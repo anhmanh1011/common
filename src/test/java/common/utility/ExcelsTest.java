@@ -1,8 +1,8 @@
 package common.utility;
 
 import com.yody.common.utility.Excels;
-import com.yody.common.utility.entity.Employee;
-import com.yody.common.utility.entity.Imex;
+import common.utility.entity.Employee;
+import common.utility.entity.Imex;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
