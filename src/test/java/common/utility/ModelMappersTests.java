@@ -7,8 +7,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.yody.common.utility.ModelMappers;
 import com.yody.common.utility.Strings;
-import com.yody.common.utility.entity.Item;
-import com.yody.common.utility.entity.Sample;
+import common.utility.entity.Item;
+import common.utility.entity.Sample;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.BeforeAll;

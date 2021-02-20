@@ -1,7 +1,7 @@
 package common.utility;
 
 import com.yody.common.utility.Jsons;
-import com.yody.common.utility.entity.Sample;
+import common.utility.entity.Sample;
 import java.util.ArrayList;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
