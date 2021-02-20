@@ -1,0 +1,53 @@
+include:
+  - project: yody-system/devops/cicd-templates
+    file: before-scripts-template.yml
+    ref: master
+
+cache:
+  key: "$CI_PROJECT_NAMESPACE:$CI_PROJECT_NAME"
+  paths:
+    - .m2/repository
+
+variables:
+  IMAGE_TAG: $CI_COMMIT_SHORT_SHA
+  MAVEN_OPTS: "-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository"
+  GIT_SUBMODULE_STRATEGY: recursive
+
+stages:
+  - test
+  - deploy
+  - tag
+  - notify
+
+.before_script: &before_script |
+  mkdir -p $CI_PROJECT_DIR/.m2/repository
+
+before_script:
+  - *before_script
+
+compile test:
+  image: maven:3.6.1-jdk-8
+  stage: test
+  script:
+    - mvn -s maven/settings.xml --batch-mode -U clean verify
+  except:
+    refs:
+      - master
+
+compile deploy:
+  image: maven:3.6.1-jdk-8
+  stage: deploy
+  script:
+    - mvn -s maven/settings.xml --batch-mode -U clean package deploy
+  only:
+    refs:
+      - develop
+
+tag:
+  image: maven:3.6.1-jdk-8
+  stage: tag
+  when: manual
+  only:
+    - tags
+  script:
+    - mvn -s maven/settings.xml --batch-mode clean package deploy
