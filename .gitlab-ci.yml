@@ -3,6 +3,9 @@ include:
     file: before-scripts-template.yml
     ref: master
 
+default:
+  image: maven:3.6.1-jdk-8
+
 cache:
   key: "$CI_PROJECT_NAMESPACE:$CI_PROJECT_NAME"
   paths:
@@ -26,7 +29,6 @@ before_script:
   - *before_script
 
 compile test:
-  image: maven:3.6.1-jdk-8
   stage: test
   script:
     - mvn -s maven/settings.xml --batch-mode -U clean verify
@@ -35,7 +37,6 @@ compile test:
       - master
 
 compile deploy:
-  image: maven:3.6.1-jdk-8
   stage: deploy
   script:
     - mvn -s maven/settings.xml --batch-mode -U clean package deploy
@@ -44,7 +45,6 @@ compile deploy:
       - develop
 
 tag:
-  image: maven:3.6.1-jdk-8
   stage: tag
   when: manual
   only:
