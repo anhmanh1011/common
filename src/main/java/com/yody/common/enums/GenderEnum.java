@@ -12,12 +12,12 @@ public enum GenderEnum implements BaseEnum<Integer>{
     private final String displayName;
     @Override
     public Integer getValue() {
-        return null;
+        return this.value;
     }
 
     @Override
     public String getDisplayName() {
-        return null;
+        return this.displayName;
     }
 
     public static GenderEnum parse(Integer value) {
