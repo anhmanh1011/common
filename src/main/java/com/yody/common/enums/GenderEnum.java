@@ -4,9 +4,9 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public enum GenderEnum implements BaseEnum<Integer>{
-    MALE(1,"enums.gender.male"),
-    FEMALE(2,"enums.gender.female"),
-    OTHER(2,"enums.gender.other");
+    MALE(1,"Nam"),
+    FEMALE(2,"Nữ"),
+    OTHER(3,"Khác");
 
     private final int value;
     private final String displayName;
