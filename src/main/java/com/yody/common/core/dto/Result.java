@@ -16,4 +16,11 @@ public class Result {
   private String transactionId;
   private Timestamp responseTime;
   private List<String> errors;
+
+  public Result(ResponseStatus status, int code , String message, Object data){
+      this.status = status;
+      this.code = code;
+      this.message = message;
+      this.data = data;
+  }
 }
