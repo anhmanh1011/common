@@ -23,4 +23,8 @@ public class Result {
       this.message = message;
       this.data = data;
   }
+
+  public Result(){
+
+  }
 }
