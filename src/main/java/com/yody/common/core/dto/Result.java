@@ -1,13 +1,13 @@
 package com.yody.common.core.dto;
 
 import com.yody.common.enums.ResponseStatus;
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
 import lombok.Data;
-import org.apache.poi.ss.formula.functions.T;
 
 @Data
-public class Result {
+public class Result implements Serializable {
 
   private ResponseStatus status;
   private int code;
