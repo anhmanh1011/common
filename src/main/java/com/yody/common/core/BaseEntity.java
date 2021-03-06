@@ -13,22 +13,35 @@ import lombok.Data;
 
 @Data
 public class BaseEntity {
+
     @Id
-    @Column(name = "Id", nullable = false, length = 50)
+    @Column(name = "id", nullable = false, length = 50)
     protected String id;
-    @Column(name = "updated_by", nullable = false)
-    protected String updatedBy;
-    @Column(name = "created_by", nullable = false)
+
+    @Column(name = "is_deleted", columnDefinition = "tinyint(1) default 0")
+    private boolean isDeleted;
+
+    @Column(name = "version", columnDefinition = "smallint",nullable = false)
+    protected int version;
+
+    @Column(name = "created_by", nullable = false, length = 50)
     protected String createdBy;
+
+    @Column(name = "updated_by", nullable = false, length = 50)
+    protected String updatedBy;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "created_date")
+    protected Date createdDate;
+
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "updated_date")
     protected Date updatedDate;
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "updated_date")
-    protected Date createdDate;
+
 
     @PrePersist
     protected void onCreate() {
+        this.version = 1;
         this.id = UUID.randomUUID().toString();
         this.updatedDate = this.createdDate = new Date();
     }
@@ -36,6 +49,7 @@ public class BaseEntity {
     @PreUpdate
     protected void onUpdate() {
         this.updatedDate = new Date();
+        this.version +=1;
     }
 
 }
