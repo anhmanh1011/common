@@ -2,9 +2,8 @@ package com.yody.common.core;
 
 
 import java.util.Date;
-import java.util.UUID;
 import javax.persistence.Column;
-import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
@@ -12,6 +11,7 @@ import javax.persistence.TemporalType;
 import lombok.Data;
 
 @Data
+@MappedSuperclass
 public class BaseEntity {
 
     @Column(name = "is_deleted", columnDefinition = "tinyint(1) default 0")
