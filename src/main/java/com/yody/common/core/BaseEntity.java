@@ -14,10 +14,6 @@ import lombok.Data;
 @Data
 public class BaseEntity {
 
-    @Id
-    @Column(name = "id", nullable = false, length = 50)
-    protected String id;
-
     @Column(name = "is_deleted", columnDefinition = "tinyint(1) default 0")
     private boolean isDeleted;
 
@@ -42,7 +38,6 @@ public class BaseEntity {
     @PrePersist
     protected void onCreate() {
         this.version = 1;
-        this.id = UUID.randomUUID().toString();
         this.updatedDate = this.createdDate = new Date();
     }
 
