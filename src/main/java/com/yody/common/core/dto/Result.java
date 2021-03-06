@@ -9,7 +9,6 @@ import lombok.Data;
 @Data
 public class Result implements Serializable {
 
-  private ResponseStatus status;
   private int code;
   private String message;
   private Object data;
@@ -17,8 +16,7 @@ public class Result implements Serializable {
   private Timestamp responseTime;
   private List<String> errors;
 
-  public Result(ResponseStatus status, int code , String message, Object data){
-      this.status = status;
+  public Result( int code , String message, Object data){
       this.code = code;
       this.message = message;
       this.data = data;
