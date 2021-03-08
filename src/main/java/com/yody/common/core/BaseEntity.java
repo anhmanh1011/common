@@ -23,13 +23,13 @@ public class BaseEntity {
     @Column(name = "created_by", nullable = false, length = 50)
     protected String createdBy;
 
-    @Column(name = "created_name", nullable = false, length = 50)
+    @Column(name = "created_name", nullable = false)
     protected String createdName;
 
     @Column(name = "updated_by", nullable = false, length = 50)
     protected String updatedBy;
 
-    @Column(name = "updated_name", nullable = false, length = 50)
+    @Column(name = "updated_name", nullable = false)
     protected String updatedName;
 
     @Temporal(TemporalType.TIMESTAMP)
