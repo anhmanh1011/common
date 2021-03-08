@@ -6,7 +6,7 @@
 
   <groupId>com.yody</groupId>
   <artifactId>yody-common</artifactId>
-  <version>1.0.7-SNAPSHOT</version>
+  <version>1.0.8-SNAPSHOT</version>
 
   <dependencies>
     <dependency>
@@ -32,6 +32,7 @@
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
+      <scope>provided</scope>
       <version>1.18.12</version>
     </dependency>
     <dependency>
@@ -67,6 +68,12 @@
       <groupId>javax.persistence</groupId>
       <artifactId>javax.persistence-api</artifactId>
       <version>2.2</version>
+    </dependency>
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>RELEASE</version>
+      <scope>compile</scope>
     </dependency>
 
 
