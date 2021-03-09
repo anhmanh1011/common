@@ -15,41 +15,39 @@ import lombok.Data;
 public class BaseEntity {
 
     @Column(name = "is_deleted", columnDefinition = "tinyint(1) default 0")
-    private boolean isDeleted;
+    private boolean is_deleted;
 
     @Column(name = "version", columnDefinition = "smallint",nullable = false)
     protected int version;
 
     @Column(name = "created_by", nullable = false, length = 50)
-    protected String createdBy;
+    protected String created_by;
 
     @Column(name = "created_name", nullable = false)
-    protected String createdName;
+    protected String created_name;
 
     @Column(name = "updated_by", nullable = false, length = 50)
-    protected String updatedBy;
+    protected String updated_by;
 
     @Column(name = "updated_name", nullable = false)
-    protected String updatedName;
+    protected String updated_name;
 
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_date")
-    protected Date createdDate;
+    protected Long created_date;
 
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "updated_date")
-    protected Date updatedDate;
+    protected Long updated_date;
 
 
     @PrePersist
     protected void onCreate() {
         this.version = 1;
-        this.updatedDate = this.createdDate = new Date();
+        this.created_date = this.updated_date = System.currentTimeMillis();
     }
 
     @PreUpdate
     protected void onUpdate() {
-        this.updatedDate = new Date();
+        this.updated_date = System.currentTimeMillis();
         this.version +=1;
     }
 
