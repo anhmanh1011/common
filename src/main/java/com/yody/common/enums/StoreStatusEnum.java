@@ -20,5 +20,14 @@ public enum StoreStatusEnum implements BaseEnum<Integer> {
     public String getDisplayName() {
         return displayName;
     }
+
+    public static StoreStatusEnum checkStatusStore (int status) {
+        for(StoreStatusEnum statusStore: StoreStatusEnum.values()) {
+            if(statusStore.getValue() == status) {
+                return statusStore;
+            }
+        }
+        return null;
+    }
 }
 
