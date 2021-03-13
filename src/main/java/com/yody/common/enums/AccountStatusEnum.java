@@ -4,8 +4,8 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public enum AccountStatusEnum implements BaseEnum<Integer> {
-    ACTIVE(1, "enums.accountStatus.active"),
-    INACTIVE(2, "enums.accountStatus.inactive");
+    ACTIVE(1, "Hoạt động"),
+    INACTIVE(2, "Không hoạt đông");
     private final int value;
     private final String displayName;
 

@@ -12,8 +12,7 @@ public class Result implements Serializable {
   private int code;
   private String message;
   private Object data;
-  private String transactionId;
-  private Timestamp responseTime;
+  private Timestamp response_time;
   private List<String> errors;
 
   public Result( int code , String message, Object data){
