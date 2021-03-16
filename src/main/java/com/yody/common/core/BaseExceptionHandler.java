@@ -33,7 +33,6 @@ public class BaseExceptionHandler extends ResponseEntityExceptionHandler {
       final HttpHeaders headers,
       final HttpStatus status,
       final WebRequest request) {
-    logger.info(ex.getClass().getName());
     //
     final List<String> errors = new ArrayList<String>();
     for (final FieldError error : ex.getBindingResult().getFieldErrors()) {
@@ -54,7 +53,6 @@ public class BaseExceptionHandler extends ResponseEntityExceptionHandler {
       final HttpHeaders headers,
       final HttpStatus status,
       final WebRequest request) {
-    logger.info(ex.getClass().getName());
     //
     final List<String> errors = new ArrayList<String>();
     for (final FieldError error : ex.getBindingResult().getFieldErrors()) {
@@ -75,7 +73,7 @@ public class BaseExceptionHandler extends ResponseEntityExceptionHandler {
       final HttpHeaders headers,
       final HttpStatus status,
       final WebRequest request) {
-    logger.info(ex.getClass().getName());
+
     //
     final String error =
         ex.getValue()
@@ -96,7 +94,7 @@ public class BaseExceptionHandler extends ResponseEntityExceptionHandler {
       final HttpHeaders headers,
       final HttpStatus status,
       final WebRequest request) {
-    logger.info(ex.getClass().getName());
+
     //
     final String error = ex.getRequestPartName() + " part is missing";
     Result result = setupResult();
@@ -110,7 +108,7 @@ public class BaseExceptionHandler extends ResponseEntityExceptionHandler {
       final HttpHeaders headers,
       final HttpStatus status,
       final WebRequest request) {
-    logger.info(ex.getClass().getName());
+
     //
     final String error = ex.getParameterName() + " parameter is missing";
     Result result = setupResult();
@@ -123,7 +121,7 @@ public class BaseExceptionHandler extends ResponseEntityExceptionHandler {
   @ExceptionHandler({MethodArgumentTypeMismatchException.class})
   public ResponseEntity<Object> handleMethodArgumentTypeMismatch(
       final MethodArgumentTypeMismatchException ex, final WebRequest request) {
-    logger.info(ex.getClass().getName());
+
     //
     final String error = ex.getName() + " should be of type " + ex.getRequiredType().getName();
 
@@ -142,7 +140,7 @@ public class BaseExceptionHandler extends ResponseEntityExceptionHandler {
       final HttpHeaders headers,
       final HttpStatus status,
       final WebRequest request) {
-    logger.info(ex.getClass().getName());
+
     //
     final String error = "No handler found for " + ex.getHttpMethod() + " " + ex.getRequestURL();
 
@@ -159,7 +157,7 @@ public class BaseExceptionHandler extends ResponseEntityExceptionHandler {
       final HttpHeaders headers,
       final HttpStatus status,
       final WebRequest request) {
-    logger.info(ex.getClass().getName());
+
     //
     final StringBuilder builder = new StringBuilder();
     builder.append(ex.getMethod());
@@ -179,7 +177,7 @@ public class BaseExceptionHandler extends ResponseEntityExceptionHandler {
       final HttpHeaders headers,
       final HttpStatus status,
       final WebRequest request) {
-    logger.info(ex.getClass().getName());
+
     //
     final StringBuilder builder = new StringBuilder();
     builder.append(ex.getContentType());
@@ -196,7 +194,7 @@ public class BaseExceptionHandler extends ResponseEntityExceptionHandler {
 
   @ExceptionHandler({Exception.class})
   public ResponseEntity<Object> handleAll(final Exception ex, final WebRequest request) {
-    logger.info(ex.getClass().getName());
+
     logger.error("error", ex);
     //
     Result result = setupResult();
