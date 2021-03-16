@@ -7,7 +7,7 @@ public class BaseException extends RuntimeException {
     private Result result;
 
     public BaseException(Result result) {
-        super(result.toString());
+        super(result.getMessage().toString());
         this.result = result;
     }
     public BaseException(String message){
