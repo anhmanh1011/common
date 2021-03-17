@@ -4,6 +4,7 @@ import com.yody.common.core.dto.Result;
 import com.yody.common.core.exception.BadRequestException;
 import com.yody.common.core.exception.BaseException;
 import com.yody.common.core.exception.InternalServerException;
+import java.sql.Timestamp;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.http.HttpStatus;
@@ -20,6 +21,7 @@ public class BaseExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Result> handleException(Exception ex) {
         Result response = new Result();
+
         if (ex instanceof BaseException) {
             logger.error(ex.getMessage());
             response.setMessage(ex.getMessage());
@@ -38,6 +40,7 @@ public class BaseExceptionHandler extends ResponseEntityExceptionHandler {
             response.setCode(internalErr.getCode());
             response.setMessage(internalErr.getMessage());
         }
+        response.setResponseTime(new Timestamp(System.currentTimeMillis()));
         return new ResponseEntity<Result>(response, HttpStatus.OK);
     }
 }

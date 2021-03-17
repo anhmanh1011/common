@@ -1,15 +1,38 @@
 package com.yody.common.enums;
 
-public enum SearchOperation {
-    GREATER_THAN,
-    LESS_THAN,
-    GREATER_THAN_EQUAL,
-    LESS_THAN_EQUAL,
-    NOT_EQUAL,
-    EQUAL,
-    MATCH,
-    MATCH_START,
-    MATCH_END,
-    IN,
-    NOT_IN
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
+public enum SearchOperation implements BaseEnum<String> {
+    GREATER_THAN("gt", "gt"),
+    LESS_THAN("lt", "lt"),
+    GREATER_THAN_EQUAL("gte", "gte"),
+    LESS_THAN_EQUAL("lte", "lte"),
+    NOT_EQUAL("neq", "neq"),
+    EQUAL("eq", "eq"),
+    MATCH("like", "like"),
+    MATCH_START("like", "like"),
+    MATCH_END("like", "like"),
+    IN("in", "in"),
+    NOT_IN("not_in", "not_in");
+    private String value;
+    private String displayName;
+
+    @Override
+    public String getValue() {
+        return this.value;
+    }
+
+    @Override
+    public String getDisplayName() {
+        return this.displayName;
+    }
+    public static SearchOperation parse (String value) {
+        for(SearchOperation v: SearchOperation.values()) {
+            if(v.getValue().equals(value)) {
+                return v;
+            }
+        }
+        return null;
+    }
 }
