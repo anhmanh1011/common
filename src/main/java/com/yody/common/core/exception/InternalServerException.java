@@ -1,6 +1,6 @@
 package com.yody.common.core.exception;
 
-import com.yody.common.core.constant.CommonErrors;
+import com.yody.common.enums.CommonResponseCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,7 +11,8 @@ public class InternalServerException extends RuntimeException {
     private String message;
 
     public InternalServerException() {
-        this.code = CommonErrors.INTERNAL_SERVER_ERROR.getCode();
-        this.message = CommonErrors.INTERNAL_SERVER_ERROR.getMessage();
+        this.code = CommonResponseCode.INTERNAL_ERROR.getValue();
+        this.message = CommonResponseCode.INTERNAL_ERROR.getDisplayName();
     }
+
 }

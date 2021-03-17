@@ -1,6 +1,7 @@
 package com.yody.common.core.exception;
 
-import com.yody.common.core.constant.CommonErrors;
+import com.yody.common.enums.BaseEnum;
+import com.yody.common.enums.CommonResponseCode;
 import lombok.Getter;
 
 @Getter
@@ -15,7 +16,14 @@ public class BadRequestException extends BaseException {
     }
 
     public BadRequestException() {
-        this.code = CommonErrors.BAD_REQUEST_ERROR.getCode();
-        this.message = CommonErrors.BAD_REQUEST_ERROR.getMessage();
+        this.code = CommonResponseCode.BAD_REQUEST.getValue();
+        this.message = CommonResponseCode.BAD_REQUEST.getDisplayName();
     }
+
+    public BadRequestException(BaseEnum<Integer> enums){
+        super(enums.getDisplayName(),enums.getValue());
+        this.code = enums.getValue();
+        this.message = enums.getDisplayName();
+    }
+
 }

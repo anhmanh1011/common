@@ -1,6 +1,7 @@
 package com.yody.common.core.exception;
 
-import com.yody.common.core.constant.CommonErrors;
+import com.yody.common.enums.BaseEnum;
+import com.yody.common.enums.CommonResponseCode;
 import lombok.Getter;
 
 @Getter
@@ -15,7 +16,13 @@ public class NotFoundException extends BaseException {
     }
 
     public NotFoundException() {
-        this.code = CommonErrors.NOT_FOUND_ERROR.getCode();
-        this.message = CommonErrors.NOT_FOUND_ERROR.getMessage();
+        this.code = CommonResponseCode.NOT_FOUND.getValue();
+        this.message = CommonResponseCode.NOT_FOUND.getDisplayName();
+    }
+
+    public NotFoundException(BaseEnum<Integer> enums){
+        super(enums.getDisplayName(),enums.getValue());
+        this.code = enums.getValue();
+        this.message = enums.getDisplayName();
     }
 }

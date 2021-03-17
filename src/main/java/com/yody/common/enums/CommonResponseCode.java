@@ -4,23 +4,23 @@ import lombok.AllArgsConstructor;
 
  @AllArgsConstructor
 public enum CommonResponseCode implements BaseEnum<Integer> {
-     SUCCESS(0, "sucess"),
-     CREATED(201,"created"),
-     BAD_REQUEST(400, "invalid request"),
-     UNAUTHORIZE(401,"unauthorized"),
-     FORBIDDEN(403,"Forbidden"),
-     NOT_FOUND(404,"Not found"),
-     INTERNAL_ERROR(500, "internal server error"),
-     BAD_GATEWAY(502,"Bad gateway");
+     SUCCESS(20000000, "Thành công"),
+     CREATED(20100000,"Tạo mới thành công"),
+     BAD_REQUEST(40000000, "invalid request"),
+     UNAUTHORIZE(40100000,"unauthorized"),
+     FORBIDDEN(40300000,"Forbidden"),
+     NOT_FOUND(40400000,"Not found"),
+     INTERNAL_ERROR(50000000, "internal server error"),
+     BAD_GATEWAY(50200000,"Bad gateway");
 
      private final int value;
      private final String displayName;
      @Override
      public Integer getValue() {
-         return null;
+         return this.value;
      }
      @Override
      public String getDisplayName() {
-         return null;
+         return this.displayName;
      }
  }
