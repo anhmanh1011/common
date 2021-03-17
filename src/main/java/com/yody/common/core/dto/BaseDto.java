@@ -1,14 +1,17 @@
 package com.yody.common.core.dto;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Data;
 
 @Data
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class BaseDto {
     protected Integer version;
-    protected String created_by;
-    protected String created_name;
-    protected long created_date;
-    protected String updated_by;
-    protected String updated_name;
-    protected long updated_date;
+    protected String createdBy;
+    protected String createdName;
+    protected long createdDate;
+    protected String updatedBy;
+    protected String updatedName;
+    protected long updatedDate;
 }
