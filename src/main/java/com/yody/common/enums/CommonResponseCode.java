@@ -6,11 +6,11 @@ import lombok.AllArgsConstructor;
 public enum CommonResponseCode implements BaseEnum<Integer> {
      SUCCESS(20000000, "Thành công"),
      CREATED(20100000,"Tạo mới thành công"),
-     BAD_REQUEST(40000000, "invalid request"),
-     UNAUTHORIZE(40100000,"unauthorized"),
-     FORBIDDEN(40300000,"Forbidden"),
-     NOT_FOUND(40400000,"Not found"),
-     INTERNAL_ERROR(50000000, "internal server error"),
+     BAD_REQUEST(40000000, "Request không hợp lệ"),
+     UNAUTHORIZE(40100000,"Không có quyền truy cập"),
+     FORBIDDEN(40300000,"Không đủ quyền truy cập"),
+     NOT_FOUND(40400000,"Không tìm thấy data"),
+     INTERNAL_ERROR(50000000, "Server đang bận"),
      BAD_GATEWAY(50200000,"Bad gateway");
 
      private final int value;
