@@ -3,8 +3,10 @@ package com.yody.common.core.exception;
 import com.yody.common.enums.BaseEnum;
 import com.yody.common.enums.CommonResponseCode;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 public class BadRequestException extends BaseException {
     private String message;
     private Integer code;
