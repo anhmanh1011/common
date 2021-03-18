@@ -11,8 +11,8 @@ public enum SearchOperation implements BaseEnum<String> {
     NOT_EQUAL("neq", "neq"),
     EQUAL("eq", "eq"),
     MATCH("like", "like"),
-    MATCH_START("like", "like"),
-    MATCH_END("like", "like"),
+    MATCH_START("like_start", "like_start"),
+    MATCH_END("like_end", "like_end"),
     IN("in", "in"),
     NOT_IN("not_in", "not_in");
     private String value;

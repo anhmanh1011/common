@@ -10,7 +10,7 @@ public enum CommonResponseCode implements BaseEnum<Integer> {
      UNAUTHORIZE(40100000,"Không có quyền truy cập"),
      FORBIDDEN(40300000,"Không đủ quyền truy cập"),
      NOT_FOUND(40400000,"Không tìm thấy data"),
-     INTERNAL_ERROR(50000000, "Server đang bận"),
+     INTERNAL_ERROR(50000000, "Máy chủ đang bận"),
      BAD_GATEWAY(50200000,"Bad gateway");
 
      private final int value;
