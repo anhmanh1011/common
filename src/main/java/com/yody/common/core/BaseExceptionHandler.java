@@ -40,15 +40,7 @@ public class BaseExceptionHandler extends ResponseEntityExceptionHandler {
             logger.error(ex.getMessage());
             response.setMessage(ex.getMessage());
             response.setCode(((BaseException) ex).getCode());
-        } else if (ex instanceof MethodArgumentTypeMismatchException
-            || ex instanceof HttpRequestMethodNotSupportedException
-            || ex instanceof HttpMediaTypeNotSupportedException
-            || ex instanceof TypeMismatchException) {
-            logger.error(ex.getMessage());
-            BadRequestException badRequestErr = new BadRequestException();
-            response.setCode(badRequestErr.getCode());
-            response.setMessage(badRequestErr.getMessage());
-        } else {
+        }  else {
             logger.error(ex.getMessage());
             InternalServerException internalErr = new InternalServerException();
             response.setCode(internalErr.getCode());
