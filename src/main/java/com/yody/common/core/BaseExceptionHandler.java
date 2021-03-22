@@ -38,13 +38,13 @@ public class BaseExceptionHandler extends ResponseEntityExceptionHandler {
 
         if (ex instanceof BaseException) {
             logger.error(ex.getMessage());
-            response.setMessage(ex.getMessage());
+            response.setErrors(Arrays.asList(ex.getMessage()));
             response.setCode(((BaseException) ex).getCode());
         }  else {
             logger.error(ex.getMessage());
             InternalServerException internalErr = new InternalServerException();
             response.setCode(internalErr.getCode());
-            response.setMessage(internalErr.getMessage());
+            response.setErrors(Arrays.asList(internalErr.getMessage()));
         }
         response.setResponseTime(new Timestamp(System.currentTimeMillis()));
         return new ResponseEntity<Result>(response, HttpStatus.OK);
