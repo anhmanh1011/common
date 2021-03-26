@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-enum SupplierTypeEnum implements BaseEnum<Integer> {
+public enum SupplierTypeEnum implements BaseEnum<Integer> {
     PERSONAL(1, "personal"),
     ENTERPRISE(2, "enterprise");
     private final Integer value;
