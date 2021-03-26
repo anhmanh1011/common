@@ -3,21 +3,22 @@ package com.yody.common.enums;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-@Getter
 @AllArgsConstructor
-public enum SupplierTypeEnum implements BaseEnum<Integer> {
-    PERSONAL(1, "personal"),
-    ENTERPRISE(2, "enterprise");
+@Getter
+public enum GoodsEnum  implements BaseEnum<Integer> {
+    FOOTWEAR(1, "Giày dép"),
+    CLOTHES(2, "Quàn áo"),
+    ACCESSORIES(3, "Phụ kiện thời trang");
+
     private final Integer value;
     private final String displayName;
 
-    public static SupplierTypeEnum parse(Integer value) {
-        for (SupplierTypeEnum type : SupplierTypeEnum.values()) {
+    public static GoodsEnum parse(Integer value) {
+        for (GoodsEnum type : GoodsEnum.values()) {
             if (type.getValue().equals(value)) {
                 return type;
             }
         }
         return null;
     }
-
 }
