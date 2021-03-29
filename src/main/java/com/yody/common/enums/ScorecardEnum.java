@@ -9,12 +9,12 @@ public enum ScorecardEnum implements BaseEnum<Integer> {
     APLUS(1, "A+"),
     A(2, "A"),
     AMINUS(3, "A-"),
-    BPLUS(1, "B+"),
-    B(2, "B"),
-    BMINUS(3, "B-"),
-    CPLUS(1, "C+"),
-    C(2, "C"),
-    CMINUS(3, "C-");
+    BPLUS(4, "B+"),
+    B(5, "B"),
+    BMINUS(6, "B-"),
+    CPLUS(7, "C+"),
+    C(8, "C"),
+    CMINUS(9, "C-");
     private Integer value;
     private String displayName;
 
