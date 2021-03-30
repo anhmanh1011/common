@@ -5,14 +5,14 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum SupplierType implements BaseEnum<Integer> {
+public enum SupplierTypeEnum implements BaseEnum<Integer> {
     PERSONAL(1, "personal"),
     ENTERPRISE(2, "enterprise");
     private final Integer value;
     private final String displayName;
 
-    public static SupplierType parse(Integer value) {
-        for (SupplierType type : SupplierType.values()) {
+    public static SupplierTypeEnum parse(Integer value) {
+        for (SupplierTypeEnum type : SupplierTypeEnum.values()) {
             if (type.getValue().equals(value)) {
                 return type;
             }
