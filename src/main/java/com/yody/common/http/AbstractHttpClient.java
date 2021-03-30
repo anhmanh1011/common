@@ -1,9 +1,9 @@
-package com.yody.common.http.client;
+package com.yody.common.http;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.yody.common.http.request.AbstractHttpRequest;
-import com.yody.common.http.response.BaseResponse;
+import com.yody.common.core.dto.Result;
+import com.yody.common.core.dto.Request;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
@@ -26,9 +26,9 @@ public abstract class AbstractHttpClient {
         this.objectMapper = objectMapper;
     }
 
-    public <T> BaseResponse<T> post(final AbstractHttpRequest request, final ParameterizedTypeReference<BaseResponse<T>> dataClass) {
+    public <T> Result<T> post(final Request request, final ParameterizedTypeReference<Result<T>> dataClass) {
         this.logRequest(HttpMethod.POST, request);
-        ResponseEntity<BaseResponse<T>> responseEntity = restTemplate.exchange(
+        ResponseEntity<Result<T>> responseEntity = restTemplate.exchange(
                 this.baseUrl().concat(request.getPath()),
                 HttpMethod.POST,
                 new HttpEntity<>(request, this.buildHeaders()),
@@ -38,9 +38,9 @@ public abstract class AbstractHttpClient {
         return responseEntity.getBody();
     }
 
-    public <T> BaseResponse<T> put(final AbstractHttpRequest request, final ParameterizedTypeReference<BaseResponse<T>> dataClass) {
+    public <T> Result<T> put(final Request request, final ParameterizedTypeReference<Result<T>> dataClass) {
         this.logRequest(HttpMethod.PUT, request);
-        ResponseEntity<BaseResponse<T>> responseEntity = restTemplate.exchange(
+        ResponseEntity<Result<T>> responseEntity = restTemplate.exchange(
                 this.baseUrl().concat(request.getPath()),
                 HttpMethod.PUT,
                 new HttpEntity<>(request, this.buildHeaders()),
@@ -50,9 +50,9 @@ public abstract class AbstractHttpClient {
         return responseEntity.getBody();
     }
 
-    public <T> BaseResponse<T> get(final AbstractHttpRequest request, final ParameterizedTypeReference<BaseResponse<T>> dataClass) {
+    public <T> Result<T> get(final Request request, final ParameterizedTypeReference<Result<T>> dataClass) {
         this.logRequest(HttpMethod.GET, request);
-        ResponseEntity<BaseResponse<T>> responseEntity = restTemplate.exchange(
+        ResponseEntity<Result<T>> responseEntity = restTemplate.exchange(
                 this.baseUrl().concat(request.getPath()),
                 HttpMethod.GET,
                 new HttpEntity<>(this.buildHeaders()),
@@ -70,7 +70,7 @@ public abstract class AbstractHttpClient {
 
     protected abstract String baseUrl();
 
-    private void logRequest(HttpMethod method, AbstractHttpRequest request) {
+    private void logRequest(HttpMethod method, Request request) {
         try {
             log.debug("Request {} to endpoint {} with data: {}", method, this.baseUrl() + request.getPath(), objectMapper.writeValueAsString(request));
         } catch (JsonProcessingException e) {

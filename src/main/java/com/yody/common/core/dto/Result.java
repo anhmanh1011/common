@@ -9,22 +9,22 @@ import lombok.Data;
 
 @Data
 @JsonNaming(SnakeCaseStrategy.class)
-public class Result implements Serializable {
+public class Result<T> implements Serializable {
 
     private int code;
     private String message;
-    private Object data;
+    private T data;
     private Timestamp responseTime;
     private List<String> errors;
     private String requestId;
 
-    public Result(int code, String message, Object data) {
+    public Result(int code, String message, T data) {
         this.code = code;
         this.message = message;
         this.data = data;
     }
 
-    public Result(int code, String message, Object data, String requestId) {
+    public Result(int code, String message, T data, String requestId) {
         this.code = code;
         this.message = message;
         this.data = data;

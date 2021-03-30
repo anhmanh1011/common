@@ -1,4 +1,4 @@
-package com.yody.common.http.request;
+package com.yody.common.core.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
@@ -12,7 +12,7 @@ import java.io.Serializable;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public abstract class AbstractHttpRequest implements Serializable {
+public abstract class Request implements Serializable {
     private static final long serialVersionUID = -8185669572280986533L;
     @JsonIgnore
     private String path;
