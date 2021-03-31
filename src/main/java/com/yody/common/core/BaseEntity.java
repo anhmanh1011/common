@@ -1,15 +1,20 @@
 package com.yody.common.core;
 
 
-import javax.persistence.Column;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
+import javax.persistence.*;
+
 import lombok.Data;
 
 @Data
 @MappedSuperclass
 public class BaseEntity {
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    @Column(name = "code")
+    private String code;
 
     @Column(name = "is_deleted", columnDefinition = "tinyint(1) default 0")
     private boolean isDeleted;
