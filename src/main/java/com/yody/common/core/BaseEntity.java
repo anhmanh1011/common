@@ -13,7 +13,7 @@ public class BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "code")
+    @Column(name = "code", nullable = false, length = 36)
     private String code;
 
     @Column(name = "is_deleted", columnDefinition = "tinyint(1) default 0")
@@ -22,13 +22,13 @@ public class BaseEntity {
     @Column(name = "version", columnDefinition = "smallint", nullable = false)
     protected int version;
 
-    @Column(name = "created_by", nullable = false, length = 50)
+    @Column(name = "created_by", nullable = false, length = 36)
     protected String createdBy;
 
     @Column(name = "created_name", nullable = false)
     protected String createdName;
 
-    @Column(name = "updated_by", nullable = false, length = 50)
+    @Column(name = "updated_by", nullable = false, length = 36)
     protected String updatedBy;
 
     @Column(name = "updated_name", nullable = false)

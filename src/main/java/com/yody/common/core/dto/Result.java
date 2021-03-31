@@ -5,6 +5,9 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
+
+import com.yody.common.enums.BaseEnum;
+import com.yody.common.enums.CommonResponseCode;
 import lombok.Data;
 
 @Data
@@ -24,11 +27,22 @@ public class Result<T> implements Serializable {
         this.data = data;
     }
 
+    public Result(BaseEnum<Integer> enums, T data) {
+        this.code = enums.getValue();
+        this.message = enums.getDisplayName();
+        this.data = data;
+        this.responseTime = new Timestamp(System.currentTimeMillis());
+    }
+
     public Result(int code, String message, T data, String requestId) {
         this.code = code;
         this.message = message;
         this.data = data;
         this.requestId = requestId;
+    }
+
+    public static <T> Result<T> ok(T data){
+        return new Result<>(CommonResponseCode.SUCCESS, data);
     }
 
     public Result() {
