@@ -1,17 +1,16 @@
 package com.yody.common.core.dto;
 
-import java.io.Serializable;
-import java.util.List;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PageableDto<T> implements Serializable {
-    private Metadata metadata;
-    private List<T> items;
+public class Metadata implements Serializable {
+    private long total;
+    private int page;
+    private int limit;
 }
-
