@@ -7,6 +7,8 @@ import lombok.Data;
 @Data
 @JsonNaming(SnakeCaseStrategy.class)
 public class BaseDto {
+    protected Long id;
+    protected String code;
     protected Integer version;
     protected String createdBy;
     protected String createdName;
