@@ -6,8 +6,8 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum SupplierTypeEnum implements BaseEnum<Integer> {
-    PERSONAL(1, "personal"),
-    ENTERPRISE(2, "enterprise");
+    PERSONAL(1, "Cá nhân"),
+    ENTERPRISE(2, "Doanh nghiệp");
     private final Integer value;
     private final String displayName;
 
