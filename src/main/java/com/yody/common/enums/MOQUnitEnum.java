@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public enum MOQUnit implements BaseEnum<String> {
+public enum MOQUnitEnum implements BaseEnum<String> {
     SINGLE("s", "Cái"),
     COUPLE("c", "Cặp"),
     KG("kg", "Kg"),
@@ -14,8 +14,8 @@ public enum MOQUnit implements BaseEnum<String> {
     private String  value;
     private String displayName;
 
-    public static MOQUnit parse(Integer value) {
-        for (MOQUnit type : MOQUnit.values()) {
+    public static MOQUnitEnum parse(String value) {
+        for (MOQUnitEnum type : MOQUnitEnum.values()) {
             if (type.getValue().equals(value)) {
                 return type;
             }
