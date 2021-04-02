@@ -13,7 +13,7 @@ public enum DateUnit implements BaseEnum<String> {
     private String  value;
     private String displayName;
 
-    public static DateUnit parse(Integer value) {
+    public static DateUnit parse(String value) {
         for (DateUnit type : DateUnit.values()) {
             if (type.getValue().equals(value)) {
                 return type;
