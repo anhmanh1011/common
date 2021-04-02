@@ -14,38 +14,36 @@ import lombok.Data;
 @JsonNaming(SnakeCaseStrategy.class)
 public class Result<T> implements Serializable {
 
-    private int code;
-    private String message;
-    private T data;
-    private Timestamp responseTime;
-    private List<String> errors;
-    private String requestId;
+  private int code;
+  private String message;
+  private T data;
+  private Timestamp responseTime;
+  private List<String> errors;
+  private String requestId;
 
-    public Result(int code, String message, T data) {
-        this.code = code;
-        this.message = message;
-        this.data = data;
-    }
+  public Result(int code, String message, T data) {
+    this.code = code;
+    this.message = message;
+    this.data = data;
+  }
 
-    public Result(BaseEnum<Integer> enums, T data) {
-        this.code = enums.getValue();
-        this.message = enums.getDisplayName();
-        this.data = data;
-        this.responseTime = new Timestamp(System.currentTimeMillis());
-    }
+  public Result(BaseEnum<Integer> enums, T data) {
+    this.code = enums.getValue();
+    this.message = enums.getDisplayName();
+    this.data = data;
+    this.responseTime = new Timestamp(System.currentTimeMillis());
+  }
 
-    public Result(int code, String message, T data, String requestId) {
-        this.code = code;
-        this.message = message;
-        this.data = data;
-        this.requestId = requestId;
-    }
+  public Result(int code, String message, T data, String requestId) {
+    this.code = code;
+    this.message = message;
+    this.data = data;
+    this.requestId = requestId;
+  }
 
-    public static <T> Result<T> ok(T data){
-        return new Result<>(CommonResponseCode.SUCCESS, data);
-    }
+  public static <T> Result<T> ok(T data) {
+    return new Result<>(CommonResponseCode.SUCCESS, data);
+  }
 
-    public Result() {
-
-    }
+  public Result() {}
 }
