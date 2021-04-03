@@ -5,16 +5,16 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public enum DateUnit implements BaseEnum<String> {
-    DAY("d", "Ngày"),
-    MONTH("m", "Tháng"),
-    YEAR("y", "Năm");
+public enum DateUnitEnum implements BaseEnum<Integer> {
+    DAY(1, "Ngày"),
+    MONTH(2, "Tháng"),
+    YEAR(3, "Năm");
 
-    private String  value;
+    private Integer  value;
     private String displayName;
 
-    public static DateUnit parse(String value) {
-        for (DateUnit type : DateUnit.values()) {
+    public static DateUnitEnum parse(Integer value) {
+        for (DateUnitEnum type : DateUnitEnum.values()) {
             if (type.getValue().equals(value)) {
                 return type;
             }
