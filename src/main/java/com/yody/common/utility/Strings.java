@@ -37,7 +37,7 @@ public final class Strings {
   }
 
   public static String snakeToCamel(String str) {
-
+    if(isEmpty(str)) return  null;
     StringBuilder builder = new StringBuilder(str);
     for (int i = 0; i < builder.length(); i++) {
 
