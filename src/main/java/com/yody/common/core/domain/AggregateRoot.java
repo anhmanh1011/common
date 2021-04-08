@@ -9,7 +9,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import lombok.Getter;
 
 @Getter
-public abstract class AggregateRoot<T extends BaseEntity> extends BaseEntity{
+public abstract class AggregateRoot<T> extends BaseEntity{
 
  // private AtomicInteger version = new AtomicInteger(0);
   private long timestamp = 0;
