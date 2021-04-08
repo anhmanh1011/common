@@ -1,5 +1,6 @@
 package com.yody.common.core.domain;
 
+import com.yody.common.core.BaseEntity;
 import com.yody.common.core.event.DomainEvent;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -8,20 +9,14 @@ import java.util.concurrent.atomic.AtomicInteger;
 import lombok.Getter;
 
 @Getter
-public abstract class AggregateRoot<T extends ID> {
+public abstract class AggregateRoot<T extends BaseEntity> extends BaseEntity{
 
-  private T id;
-  private AtomicInteger version = new AtomicInteger(0);
+ // private AtomicInteger version = new AtomicInteger(0);
   private long timestamp = 0;
   private final String APPLY_METHOD = "apply";
   private List<DomainEvent> pendingEvents = new ArrayList<>();
-
-  protected T getID() {
-    return this.id;
-  }
-
   protected int nextVersion() {
-    return version.incrementAndGet();
+    return version++;
   }
 
   protected void addEvents(DomainEvent event) {
@@ -49,8 +44,7 @@ public abstract class AggregateRoot<T extends ID> {
   }
 
   private void updateMetadata(DomainEvent event) {
-    this.id = (T) event.id;
-    this.version.set(event.version);
+    this.version = event.version;
     this.timestamp = event.timestamp;
   }
 
