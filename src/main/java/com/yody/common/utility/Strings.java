@@ -1,8 +1,10 @@
 package com.yody.common.utility;
 
 import com.yody.common.enums.SearchOperation;
+import org.apache.poi.util.StringUtil;
+import org.springframework.util.StringUtils;
 
-public final class Strings {
+public final class Strings extends StringUtils {
 
   public static String trim(final String s) {
     return ((s == null) ? null : s.trim());
@@ -12,7 +14,6 @@ public final class Strings {
     s = trim(s);
     return isEmpty(s) ? null : s;
   }
-
   public static String trimToEmpty(String s) {
     if (s == null) {
       return "";
