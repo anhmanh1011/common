@@ -49,4 +49,10 @@ public final class Strings extends StringUtils {
     }
     return builder.toString();
   }
+
+  public static boolean compare(String s1 , String s2){
+      if(isEmpty(s1) && isEmpty(s2)) return true;
+      if(isEmpty(s1) || isEmpty(s2)) return false;
+      return s1.equals(s2);
+  }
 }
