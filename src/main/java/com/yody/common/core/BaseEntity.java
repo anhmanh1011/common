@@ -4,20 +4,23 @@ package com.yody.common.core;
 import javax.persistence.*;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @MappedSuperclass
 public class BaseEntity {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    protected Long id;
 
     @Column(name = "code", nullable = false, length = 36)
-    private String code;
+    protected String code;
 
     @Column(name = "is_deleted", columnDefinition = "tinyint(1) default 0")
-    private boolean isDeleted;
+    protected boolean isDeleted;
 
     @Column(name = "version", columnDefinition = "smallint", nullable = false)
     protected int version;
