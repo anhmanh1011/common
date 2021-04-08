@@ -45,5 +45,9 @@ public class Result<T> implements Serializable {
     return new Result<>(CommonResponseCode.SUCCESS, data);
   }
 
+  public static <T> Result<T> ok(String message, T data) {
+    return new Result<>(CommonResponseCode.SUCCESS.getValue(), message, data);
+  }
+
   public Result() {}
 }
