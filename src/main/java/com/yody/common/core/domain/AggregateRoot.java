@@ -1,30 +1,40 @@
 package com.yody.common.core.domain;
 
+import com.yody.common.core.BaseBO;
 import com.yody.common.core.BaseEntity;
 import com.yody.common.core.event.DomainEvent;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import lombok.Getter;
+import org.springframework.util.Assert;
 
 @Getter
-public abstract class AggregateRoot<T extends  AggregateRoot<T>> extends BaseEntity{
+public abstract class AggregateRoot<T extends AggregateRoot<T>> extends BaseBO {
 
- // private AtomicInteger version = new AtomicInteger(0);
+  // private AtomicInteger version = new AtomicInteger(0);
   private long timestamp = 0;
   private final String APPLY_METHOD = "apply";
-  private List<DomainEvent> pendingEvents = new ArrayList<>();
+  private final transient List<DomainEvent> pendingEvents = new ArrayList<>();
+
   protected int nextVersion() {
     return version++;
   }
 
   protected void addEvents(DomainEvent event) {
+    Assert.notNull(event, "Domain event must not be null!");
     pendingEvents.add(event);
   }
 
   protected void removeEvents(DomainEvent event) {
     pendingEvents.remove(event);
+  }
+
+  protected Collection<Object> domainEvents() {
+    return Collections.unmodifiableList(this.pendingEvents);
   }
 
   protected void clearEvents() {
@@ -56,7 +66,8 @@ public abstract class AggregateRoot<T extends  AggregateRoot<T>> extends BaseEnt
       try {
         handlerMethod.invoke(this, event);
       } catch (Exception e) {
-        throw new RuntimeException("Unable to call event handler method for " + event.getClass().getName(), e);
+        throw new RuntimeException(
+            "Unable to call event handler method for " + event.getClass().getName(), e);
       }
     }
   }
