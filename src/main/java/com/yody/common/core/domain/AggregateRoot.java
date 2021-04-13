@@ -18,7 +18,7 @@ public abstract class AggregateRoot<T extends AggregateRoot<T>> extends BaseBO {
   // private AtomicInteger version = new AtomicInteger(0);
   private long timestamp = 0;
   private final String APPLY_METHOD = "apply";
-  private final transient List<DomainEvent> pendingEvents = new ArrayList<>();
+  private final  List<DomainEvent> pendingEvents = new ArrayList<>();
 
   protected int nextVersion() {
     return version++;
