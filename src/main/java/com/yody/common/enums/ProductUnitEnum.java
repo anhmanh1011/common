@@ -4,8 +4,8 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public enum ProductUnitEnum implements BaseEnum<Integer>{
-    MALE(1,"Cái"),
-    FEMALE(2,"Bộ");
+    PIECE(1,"Cái"),
+    SET(2,"Bộ");
     private final int value;
     private final String displayName;
     @Override

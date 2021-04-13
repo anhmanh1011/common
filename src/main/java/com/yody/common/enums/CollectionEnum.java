@@ -4,9 +4,8 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public enum CollectionEnum implements BaseEnum<Integer>{
-    COLLECTION1(1,"BST 1"),
-    COLLECTION2(2,"BST 2"),
-    COLLECTION3(3,"BST 3");
+    YODYEVERYDAYWEAR(1,"YODYEVERYDAYWEAR"),
+    SUMMER(2,"SUMMER");
 
     private final int value;
     private final String displayName;
