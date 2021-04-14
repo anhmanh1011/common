@@ -7,8 +7,7 @@ import lombok.Getter;
 @Getter
 public enum ProductStatusEnum implements BaseEnum<Integer> {
   ACTIVE(1, "Đang bán"),
-  IN_ACTIVE(2, "Ngừng bán"),
-  DELETED(3, "Đã xóa");
+  IN_ACTIVE(2, "Ngừng bán");
 
   private Integer value;
   private String displayName;

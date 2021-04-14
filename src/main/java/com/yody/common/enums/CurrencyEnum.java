@@ -5,15 +5,18 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public enum Currency implements BaseEnum<String> {
-  VND("VNĐ", "đ", 0, "Việt Nam Đồng");
-  private String value;
+public enum CurrencyEnum implements BaseEnum<Integer> {
+  VND(1,"VNĐ", "đ", 0, "Việt Nam Đồng"),
+  THB(2,"THB","฿",2,"Thai Baht")
+    ;
+  private Integer value;
+  private String code;
   private String symbol;
   private Integer scale;
   private String displayName;
 
-  public static Currency parse(String code) {
-    for (Currency type : Currency.values()) {
+  public static CurrencyEnum parse(String code) {
+    for (CurrencyEnum type : CurrencyEnum.values()) {
       if (type.getValue().equals(code)) {
         return type;
       }
