@@ -14,7 +14,7 @@ public enum ProductPriceType implements BaseEnum<Integer> {
   private Integer value;
   private String displayName;
 
-  public static ProductPriceType parse(String value) {
+  public static ProductPriceType parse(Integer value) {
     for (ProductPriceType type : ProductPriceType.values()) {
       if (type.getValue().equals(value)) {
         return type;
