@@ -5,9 +5,9 @@ import com.yody.common.anotaion.Permission;
 import com.yody.common.core.dto.Result;
 import com.yody.common.enums.CommonResponseCode;
 import com.yody.common.enums.HeaderEnum;
-import com.yody.common.thirdparty.request.PermissionRequestDto;
-import com.yody.common.thirdparty.response.PermissionResponseDto;
-import com.yody.common.thirdparty.services.AccountService;
+import com.yody.common.filter.thirdparty.request.PermissionRequestDto;
+import com.yody.common.filter.thirdparty.response.PermissionResponseDto;
+import com.yody.common.filter.thirdparty.services.AuthService;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.Ordered;
@@ -26,6 +26,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.Objects;
+import java.util.UUID;
 
 import org.springframework.context.ApplicationContext;
 
@@ -42,11 +43,11 @@ public class HandlerFilter implements Filter {
     static final String REQUEST_MAPPING_HANDLER_MAPPING = "requestMappingHandlerMapping";
 
     private final ApplicationContext appContext;
-    private final AccountService accountService;
+    private final AuthService authService;
 
-    public HandlerFilter(ApplicationContext appContext, AccountService accountService) {
+    public HandlerFilter(ApplicationContext appContext, AuthService authService) {
         this.appContext = appContext;
-        this.accountService = accountService;
+        this.authService = authService;
     }
 
     @Override
@@ -68,9 +69,13 @@ public class HandlerFilter implements Filter {
             String xApiKey = request.getHeader(HeaderEnum.X_API_KEY.getValue());
             String xApiSecretKey = request.getHeader(HeaderEnum.X_API_SECRET_KEY.getValue());
 
-            ApiKeyVerifyRequestWrapper requestWrapper = new ApiKeyVerifyRequestWrapper(request);
+            if (requestId == null) {
+                requestId = UUID.randomUUID().toString();
+            }
+
+            VerifyRequestWrapper requestWrapper = new VerifyRequestWrapper(request);
             JSONObject dataRequest;
-            if (requestWrapper.getBody() != null) {
+            if (requestWrapper.getBody() != null && !"".equals(requestWrapper.getBody())) {
                 dataRequest = new JSONObject(requestWrapper.getBody());
             } else {
                 dataRequest = new JSONObject();
@@ -79,11 +84,11 @@ public class HandlerFilter implements Filter {
             dataRequest.put(HeaderEnum.HEADER_USER_NAME.getValue(), userName);
             dataRequest.put(HeaderEnum.HEADER_REQUEST_ID.getValue(), requestId);
             requestWrapper.setBody(dataRequest.toString());
-            if (null != apiKey && null != apiSecretKey) {
+            if (null != xApiKey && null != xApiSecretKey) {
                 if (apiKey.equals(xApiKey) && apiSecretKey.equals(xApiSecretKey)) {
                     filterChain.doFilter(requestWrapper, servletResponse);
                 } else {
-                    buildErrorUnAuthorize(response, requestId, 401,
+                    buildErrorResponse(response, requestId, HttpServletResponse.SC_UNAUTHORIZED,
                         CommonResponseCode.UNAUTHORIZE.getValue(), CommonResponseCode.UNAUTHORIZE.getDisplayName());
                 }
             } else {
@@ -103,16 +108,16 @@ public class HandlerFilter implements Filter {
                     requestDto.setRequestId(requestId);
                     requestDto.setUserId(userId);
                     requestDto.setUserName(userName);
-                    Result<PermissionResponseDto> result = accountService.getPermissionInfo(requestDto);
+                    Result<PermissionResponseDto> result = authService.getPermissionInfo(requestDto);
                     if (result == null) {
-                        buildErrorUnAuthorize(response, requestId, 401,
+                        buildErrorResponse(response, requestId, HttpServletResponse.SC_UNAUTHORIZED,
                             CommonResponseCode.UNAUTHORIZE.getValue(), CommonResponseCode.UNAUTHORIZE.getDisplayName());
                         return;
                     }
                     PermissionResponseDto permissionsDto = result.getData();
 
                     if (null == permissionsDto.getModules() || CollectionUtils.isEmpty(permissionsDto.getModules().getPermissions())) {
-                        buildErrorUnAuthorize(response, requestId, 401,
+                        buildErrorResponse(response, requestId, HttpServletResponse.SC_UNAUTHORIZED,
                             CommonResponseCode.UNAUTHORIZE.getValue(), CommonResponseCode.UNAUTHORIZE.getDisplayName());
                         return;
                     } else {
@@ -125,7 +130,7 @@ public class HandlerFilter implements Filter {
                             }
                         }
                         if (countPer == 0) {
-                            buildErrorUnAuthorize(response, requestId, 401,
+                            buildErrorResponse(response, requestId, HttpServletResponse.SC_UNAUTHORIZED,
                                 CommonResponseCode.UNAUTHORIZE.getValue(), CommonResponseCode.UNAUTHORIZE.getDisplayName());
                             return;
                         }
@@ -134,8 +139,9 @@ public class HandlerFilter implements Filter {
                 filterChain.doFilter(requestWrapper, servletResponse);
             }
         } catch (Exception exception) {
-            buildErrorUnAuthorize((HttpServletResponse) servletRequest, "", 500,
-                CommonResponseCode.INTERNAL_ERROR.getValue(), CommonResponseCode.INTERNAL_ERROR.getDisplayName());
+            buildErrorResponse((HttpServletResponse) servletRequest, UUID.randomUUID().toString(),
+                HttpServletResponse.SC_INTERNAL_SERVER_ERROR, CommonResponseCode.INTERNAL_ERROR.getValue(),
+                CommonResponseCode.INTERNAL_ERROR.getDisplayName());
         }
     }
 
@@ -149,13 +155,12 @@ public class HandlerFilter implements Filter {
         return serialized.getBytes();
     }
 
-    private void buildErrorUnAuthorize(HttpServletResponse response, String requestId,
-                                       int httpStatus, int errorCode, String message) {
+    private void buildErrorResponse(HttpServletResponse response, String requestId,
+                                    int httpStatus, int errorCode, String message) {
         response.setStatus(httpStatus);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         try {
-            response.getOutputStream().write(restResponseBytes(
-                new Result(errorCode, message, null, requestId)));
+            response.getOutputStream().write(restResponseBytes(Result.error(requestId, errorCode, message)));
         } catch (IOException ignored) {
         }
     }

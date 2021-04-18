@@ -1,4 +1,4 @@
-package com.yody.common.thirdparty.services;
+package com.yody.common.filter.thirdparty.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yody.common.core.dto.Request;
@@ -6,18 +6,20 @@ import com.yody.common.enums.HeaderEnum;
 import com.yody.common.http.AbstractHttpClient;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 @Component
 @Slf4j
-public class AccountServiceClient extends AbstractHttpClient {
+@Order(1)
+public class AuthServiceClient extends AbstractHttpClient {
 
-    @Value("${yody.common.thirdparty.services.account.base-url}")
+    @Value("${yody.common.thirdparty.services.auth.base-url}")
     private String url;
 
-    public AccountServiceClient(RestTemplate restTemplate, ObjectMapper objectMapper) {
+    public AuthServiceClient(RestTemplate restTemplate, ObjectMapper objectMapper) {
         super(restTemplate, objectMapper);
     }
 

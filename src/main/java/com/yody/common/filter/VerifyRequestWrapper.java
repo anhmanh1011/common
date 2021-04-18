@@ -2,13 +2,14 @@ package com.yody.common.filter;
 
 import org.springframework.http.MediaType;
 
+import javax.servlet.ReadListener;
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 import java.io.*;
 
 /** The Class ApiKeyVerifiRequestWrapper. */
-public class ApiKeyVerifyRequestWrapper extends HttpServletRequestWrapper {
+public class VerifyRequestWrapper extends HttpServletRequestWrapper {
 
   /** The body. */
   private String body;
@@ -20,7 +21,7 @@ public class ApiKeyVerifyRequestWrapper extends HttpServletRequestWrapper {
    * @throws IOException Signals that an I/O exception has occurred.
    * @throws IllegalArgumentException if the request is null
    */
-  public ApiKeyVerifyRequestWrapper(HttpServletRequest request) throws IOException {
+  public VerifyRequestWrapper(HttpServletRequest request) throws IOException {
     super(request);
     StringBuilder stringBuilder = new StringBuilder();
     BufferedReader bufferedReader = null;
@@ -57,7 +58,22 @@ public class ApiKeyVerifyRequestWrapper extends HttpServletRequestWrapper {
     final ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(body.getBytes());
     ServletInputStream servletInputStream =
         new ServletInputStream() {
-          public int read() throws IOException {
+            @Override
+            public boolean isFinished() {
+                return false;
+            }
+
+            @Override
+            public boolean isReady() {
+                return false;
+            }
+
+            @Override
+            public void setReadListener(ReadListener readListener) {
+
+            }
+
+            public int read() throws IOException {
             return byteArrayInputStream.read();
           }
 
