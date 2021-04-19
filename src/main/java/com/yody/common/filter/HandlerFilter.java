@@ -84,6 +84,7 @@ public class HandlerFilter implements Filter {
             dataRequest.put(HeaderEnum.HEADER_USER_NAME.getValue(), userName);
             dataRequest.put(HeaderEnum.HEADER_REQUEST_ID.getValue(), requestId);
             requestWrapper.setBody(dataRequest.toString());
+
             if (null != authorization) {
                 boolean isAuthorization = BasicAuthorization.checkBasicAuthorization(authorization, basicUserName, basicPassword);
                 if (isAuthorization) {

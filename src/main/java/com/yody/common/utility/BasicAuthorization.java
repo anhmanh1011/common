@@ -27,10 +27,6 @@ public class BasicAuthorization {
             return false;
         }
 
-        if (userName.equals(userNameAndPass[0]) && password.equals(userNameAndPass[1])){
-            return true;
-        }else {
-            return false;
-        }
+        return userName.equals(userNameAndPass[0]) && password.equals(userNameAndPass[1]);
     }
 }
