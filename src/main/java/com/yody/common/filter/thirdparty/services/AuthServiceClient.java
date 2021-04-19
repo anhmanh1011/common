@@ -47,6 +47,11 @@ public class AuthServiceClient extends AbstractHttpClient {
     }
 
     @Override
+    protected HttpHeaders buildHeaders() {
+        return null;
+    }
+
+    @Override
     protected String baseUrl() {
         return url;
     }
