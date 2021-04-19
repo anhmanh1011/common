@@ -31,7 +31,7 @@ public abstract class AbstractHttpClient {
         ResponseEntity<Result<T>> responseEntity = restTemplate.exchange(
                 this.baseUrl().concat(request.getPath()),
                 HttpMethod.POST,
-                new HttpEntity<>(request, this.buildHeaders()),
+                new HttpEntity<>(request, this.buildHeaders(request)),
                 dataClass
         );
         this.logResponse(responseEntity.getBody(), request.getPath());
@@ -43,7 +43,7 @@ public abstract class AbstractHttpClient {
         ResponseEntity<Result<T>> responseEntity = restTemplate.exchange(
                 this.baseUrl().concat(request.getPath()),
                 HttpMethod.PUT,
-                new HttpEntity<>(request, this.buildHeaders()),
+                new HttpEntity<>(request, this.buildHeaders(request)),
                 dataClass
         );
         this.logResponse(responseEntity.getBody(), request.getPath());
@@ -55,7 +55,7 @@ public abstract class AbstractHttpClient {
         ResponseEntity<Result<T>> responseEntity = restTemplate.exchange(
                 this.baseUrl().concat(request.getPath()),
                 HttpMethod.GET,
-                new HttpEntity<>(this.buildHeaders()),
+                new HttpEntity<>(this.buildHeaders(request)),
                 dataClass
         );
         this.logResponse(responseEntity.getBody(), request.getPath());
@@ -66,7 +66,7 @@ public abstract class AbstractHttpClient {
     	return this.restTemplate;
     }
 
-    protected abstract HttpHeaders buildHeaders();
+    protected abstract HttpHeaders buildHeaders(Request request);
 
     protected abstract String baseUrl();
 
