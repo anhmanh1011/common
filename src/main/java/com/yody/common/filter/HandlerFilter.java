@@ -8,6 +8,7 @@ import com.yody.common.enums.HeaderEnum;
 import com.yody.common.filter.thirdparty.request.PermissionRequestDto;
 import com.yody.common.filter.thirdparty.response.PermissionResponseDto;
 import com.yody.common.filter.thirdparty.services.AuthService;
+import com.yody.common.utility.BasicAuthorization;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.Ordered;
@@ -34,11 +35,11 @@ import org.springframework.context.ApplicationContext;
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class HandlerFilter implements Filter {
 
-    @Value("${yody.security.api.key}")
-    private String apiKey;
+    @Value("${yody.security.basic.username}")
+    private String basicUserName;
 
-    @Value("${yody.security.api.secret.key}")
-    private String apiSecretKey;
+    @Value("${yody.security.basic.password}")
+    private String basicPassword;
 
     static final String REQUEST_MAPPING_HANDLER_MAPPING = "requestMappingHandlerMapping";
 
@@ -66,8 +67,7 @@ public class HandlerFilter implements Filter {
             String userId = request.getHeader(HeaderEnum.HEADER_USER_ID.getValue());
             String userName = request.getHeader(HeaderEnum.HEADER_USER_NAME.getValue());
             String requestId = request.getHeader(HeaderEnum.HEADER_REQUEST_ID.getValue());
-            String xApiKey = request.getHeader(HeaderEnum.X_API_KEY.getValue());
-            String xApiSecretKey = request.getHeader(HeaderEnum.X_API_SECRET_KEY.getValue());
+            String authorization = request.getHeader(HeaderEnum.HEADER_AUTHORIZATION.getValue());
 
             if (requestId == null) {
                 requestId = UUID.randomUUID().toString();
@@ -84,8 +84,9 @@ public class HandlerFilter implements Filter {
             dataRequest.put(HeaderEnum.HEADER_USER_NAME.getValue(), userName);
             dataRequest.put(HeaderEnum.HEADER_REQUEST_ID.getValue(), requestId);
             requestWrapper.setBody(dataRequest.toString());
-            if (null != xApiKey && null != xApiSecretKey) {
-                if (apiKey.equals(xApiKey) && apiSecretKey.equals(xApiSecretKey)) {
+            if (null != authorization) {
+                boolean isAuthorization = BasicAuthorization.checkBasicAuthorization(authorization, basicUserName, basicPassword);
+                if (isAuthorization) {
                     filterChain.doFilter(requestWrapper, servletResponse);
                 } else {
                     buildErrorResponse(response, requestId, HttpServletResponse.SC_UNAUTHORIZED,

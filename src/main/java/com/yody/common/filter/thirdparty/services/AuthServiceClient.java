@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yody.common.core.dto.Request;
 import com.yody.common.enums.HeaderEnum;
 import com.yody.common.http.AbstractHttpClient;
+import com.yody.common.utility.BasicAuthorization;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.annotation.Order;
@@ -35,16 +36,13 @@ public class AuthServiceClient extends AbstractHttpClient {
         if (request.getRequestId() != null)
             httpHeaders.set(HeaderEnum.HEADER_REQUEST_ID.getValue(), request.getRequestId());
 
-        if (request.getApiKey() != null) {
-            httpHeaders.set(HeaderEnum.X_API_KEY.getValue(), request.getApiKey());
-            request.setApiKey(null);
+        if (request.getBasicUserName() != null && !"".equals(request.getBasicUserName())
+            && null != request.getBasicPassword() && !"".equals(request.getBasicPassword())) {
+            httpHeaders.set(HeaderEnum.HEADER_AUTHORIZATION.getValue(),
+                BasicAuthorization.encodeBasicAuthorization(request.getBasicUserName(), request.getBasicPassword()));
+            request.setBasicPassword(null);
+            request.setBasicUserName(null);
         }
-
-        if (request.getApiSecretKey() != null) {
-            httpHeaders.set(HeaderEnum.X_API_SECRET_KEY.getValue(), request.getApiSecretKey());
-            request.setApiSecretKey(null);
-        }
-
         return httpHeaders;
     }
 

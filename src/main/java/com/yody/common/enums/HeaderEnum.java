@@ -4,8 +4,9 @@ public enum HeaderEnum {
     HEADER_USER_ID("user_id"),
     HEADER_USER_NAME("user_name"),
     HEADER_REQUEST_ID("request_id"),
-    X_API_KEY("X-API-KEY"),
-    X_API_SECRET_KEY("X-API-SECRET");
+    HEADER_AUTHORIZATION("Authorization"),
+    BASIC_USERNAME("BASIC-USERNAME"),
+    BASIC_PASSWORD("BASIC-PASSWORD");
 
     private String value;
 

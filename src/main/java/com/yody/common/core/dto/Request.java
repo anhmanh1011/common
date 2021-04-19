@@ -23,7 +23,7 @@ public abstract class Request implements Serializable {
     private String userName;
     private String requestId;
     @JsonIgnore
-    private String apiKey;
+    private String basicUserName;
     @JsonIgnore
-    private String apiSecretKey;
+    private String basicPassword;
 }
