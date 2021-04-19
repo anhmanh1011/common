@@ -67,6 +67,7 @@ public abstract class AbstractHttpClient {
     }
 
     protected abstract HttpHeaders buildHeaders(Request request);
+    protected abstract HttpHeaders buildHeaders();
 
     protected abstract String baseUrl();
 
