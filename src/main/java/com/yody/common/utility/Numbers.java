@@ -157,6 +157,9 @@ public final class Numbers {
     }
 
     public static boolean compare(Long n1, Long n2) {
+        if(n1 == null && n2 == null) {
+            return  true;
+        }
         if(n1 == null || n2 == null) {
             return false;
         }
@@ -164,10 +167,22 @@ public final class Numbers {
     }
 
     public static boolean compare(Integer n1, Integer n2) {
+        if(n1 == null && n2 == null) {
+            return  true;
+        }
         if(n1 == null || n2 == null) {
             return false;
         }
         return n1.equals(n2);
     }
 
+    public static boolean compare(BigDecimal n1, BigDecimal n2) {
+        if(n1 == null && n2 == null) {
+            return  true;
+        }
+        if(n1 == null || n2 == null) {
+            return false;
+        }
+        return n1.compareTo(n2) == 0;
+    }
 }
