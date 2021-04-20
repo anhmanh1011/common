@@ -3,8 +3,6 @@ package com.yody.common.core;
 
 import javax.persistence.*;
 
-import lombok.AccessLevel;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
