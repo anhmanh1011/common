@@ -6,7 +6,7 @@
 
   <groupId>com.yody</groupId>
   <artifactId>yody-common</artifactId>
-  <version>1.0.53-SNAPSHOT</version>
+  <version>1.0.54-SNAPSHOT</version>
 
   <dependencies>
     <dependency>
@@ -107,6 +107,12 @@
       <artifactId>javax.servlet-api</artifactId>
       <version>4.0.1</version>
       <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>net.sourceforge.barbecue</groupId>
+      <artifactId>barbecue</artifactId>
+      <version>1.5-beta1</version>
     </dependency>
   </dependencies>
 
