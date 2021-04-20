@@ -4,8 +4,8 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public enum ProductTypeEnum implements BaseEnum<Integer>{
-    COMBO(1,"Combo"),
-    NORMAL(2,"Thường");
+    NORMAL(1,"Thường"),
+    COMBO(2,"Combo");
 
     private final int value;
     private final String displayName;
