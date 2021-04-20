@@ -9,10 +9,23 @@ import com.yody.common.filter.thirdparty.request.PermissionRequestDto;
 import com.yody.common.filter.thirdparty.response.PermissionResponseDto;
 import com.yody.common.filter.thirdparty.services.AuthService;
 import com.yody.common.utility.BasicAuthorization;
+import java.io.IOException;
+import java.lang.reflect.Method;
+import java.util.Objects;
+import java.util.UUID;
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
 import java.util.Collection;
 import org.json.JSONObject;
+import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationContext;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.core.annotation.Order;
@@ -23,16 +36,6 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerExecutionChain;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
-import javax.servlet.*;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.lang.reflect.Method;
-import java.util.Objects;
-import java.util.UUID;
-
-import org.springframework.context.ApplicationContext;
-
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class HandlerFilter implements Filter {
@@ -42,6 +45,8 @@ public class HandlerFilter implements Filter {
 
     @Value("${yody.security.basic.password}")
     private String basicPassword;
+
+    private static final String REQUEST_ID_LOG_VAR_NAME = "request_id";
 
     static final String REQUEST_MAPPING_HANDLER_MAPPING = "requestMappingHandlerMapping";
 
@@ -74,6 +79,7 @@ public class HandlerFilter implements Filter {
             if (requestId == null) {
                 requestId = UUID.randomUUID().toString();
             }
+            MDC.put(REQUEST_ID_LOG_VAR_NAME, requestId);
 
             VerifyRequestWrapper requestWrapper = new VerifyRequestWrapper(request);
             JSONObject dataRequest;
@@ -146,7 +152,7 @@ public class HandlerFilter implements Filter {
 
     @Override
     public void destroy() {
-        // do nothing
+        MDC.remove(REQUEST_ID_LOG_VAR_NAME);
     }
 
     private byte[] restResponseBytes(Object result) throws IOException {
