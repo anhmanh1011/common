@@ -20,6 +20,8 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Arrays;
+import java.util.Collection;
 import org.json.JSONObject;
 import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Value;
@@ -129,15 +131,10 @@ public class HandlerFilter implements Filter {
                             CommonResponseCode.UNAUTHORIZE.getValue(), CommonResponseCode.UNAUTHORIZE.getDisplayName());
                         return;
                     } else {
-                        int countPer = 0;
-                        for (String per : permissionTypes) {
-                            for (String permissionCode : permissionsDto.getModules().getPermissions()) {
-                                if (per.contains(permissionCode)) {
-                                    countPer++;
-                                }
-                            }
-                        }
-                        if (countPer == 0) {
+                        Collection<String> listPerCheck = Arrays.asList(permissionTypes);
+                        Collection<String> listPerOfUser = permissionsDto.getModules().getPermissions();
+                        listPerCheck.retainAll(listPerOfUser);
+                        if (listPerCheck.isEmpty()) {
                             buildErrorResponse(response, requestId, HttpServletResponse.SC_UNAUTHORIZED,
                                 CommonResponseCode.UNAUTHORIZE.getValue(), CommonResponseCode.UNAUTHORIZE.getDisplayName());
                             return;
