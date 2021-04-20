@@ -9,6 +9,8 @@ import com.yody.common.filter.thirdparty.request.PermissionRequestDto;
 import com.yody.common.filter.thirdparty.response.PermissionResponseDto;
 import com.yody.common.filter.thirdparty.services.AuthService;
 import com.yody.common.utility.BasicAuthorization;
+import java.util.Arrays;
+import java.util.Collection;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.Ordered;
@@ -123,15 +125,10 @@ public class HandlerFilter implements Filter {
                             CommonResponseCode.UNAUTHORIZE.getValue(), CommonResponseCode.UNAUTHORIZE.getDisplayName());
                         return;
                     } else {
-                        int countPer = 0;
-                        for (String per : permissionTypes) {
-                            for (String permissionCode : permissionsDto.getModules().getPermissions()) {
-                                if (per.contains(permissionCode)) {
-                                    countPer++;
-                                }
-                            }
-                        }
-                        if (countPer == 0) {
+                        Collection<String> listPerCheck = Arrays.asList(permissionTypes);
+                        Collection<String> listPerOfUser = permissionsDto.getModules().getPermissions();
+                        listPerCheck.retainAll(listPerOfUser);
+                        if (listPerCheck.isEmpty()) {
                             buildErrorResponse(response, requestId, HttpServletResponse.SC_UNAUTHORIZED,
                                 CommonResponseCode.UNAUTHORIZE.getValue(), CommonResponseCode.UNAUTHORIZE.getDisplayName());
                             return;
