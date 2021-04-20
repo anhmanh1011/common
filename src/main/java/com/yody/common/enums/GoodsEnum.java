@@ -7,7 +7,7 @@ import lombok.Getter;
 @Getter
 public enum GoodsEnum  implements BaseEnum<Integer> {
     FOOTWEAR(1, "Giày dép"),
-    CLOTHES(2, "Quàn áo"),
+    CLOTHES(2, "Quần áo"),
     ACCESSORIES(3, "Phụ kiện thời trang");
 
     private final Integer value;

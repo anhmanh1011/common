@@ -18,18 +18,17 @@ public abstract class AggregateRoot<T extends AggregateRoot<T>> extends BaseBO {
   // private AtomicInteger version = new AtomicInteger(0);
   private long timestamp = 0;
   private final String APPLY_METHOD = "apply";
-  private final  List<DomainEvent> pendingEvents = new ArrayList<>();
+  private final  List<Enum> pendingEvents = new ArrayList<>();
 
   protected int nextVersion() {
     return version++;
   }
 
-  protected void addEvents(DomainEvent event) {
+  protected void addEvents(Enum event) {
     Assert.notNull(event, "Domain event must not be null!");
     pendingEvents.add(event);
   }
-
-  protected void removeEvents(DomainEvent event) {
+  protected void removeEvents(Enum event) {
     pendingEvents.remove(event);
   }
 
@@ -41,25 +40,20 @@ public abstract class AggregateRoot<T extends AggregateRoot<T>> extends BaseBO {
     pendingEvents.clear();
   }
 
-  protected void applyChange(DomainEvent event) {
+  protected void applyChange(Enum event) {
     applyChange(event, true);
   }
 
-  private void applyChange(DomainEvent event, boolean isNew) {
-    updateMetadata(event);
+  private void applyChange(Enum event, boolean isNew) {
     invokeHandlerMethod(event);
     if (isNew) {
       pendingEvents.add(event);
     }
   }
 
-  private void updateMetadata(DomainEvent event) {
-    this.version = event.version;
-    this.timestamp = event.timestamp;
-  }
 
   // call method apply event in root
-  private void invokeHandlerMethod(DomainEvent event) {
+  private void invokeHandlerMethod(Enum event) {
     Method handlerMethod = getHandlerMethod(event);
     if (handlerMethod != null) {
       handlerMethod.setAccessible(true);
@@ -72,7 +66,7 @@ public abstract class AggregateRoot<T extends AggregateRoot<T>> extends BaseBO {
     }
   }
 
-  private Method getHandlerMethod(DomainEvent event) {
+  private Method getHandlerMethod(Enum event) {
     try {
       return getClass().getDeclaredMethod(APPLY_METHOD, event.getClass());
     } catch (NoSuchMethodException e) {
