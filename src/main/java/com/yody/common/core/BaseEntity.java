@@ -12,7 +12,7 @@ import lombok.Setter;
 public class BaseEntity {
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
 
     @Column(name = "code", nullable = false, length = 36)
@@ -42,6 +42,8 @@ public class BaseEntity {
     @Column(name = "updated_date")
     protected Long updatedDate;
 
+    protected boolean selfUpdateVersion;
+
     @PrePersist
     protected void onCreate() {
         this.version = 1;
@@ -51,6 +53,9 @@ public class BaseEntity {
     @PreUpdate
     protected void onUpdate() {
         this.updatedDate = System.currentTimeMillis();
-        this.version += 1;
+        if(!selfUpdateVersion){
+            this.version++;
+        }
+
     }
 }
