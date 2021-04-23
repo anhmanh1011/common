@@ -5,15 +5,15 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public enum DateUnitEnum implements BaseEnum<Integer> {
-    DAY(1, "Ngày"),
-    MONTH(2, "Tháng"),
-    YEAR(3, "Năm");
+public enum DateUnitEnum implements BaseEnum<String> {
+    DAY("day", "Ngày"),
+    MONTH("month", "Tháng"),
+    YEAR("year", "Năm");
 
-    private Integer  value;
+    private String  value;
     private String displayName;
 
-    public static DateUnitEnum parse(Integer value) {
+    public static DateUnitEnum parse(String value) {
         for (DateUnitEnum type : DateUnitEnum.values()) {
             if (type.getValue().equals(value)) {
                 return type;

@@ -22,6 +22,11 @@ public class BadRequestException extends BaseException {
         this.message = CommonResponseCode.BAD_REQUEST.getDisplayName();
     }
 
+    public BadRequestException(String message){
+        this.message = message;
+        this.code  = CommonResponseCode.BAD_REQUEST.getValue();
+    }
+
     public BadRequestException(BaseEnum<Integer> enums){
         super(enums.getDisplayName(),enums.getValue());
         this.code = enums.getValue();

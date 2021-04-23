@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public enum CollectionEnum implements BaseEnum<String>{
     YODY_EVERYDAY_WEAR("yody_everyday_wear","YODY EVERYDAY WEAR"),
-    SUMMER("SUMMER","SUMMER");
+    SUMMER("summer","SUMMER");
 
     private final String value;
     private final String displayName;
