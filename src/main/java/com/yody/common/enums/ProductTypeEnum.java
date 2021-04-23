@@ -3,14 +3,14 @@ package com.yody.common.enums;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public enum ProductTypeEnum implements BaseEnum<Integer>{
-    NORMAL(1,"Thường"),
-    COMBO(2,"Combo");
+public enum ProductTypeEnum implements BaseEnum<String>{
+    NORMAL("normal","Thường"),
+    COMBO("combo","Combo");
 
-    private final int value;
+    private final String value;
     private final String displayName;
     @Override
-    public Integer getValue() {
+    public String getValue() {
         return this.value;
     }
 
@@ -19,7 +19,7 @@ public enum ProductTypeEnum implements BaseEnum<Integer>{
         return this.displayName;
     }
 
-    public static ProductTypeEnum parse(Integer value) {
+    public static ProductTypeEnum parse(String value) {
         for (ProductTypeEnum type : ProductTypeEnum.values()) {
             if (type.getValue().equals(value)) {
                 return type;

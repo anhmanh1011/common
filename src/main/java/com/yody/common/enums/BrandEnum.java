@@ -3,14 +3,14 @@ package com.yody.common.enums;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public enum BrandEnum implements BaseEnum<Integer>{
-    YODY(1,"YODY"),
-    ONOFF(2,"ONOFF");
+public enum BrandEnum implements BaseEnum<String>{
+    YODY("yody","YODY"),
+    ONOFF("onoff","ONOFF");
 
-    private final int value;
+    private final String value;
     private final String displayName;
     @Override
-    public Integer getValue() {
+    public String getValue() {
         return this.value;
     }
 
@@ -19,7 +19,7 @@ public enum BrandEnum implements BaseEnum<Integer>{
         return this.displayName;
     }
 
-    public static BrandEnum parse(Integer value) {
+    public static BrandEnum parse(String value) {
         for (BrandEnum brand : BrandEnum.values()) {
             if (brand.getValue().equals(value)) {
                 return brand;

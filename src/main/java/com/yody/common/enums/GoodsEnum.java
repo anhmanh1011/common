@@ -5,15 +5,15 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public enum GoodsEnum  implements BaseEnum<Integer> {
-    FOOTWEAR(1, "Giày dép"),
-    CLOTHES(2, "Quần áo"),
-    ACCESSORIES(3, "Phụ kiện thời trang");
+public enum GoodsEnum  implements BaseEnum<String> {
+    FOOTWEAR("foot_wear", "Giày dép"),
+    CLOTHES("clothes", "Quần áo"),
+    ACCESSORIES("accessories", "Phụ kiện thời trang");
 
-    private final Integer value;
+    private final String value;
     private final String displayName;
 
-    public static GoodsEnum parse(Integer value) {
+    public static GoodsEnum parse(String value) {
         for (GoodsEnum type : GoodsEnum.values()) {
             if (type.getValue().equals(value)) {
                 return type;

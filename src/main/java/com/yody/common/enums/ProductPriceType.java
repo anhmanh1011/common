@@ -5,16 +5,16 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public enum ProductPriceType implements BaseEnum<Integer> {
-  PRICE(1, "PRICE"),
-  AVG_COST(2, "AVG_COST"),
-  IMPORT_PRICE(3, "IMPORT_PRICE"),
-  WHOLE_SALE_PRICE(4, "WHOLE_SALE_PRICE");
+public enum ProductPriceType implements BaseEnum<String> {
+  RETAIL_PRICE("retail_price", "Giá bán lẻ"),
+  COGS("cogs", "Giá vốn"),
+  IMPORT_PRICE("import_price", "Giá nhập"),
+  WHOLE_SALE_PRICE("whole_sale_price", "Giá bán buôn");
 
-  private Integer value;
+  private String value;
   private String displayName;
 
-  public static ProductPriceType parse(Integer value) {
+  public static ProductPriceType parse(String value) {
     for (ProductPriceType type : ProductPriceType.values()) {
       if (type.getValue().equals(value)) {
         return type;

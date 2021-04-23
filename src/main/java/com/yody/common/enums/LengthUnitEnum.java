@@ -5,14 +5,14 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum LengthUnitEnum implements BaseEnum<Integer> {
-    MM(1, "Mm"),
-    CM(2, "Cm"),
-    DM(3, "Dm"),
-    M(4, "M"),
-    KM(5, "Km");
+public enum LengthUnitEnum implements BaseEnum<String> {
+    MM("mm", "Mm"),
+    CM("cm", "Cm"),
+    DM("dm", "Dm"),
+    M("m", "M"),
+    KM("km", "Km");
 
-    private Integer  value;
+    private String  value;
     private String displayName;
 
     public static WeightUnitEnum parse(WeightUnitEnum value) {

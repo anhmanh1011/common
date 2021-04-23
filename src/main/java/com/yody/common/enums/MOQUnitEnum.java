@@ -5,16 +5,16 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public enum MOQUnitEnum implements BaseEnum<Integer> {
-    SINGLE(1, "Cái"),
-    COUPLE(2, "Cặp"),
-    KG(3, "Kg"),
-    M(4, "m");
+public enum MOQUnitEnum implements BaseEnum<String> {
+    PIECE("single", "Cái"),
+    COUPLE("couple", "Cặp"),
+    KG("kg", "Kg"),
+    M("m", "m");
 
-    private Integer  value;
+    private String  value;
     private String displayName;
 
-    public static MOQUnitEnum parse(Integer value) {
+    public static MOQUnitEnum parse(String value) {
         for (MOQUnitEnum type : MOQUnitEnum.values()) {
             if (type.getValue().equals(value)) {
                 return type;

@@ -5,13 +5,13 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum WeightUnitEnum implements BaseEnum<Integer> {
-    G(1, "G"),
-    KG(2, "KG");
-    private Integer  value;
+public enum WeightUnitEnum implements BaseEnum<String> {
+    G("g", "G"),
+    KG("kg", "KG");
+    private String  value;
     private String displayName;
 
-    public static WeightUnitEnum parse(WeightUnitEnum value) {
+    public static WeightUnitEnum parse(String value) {
         for (WeightUnitEnum type : WeightUnitEnum.values()) {
             if (type.getValue().equals(value)) {
                 return type;

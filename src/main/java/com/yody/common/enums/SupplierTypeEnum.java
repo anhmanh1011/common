@@ -5,13 +5,13 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum SupplierTypeEnum implements BaseEnum<Integer> {
-    PERSONAL(1, "Cá nhân"),
-    ENTERPRISE(2, "Doanh nghiệp");
-    private final Integer value;
+public enum SupplierTypeEnum implements BaseEnum<String> {
+    PERSONAL("personal", "Cá nhân"),
+    ENTERPRISE("enterprise", "Doanh nghiệp");
+    private final String value;
     private final String displayName;
 
-    public static SupplierTypeEnum parse(Integer value) {
+    public static SupplierTypeEnum parse(String value) {
         for (SupplierTypeEnum type : SupplierTypeEnum.values()) {
             if (type.getValue().equals(value)) {
                 return type;

@@ -3,14 +3,14 @@ package com.yody.common.enums;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public enum AccountStatusEnum implements BaseEnum<Integer> {
-    ACTIVE(1, "Hoạt động"),
-    INACTIVE(2, "Không hoạt đông");
-    private final int value;
+public enum AccountStatusEnum implements BaseEnum<String> {
+    ACTIVE("active", "Hoạt động"),
+    INACTIVE("inactive", "Không hoạt đông");
+    private final String value;
     private final String displayName;
 
     @Override
-    public Integer getValue() {
+    public String getValue() {
         return this.value;
     }
 
@@ -19,7 +19,7 @@ public enum AccountStatusEnum implements BaseEnum<Integer> {
         return this.displayName;
     }
 
-    public static AccountStatusEnum parse(Integer value) {
+    public static AccountStatusEnum parse(String value) {
         for (AccountStatusEnum type : AccountStatusEnum.values()) {
             if (type.getValue().equals(value)) {
                 return type;

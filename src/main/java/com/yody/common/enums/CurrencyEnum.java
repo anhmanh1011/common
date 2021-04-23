@@ -5,12 +5,11 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public enum CurrencyEnum implements BaseEnum<Integer> {
-  VND(1,"VNĐ", "đ", 0, "Việt Nam Đồng"),
-  THB(2,"THB","฿",2,"Thai Baht")
+public enum CurrencyEnum implements BaseEnum<String> {
+  VND("VNĐ", "đ", 0, "Việt Nam Đồng"),
+  THB("THB","฿",2,"Thai Baht")
     ;
-  private Integer value;
-  private String code;
+  private String value;
   private String symbol;
   private Integer scale;
   private String displayName;

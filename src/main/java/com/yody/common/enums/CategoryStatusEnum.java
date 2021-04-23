@@ -6,14 +6,14 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public enum CategoryStatusEnum implements BaseEnum<Integer> {
-    SHOW(1, "Hiển thị"),
-    HIDE(1, "Ẩn");
+public enum CategoryStatusEnum implements BaseEnum<String> {
+    SHOW("show", "Hiển thị"),
+    HIDE("hide", "Ẩn");
 
-    private final Integer value;
+    private final String value;
     private final String displayName;
 
-    public static CategoryStatusEnum parse(Integer value) {
+    public static CategoryStatusEnum parse(String value) {
         for (CategoryStatusEnum type : CategoryStatusEnum.values()) {
             if (type.getValue().equals(value)) {
                 return type;

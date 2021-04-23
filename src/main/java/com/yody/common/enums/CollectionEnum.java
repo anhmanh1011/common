@@ -3,14 +3,14 @@ package com.yody.common.enums;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public enum CollectionEnum implements BaseEnum<Integer>{
-    YODYEVERYDAYWEAR(1,"YODYEVERYDAYWEAR"),
-    SUMMER(2,"SUMMER");
+public enum CollectionEnum implements BaseEnum<String>{
+    YODY_EVERYDAY_WEAR("yody_everyday_wear","YODY EVERYDAY WEAR"),
+    SUMMER("SUMMER","SUMMER");
 
-    private final int value;
+    private final String value;
     private final String displayName;
     @Override
-    public Integer getValue() {
+    public String getValue() {
         return this.value;
     }
 
@@ -19,7 +19,7 @@ public enum CollectionEnum implements BaseEnum<Integer>{
         return this.displayName;
     }
 
-    public static CollectionEnum parse(Integer value) {
+    public static CollectionEnum parse(String value) {
         for (CollectionEnum collection : CollectionEnum.values()) {
             if (collection.getValue().equals(value)) {
                 return collection;

@@ -5,14 +5,14 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public enum SupplierStatusEnum implements BaseEnum<Integer> {
-    ACTIVE(1, "Đang hoạt động"),
-    INACTIVE(2, "Ngừng giao dịch");
+public enum SupplierStatusEnum implements BaseEnum<String> {
+    ACTIVE("active", "Đang hoạt động"),
+    INACTIVE("inactive", "Ngừng giao dịch");
 
-    private Integer value;
+    private String value;
     private String displayName;
 
-    public static SupplierStatusEnum parse(Integer value) {
+    public static SupplierStatusEnum parse(String value) {
         for (SupplierStatusEnum type : SupplierStatusEnum.values()) {
             if (type.getValue().equals(value)) {
                 return type;

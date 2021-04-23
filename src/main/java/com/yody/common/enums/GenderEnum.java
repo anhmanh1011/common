@@ -3,15 +3,15 @@ package com.yody.common.enums;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public enum GenderEnum implements BaseEnum<Integer>{
-    MALE(1,"Nam"),
-    FEMALE(2,"Nữ"),
-    OTHER(3,"Khác");
+public enum GenderEnum implements BaseEnum<String>{
+    MALE("male","Nam"),
+    FEMALE("female","Nữ"),
+    OTHER("other","Khác");
 
-    private final int value;
+    private final String value;
     private final String displayName;
     @Override
-    public Integer getValue() {
+    public String getValue() {
         return this.value;
     }
 
@@ -20,7 +20,7 @@ public enum GenderEnum implements BaseEnum<Integer>{
         return this.displayName;
     }
 
-    public static GenderEnum parse(Integer value) {
+    public static GenderEnum parse(String value) {
         for (GenderEnum type : GenderEnum.values()) {
             if (type.getValue().equals(value)) {
                 return type;
