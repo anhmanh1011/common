@@ -6,7 +6,7 @@
 
   <groupId>com.yody</groupId>
   <artifactId>yody-common</artifactId>
-  <version>1.0.56-SNAPSHOT</version>
+  <version>1.0.57-SNAPSHOT</version>
 
   <dependencies>
     <dependency>
