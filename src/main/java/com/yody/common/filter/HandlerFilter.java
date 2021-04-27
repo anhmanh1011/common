@@ -1,7 +1,7 @@
 package com.yody.common.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.yody.common.anotaion.Permission;
+import com.yody.common.annotation.Permission;
 import com.yody.common.core.dto.Result;
 import com.yody.common.enums.CommonResponseCode;
 import com.yody.common.enums.HeaderEnum;

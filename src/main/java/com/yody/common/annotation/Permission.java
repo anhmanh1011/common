@@ -1,4 +1,4 @@
-package com.yody.common.anotaion;
+package com.yody.common.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
