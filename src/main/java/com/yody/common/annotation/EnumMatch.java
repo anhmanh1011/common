@@ -3,6 +3,7 @@ package com.yody.common.annotation;
 import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
+import com.yody.common.annotation.impl.EnumMatchValidate;
 import com.yody.common.annotation.impl.NotNullWithConditionValidate;
 import com.yody.common.enums.BaseEnum;
 import java.lang.annotation.Documented;
@@ -19,7 +20,7 @@ import javax.validation.Payload;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Constraint(
-    validatedBy = {NotNullWithConditionValidate.class}
+    validatedBy = {EnumMatchValidate.class}
 )
 public @interface EnumMatch {
   Class<? extends BaseEnum<String>> type();
