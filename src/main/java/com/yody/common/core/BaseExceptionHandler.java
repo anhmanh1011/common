@@ -44,7 +44,7 @@ public class BaseExceptionHandler extends ResponseEntityExceptionHandler {
       response.setCode(internalErr.getCode());
       response.setErrors(Arrays.asList(internalErr.getMessage()));
     }
-    response.setResponseTime(System.currentTimeMillis());
+    response.setResponseTime(new Timestamp(System.currentTimeMillis()));
     return new ResponseEntity<Result>(response, HttpStatus.OK);
   }
 
@@ -193,7 +193,7 @@ public class BaseExceptionHandler extends ResponseEntityExceptionHandler {
 
   protected Result setupResult() {
     Result result = new Result();
-    result.setResponseTime(System.currentTimeMillis());
+    result.setResponseTime(new Timestamp(System.currentTimeMillis()));
     return result;
   }
 }
