@@ -23,6 +23,7 @@ public @interface NotNullWithCondition {
   String fieldName();
   String fieldDependName();
   String expectValue();
+  String operation();
   String message() default "Required";
   Class<?>[] groups() default {};
 
