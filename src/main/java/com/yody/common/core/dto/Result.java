@@ -18,7 +18,7 @@ public class Result<T> implements Serializable {
     private int code;
     private String message;
     private T data;
-    private Long responseTime;
+    private Timestamp responseTime;
     private List<String> errors;
     private String requestId;
 
@@ -32,7 +32,7 @@ public class Result<T> implements Serializable {
         this.code = enums.getValue();
         this.message = enums.getDisplayName();
         this.data = data;
-        this.responseTime = System.currentTimeMillis();
+        this.responseTime = new Timestamp(System.currentTimeMillis());
     }
 
     public Result(int code, String message, T data, String requestId) {
