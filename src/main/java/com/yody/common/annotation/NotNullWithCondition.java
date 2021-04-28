@@ -15,6 +15,7 @@ import javax.validation.Payload;
 
 @Target({ ElementType.FIELD, ElementType.TYPE, ANNOTATION_TYPE})
 @Retention(RetentionPolicy.RUNTIME)
+@Repeatable(NotNullWithCondition.List.class)
 @Documented
 @Constraint(
     validatedBy = {NotNullWithConditionValidate.class}
@@ -22,13 +23,19 @@ import javax.validation.Payload;
 public @interface NotNullWithCondition {
   String fieldName();
   String fieldDependName();
-  String expectValue();
+  String expectValue() default "";
   String operation();
   String message() default "Required";
   Class<?>[] groups() default {};
 
   Class<? extends Payload>[] payload() default {};
 
+  @Target({ElementType.TYPE, ANNOTATION_TYPE,ElementType.FIELD})
+  @Retention(RUNTIME)
+  @Documented
+  @interface List {
+    NotNullWithCondition[] value();
+  }
 }
 
 

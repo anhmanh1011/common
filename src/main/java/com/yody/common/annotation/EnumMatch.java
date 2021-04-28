@@ -18,6 +18,7 @@ import javax.validation.Payload;
 
 @Target({ ElementType.FIELD, ElementType.TYPE, ANNOTATION_TYPE})
 @Retention(RetentionPolicy.RUNTIME)
+@Repeatable(EnumMatch.List.class)
 @Documented
 @Constraint(
     validatedBy = {EnumMatchValidate.class}
@@ -28,4 +29,10 @@ public @interface EnumMatch {
   Class<?>[] groups() default {};
   Class<? extends Payload>[] payload() default {};
 
+  @Target({ElementType.TYPE, ANNOTATION_TYPE,ElementType.FIELD})
+  @Retention(RUNTIME)
+  @Documented
+  @interface List {
+    EnumMatch[] value();
+  }
 }
