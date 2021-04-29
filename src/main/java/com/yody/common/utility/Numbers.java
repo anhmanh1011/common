@@ -23,6 +23,18 @@ public final class Numbers {
         }
     }
 
+    public static boolean compare(String s1, String s2){
+        if(!isNumeric(s1) || !isNumeric(s2)){
+            return false;
+        }
+        BigDecimal v1 = new BigDecimal(s1);
+        BigDecimal v2 = new BigDecimal(s2);
+        return v1.compareTo(v2) > 0;
+    }
+
+
+
+
     /**
      * BigDecimal
      */
