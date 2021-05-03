@@ -93,6 +93,7 @@ public class HandlerFilter implements Filter {
             dataRequest.put(HeaderEnum.HEADER_USER_ID.getValue(), userId);
             dataRequest.put(HeaderEnum.HEADER_USER_NAME.getValue(), userName);
             dataRequest.put(HeaderEnum.HEADER_REQUEST_ID.getValue(), requestId);
+            log.info("DATA REQUEST = " + dataRequest);
             requestWrapper.setBody(dataRequest.toString());
 
             if (null != authorization) {

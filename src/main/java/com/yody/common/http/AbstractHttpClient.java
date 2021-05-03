@@ -52,6 +52,7 @@ public abstract class AbstractHttpClient {
 
     public <T> Result<T> get(final Request request, final ParameterizedTypeReference<Result<T>> dataClass) {
         this.logRequest(HttpMethod.GET, request);
+        log.error(" URL = "+ this.baseUrl().concat(request.getPath()));
         ResponseEntity<Result<T>> responseEntity = restTemplate.exchange(
                 this.baseUrl().concat(request.getPath()),
                 HttpMethod.GET,
@@ -74,6 +75,7 @@ public abstract class AbstractHttpClient {
     private void logRequest(HttpMethod method, Request request) {
         try {
             log.debug("Request {} to endpoint {} with data: {}", method, this.baseUrl() + request.getPath(), objectMapper.writeValueAsString(request));
+            log.error("Request {} to endpoint {} with data: {}", method, this.baseUrl() + request.getPath(), objectMapper.writeValueAsString(request));
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
@@ -82,6 +84,8 @@ public abstract class AbstractHttpClient {
     public <T> void logResponse(T responseBody, String requestUri) {
         try {
             log.debug("Response from {}: {}", this.baseUrl() + requestUri, objectMapper.writeValueAsString(responseBody));
+            log.error("Response from {}: {}", this.baseUrl() + requestUri, objectMapper.writeValueAsString(responseBody));
+
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
