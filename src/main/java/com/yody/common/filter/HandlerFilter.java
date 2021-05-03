@@ -145,7 +145,7 @@ public class HandlerFilter implements Filter {
                 filterChain.doFilter(requestWrapper, servletResponse);
             }
         } catch (Exception exception) {
-            buildErrorResponse((HttpServletResponse) servletRequest, UUID.randomUUID().toString(),
+            buildErrorResponse((HttpServletResponse) servletResponse, UUID.randomUUID().toString(),
                 HttpServletResponse.SC_INTERNAL_SERVER_ERROR, CommonResponseCode.INTERNAL_ERROR.getValue(),
                 CommonResponseCode.INTERNAL_ERROR.getDisplayName());
         }
