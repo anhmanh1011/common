@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
 import java.util.Collection;
+import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
 import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Value;
@@ -38,6 +39,7 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
 
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
+@Slf4j
 public class HandlerFilter implements Filter {
 
     @Value("${yody.security.basic.username}")
@@ -145,6 +147,8 @@ public class HandlerFilter implements Filter {
                 filterChain.doFilter(requestWrapper, servletResponse);
             }
         } catch (Exception exception) {
+            log.error(exception.getMessage());
+            log.error(exception.getStackTrace().toString());
             buildErrorResponse((HttpServletResponse) servletResponse, UUID.randomUUID().toString(),
                 HttpServletResponse.SC_INTERNAL_SERVER_ERROR, CommonResponseCode.INTERNAL_ERROR.getValue(),
                 CommonResponseCode.INTERNAL_ERROR.getDisplayName());
