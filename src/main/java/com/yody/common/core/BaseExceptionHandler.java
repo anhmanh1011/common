@@ -58,7 +58,7 @@ public class BaseExceptionHandler extends ResponseEntityExceptionHandler {
       errors.add(error.getField() + ": " + error.getDefaultMessage());
     }
     for (final ObjectError error : ex.getBindingResult().getGlobalErrors()) {
-      errors.add(error.getObjectName() + ": " + error.getDefaultMessage());
+      errors.add(error.getDefaultMessage());
     }
     Result result = setupResult();
     result.setErrors(errors);
