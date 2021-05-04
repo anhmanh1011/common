@@ -148,6 +148,7 @@ public class HandlerFilter implements Filter {
                 filterChain.doFilter(requestWrapper, servletResponse);
             }
         } catch (Exception exception) {
+            log.error(exception.toString());
             log.error(exception.getMessage());
             log.error(exception.getStackTrace().toString());
             buildErrorResponse((HttpServletResponse) servletResponse, UUID.randomUUID().toString(),
