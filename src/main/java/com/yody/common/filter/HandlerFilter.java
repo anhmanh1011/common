@@ -135,10 +135,15 @@ public class HandlerFilter implements Filter {
                             CommonResponseCode.UNAUTHORIZE.getValue(), CommonResponseCode.UNAUTHORIZE.getDisplayName());
                         return;
                     } else {
-                        Collection<String> listPerCheck = Arrays.asList(permissionTypes);
-                        Collection<String> listPerOfUser = permissionsDto.getModules().getPermissions();
-                        listPerCheck.retainAll(listPerOfUser);
-                        if (listPerCheck.isEmpty()) {
+                        int countPer = 0;
+                        for (String per : permissionTypes) {
+                            for (String permissionCode : permissionsDto.getModules().getPermissions()) {
+                                if (per.contains(permissionCode)) {
+                                    countPer++;
+                                }
+                            }
+                        }
+                        if (countPer == 0) {
                             buildErrorResponse(response, requestId, HttpServletResponse.SC_UNAUTHORIZED,
                                 CommonResponseCode.UNAUTHORIZE.getValue(), CommonResponseCode.UNAUTHORIZE.getDisplayName());
                             return;
