@@ -1,10 +1,61 @@
-<settings xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.1.0 http://maven.apache.org/xsd/settings-1.1.0.xsd"
-          xmlns="http://maven.apache.org/SETTINGS/1.1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<?xml version="1.0" encoding="UTF-8"?>
+<settings xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.1.0 http://maven.apache.org/xsd/settings-1.1.0.xsd" xmlns="http://maven.apache.org/SETTINGS/1.1.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <servers>
     <server>
       <id>yody-dev-snapshot</id>
       <username>${MAVEN_NEXUS_REPO_USER}</username>
       <password>${MAVEN_NEXUS_REPO_PASS}</password>
     </server>
+    <server>
+      <username>${ARTIFACTORY_USER}</username>
+      <password>${ARTIFACTORY_PASSWORD}</password>
+      <id>central</id>
+    </server>
+    <server>
+      <username>${ARTIFACTORY_USER}</username>
+      <password>${ARTIFACTORY_PASSWORD}</password>
+      <id>snapshots</id>
+    </server>
   </servers>
+  <profiles>
+    <profile>
+      <repositories>
+        <repository>
+          <snapshots>
+            <enabled>false</enabled>
+          </snapshots>
+          <id>central</id>
+          <name>maven-local</name>
+          <url>${ARTIFACTORY_URL}/maven-local</url>
+        </repository>
+        <repository>
+          <snapshots />
+          <id>snapshots</id>
+          <name>maven-local</name>
+          <url>${ARTIFACTORY_URL}/maven-local</url>
+        </repository>
+      </repositories>
+      <pluginRepositories>
+        <pluginRepository>
+          <snapshots>
+            <enabled>true</enabled>
+          </snapshots>
+          <id>central</id>
+          <name>libs-release</name>
+          <url>${ARTIFACTORY_URL}/libs-release</url>
+        </pluginRepository>
+        <pluginRepository>
+          <snapshots />
+          <id>snapshots</id>
+          <name>libs-snapshot</name>
+          <url>${ARTIFACTORY_URL}/libs-snapshot</url>
+        </pluginRepository>
+      </pluginRepositories>
+      <id>artifactory</id>
+    </profile>
+  </profiles>
+  <activeProfiles>
+    <activeProfile>artifactory</activeProfile>
+  </activeProfiles>
 </settings>
