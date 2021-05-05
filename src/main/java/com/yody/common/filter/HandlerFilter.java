@@ -151,7 +151,6 @@ public class HandlerFilter implements Filter {
 
   @Override
   public void destroy() {
-    MDC.remove(REQUEST_ID_LOG_VAR_NAME);
   }
 
   private byte[] restResponseBytes(Object result) throws IOException {
@@ -165,6 +164,7 @@ public class HandlerFilter implements Filter {
     try {
       response.getOutputStream().write(restResponseBytes(Result.error(requestId, errorCode, message)));
     } catch (IOException ignored) {
+      log.error(ignored.toString());
     }
   }
 
