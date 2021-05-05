@@ -10,6 +10,7 @@ import com.yody.common.filter.thirdparty.request.PermissionRequestDto;
 import com.yody.common.filter.thirdparty.response.PermissionResponseDto;
 import com.yody.common.filter.thirdparty.services.AuthService;
 import com.yody.common.utility.BasicAuthorization;
+
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.Objects;
@@ -21,6 +22,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
@@ -130,7 +132,6 @@ public class HandlerFilter implements Filter {
         dataRequest.put(FieldConstant.CREATED_NAME, userName);
         dataRequest.put(FieldConstant.UPDATED_BY, userId);
         dataRequest.put(FieldConstant.UPDATED_NAME, userName);
-        log.info("DATA REQUEST = " + dataRequest);
         requestWrapper.setBody(dataRequest.toString());
         if (null != authorization && !"".equals(authorization) && checkBasicAuth()) {
           filterChain.doFilter(requestWrapper, servletResponse);
@@ -142,8 +143,7 @@ public class HandlerFilter implements Filter {
       }
       buildErrorResponse(response, requestId, HttpServletResponse.SC_UNAUTHORIZED, CommonResponseCode.UNAUTHORIZE.getValue(), CommonResponseCode.UNAUTHORIZE.getDisplayName());
     } catch (Exception exception) {
-      log.error(exception.toString());
-      log.error(exception.getMessage());
+      log.error("Error when process check permission: {}", exception.getMessage());
       buildErrorResponse((HttpServletResponse) servletResponse, UUID.randomUUID().toString(), HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
           CommonResponseCode.INTERNAL_ERROR.getValue(), CommonResponseCode.INTERNAL_ERROR.getDisplayName());
     }
@@ -174,41 +174,43 @@ public class HandlerFilter implements Filter {
 
   @SneakyThrows
   private boolean checkPermissionByUserId(String userId, HttpServletRequest request) {
-    RequestMappingHandlerMapping req2HandlerMapping = (RequestMappingHandlerMapping) appContext.getBean(REQUEST_MAPPING_HANDLER_MAPPING);
+    RequestMappingHandlerMapping req2HandlerMapping = (RequestMappingHandlerMapping) appContext.getBean(RequestMappingHandlerMapping.class);
     HandlerExecutionChain handlerExeChain = req2HandlerMapping.getHandler(request);
-    if (Objects.nonNull(handlerExeChain)) {
-      HandlerMethod handlerMethod = (HandlerMethod) handlerExeChain.getHandler();
+    if (!Objects.nonNull(handlerExeChain)) {
+      return true;
+    }
 
-      Method method = handlerMethod.getMethod();
-      Permission annotation = AnnotationUtils.findAnnotation(method, Permission.class);
-      String[] permissionTypes = annotation != null ? annotation.permissionType() : null;
-      if (permissionTypes == null || permissionTypes.length <= 0) {
-        return true;
-      }
-      PermissionRequestDto requestDto = new PermissionRequestDto();
-      requestDto.setRequestId(requestId);
-      requestDto.setUserId(userId);
-      requestDto.setUserName(userName);
-      Result<PermissionResponseDto> result = authService.getPermissionInfo(requestDto);
-      if (result == null) {
-        return false;
-      }
-      PermissionResponseDto permissionsDto = result.getData();
+    HandlerMethod handlerMethod = (HandlerMethod) handlerExeChain.getHandler();
 
-      if (null == permissionsDto.getModules() || CollectionUtils.isEmpty(permissionsDto.getModules().getPermissions())) {
-        return false;
-      } else {
-        int countPer = 0;
-        for (String per : permissionTypes) {
-          for (String permissionCode : permissionsDto.getModules().getPermissions()) {
-            if (per.contains(permissionCode)) {
-              countPer++;
-            }
-          }
+    Method method = handlerMethod.getMethod();
+    Permission annotation = AnnotationUtils.findAnnotation(method, Permission.class);
+    String[] permissionTypes = annotation != null ? annotation.permissionType() : null;
+    if (permissionTypes == null || permissionTypes.length <= 0) {
+      return true;
+    }
+    PermissionRequestDto requestDto = new PermissionRequestDto();
+    requestDto.setRequestId(requestId);
+    requestDto.setUserId(userId);
+    requestDto.setUserName(userName);
+    Result<PermissionResponseDto> result = authService.getPermissionInfo(requestDto);
+    if (result == null) {
+      return false;
+    }
+    PermissionResponseDto permissionsDto = result.getData();
+
+    if (null == permissionsDto.getModules() || CollectionUtils.isEmpty(permissionsDto.getModules().getPermissions())) {
+      return false;
+    }
+
+    int countPer = 0;
+    for (String per : permissionTypes) {
+      for (String permissionCode : permissionsDto.getModules().getPermissions()) {
+        if (per.contains(permissionCode)) {
+          countPer++;
+          break;
         }
-        return countPer != 0;
       }
     }
-    return true;
+    return countPer != 0;
   }
 }
