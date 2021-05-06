@@ -9,4 +9,5 @@ public class FieldConstant {
   public static String USER_ID = "user_id";
   public static String USER_NAME = "user_name";
   public static String REQUEST_ID = "request_id";
+  public static String FULL_NAME ="full_name";
 }

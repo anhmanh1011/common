@@ -21,6 +21,7 @@ public abstract class Request implements Serializable {
     private String path;
     private String userId;
     private String userName;
+
     private String requestId;
     @JsonIgnore
     private String basicUserName;

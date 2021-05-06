@@ -10,7 +10,6 @@ import com.yody.common.filter.thirdparty.request.PermissionRequestDto;
 import com.yody.common.filter.thirdparty.response.PermissionResponseDto;
 import com.yody.common.filter.thirdparty.services.AuthService;
 import com.yody.common.utility.BasicAuthorization;
-
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.Objects;
@@ -22,7 +21,6 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
@@ -65,6 +63,7 @@ public class HandlerFilter implements Filter {
   String userName = "";
   String requestId = "";
   String authorization = "";
+  String fullName = "";
 
   public HandlerFilter(ApplicationContext appContext, AuthService authService) {
     this.appContext = appContext;
@@ -79,14 +78,20 @@ public class HandlerFilter implements Filter {
   @Override
   public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) {
     try {
+
       HttpServletResponse response = (HttpServletResponse) servletResponse;
       HttpServletRequest request = (HttpServletRequest) servletRequest;
+      if(request.getRequestURI().contains("/v2/api-docs")){
+        filterChain.doFilter(servletRequest,servletResponse);
+        return;
+      }
       boolean isMultipart = ServletFileUpload.isMultipartContent(request);
       if (isMultipart) {
         MultipartResolver resolver = new CommonsMultipartResolver(request.getSession().getServletContext());
         MultipartHttpServletRequest multipartRequest = resolver.resolveMultipart(request);
         userId = multipartRequest.getHeader(HeaderEnum.HEADER_USER_ID.getValue());
         userName = multipartRequest.getHeader(HeaderEnum.HEADER_USER_NAME.getValue());
+        fullName = multipartRequest.getHeader(HeaderEnum.HEADER_FULL_NAME.getValue());
         authorization = multipartRequest.getHeader(HeaderEnum.HEADER_AUTHORIZATION.getValue());
         requestId = multipartRequest.getHeader(HeaderEnum.HEADER_REQUEST_ID.getValue());
         if (requestId == null || requestId.isEmpty()) {
@@ -100,6 +105,7 @@ public class HandlerFilter implements Filter {
         multipartRequest.setAttribute(FieldConstant.CREATED_NAME, userName);
         multipartRequest.setAttribute(FieldConstant.UPDATED_BY, userId);
         multipartRequest.setAttribute(FieldConstant.UPDATED_NAME, userName);
+        multipartRequest.setAttribute(FieldConstant.FULL_NAME,fullName);
 
         if (null != authorization && !"".equals(authorization) && checkBasicAuth()) {
           filterChain.doFilter(multipartRequest, servletResponse);
@@ -111,8 +117,10 @@ public class HandlerFilter implements Filter {
       } else {
         userId = request.getHeader(HeaderEnum.HEADER_USER_ID.getValue());
         userName = request.getHeader(HeaderEnum.HEADER_USER_NAME.getValue());
+        fullName = request.getHeader(HeaderEnum.HEADER_FULL_NAME.getValue());
         requestId = request.getHeader(HeaderEnum.HEADER_REQUEST_ID.getValue());
         authorization = request.getHeader(HeaderEnum.HEADER_AUTHORIZATION.getValue());
+
         if (requestId == null) {
           requestId = UUID.randomUUID().toString();
         }
@@ -132,6 +140,7 @@ public class HandlerFilter implements Filter {
         dataRequest.put(FieldConstant.CREATED_NAME, userName);
         dataRequest.put(FieldConstant.UPDATED_BY, userId);
         dataRequest.put(FieldConstant.UPDATED_NAME, userName);
+        dataRequest.put(FieldConstant.FULL_NAME,fullName);
         requestWrapper.setBody(dataRequest.toString());
         if (null != authorization && !"".equals(authorization) && checkBasicAuth()) {
           filterChain.doFilter(requestWrapper, servletResponse);
