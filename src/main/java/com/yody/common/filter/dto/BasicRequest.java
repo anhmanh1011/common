@@ -8,7 +8,7 @@ import lombok.Setter;
 @Setter
 @Getter
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
-public class BasicFilterDto {
+public class BasicRequest {
   protected String createdBy;
   protected String createdName;
   protected String updatedBy;
