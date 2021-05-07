@@ -31,6 +31,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
@@ -79,10 +80,8 @@ public class HandlerFilter implements Filter {
 
       HttpServletResponse response = (HttpServletResponse) servletResponse;
       HttpServletRequest request = (HttpServletRequest) servletRequest;
-      if(request.getRequestURI().contains("/v2/api-docs")
-          || request.getRequestURI().contains("/actuator/health")
-          || request.getRequestURI().contains("/actuator/info")){
-        filterChain.doFilter(servletRequest,servletResponse);
+      if (request.getRequestURI().contains("/v2/api-docs") || request.getRequestURI().contains("/actuator/health") || request.getRequestURI().contains("/actuator/info")) {
+        filterChain.doFilter(servletRequest, servletResponse);
         return;
       }
       boolean isMultipart = ServletFileUpload.isMultipartContent(request);
@@ -99,13 +98,16 @@ public class HandlerFilter implements Filter {
         }
         MDC.put(REQUEST_ID_LOG_VAR_NAME, requestId);
 
+        if (request.getMethod().equals(HttpMethod.POST.name())) {
+          multipartRequest.setAttribute(FieldConstant.CREATED_BY, userName);
+          multipartRequest.setAttribute(FieldConstant.CREATED_NAME, fullName);
+        } else if (request.getMethod().equals(HttpMethod.PUT.name())) {
+          multipartRequest.setAttribute(FieldConstant.UPDATED_BY, userName);
+          multipartRequest.setAttribute(FieldConstant.UPDATED_NAME, fullName);
+        }
         multipartRequest.setAttribute(FieldConstant.USER_ID, userId);
         multipartRequest.setAttribute(FieldConstant.USER_NAME, userName);
         multipartRequest.setAttribute(FieldConstant.REQUEST_ID, requestId);
-        multipartRequest.setAttribute(FieldConstant.CREATED_BY, userName);
-        multipartRequest.setAttribute(FieldConstant.CREATED_NAME, fullName);
-        multipartRequest.setAttribute(FieldConstant.UPDATED_BY, userName);
-        multipartRequest.setAttribute(FieldConstant.UPDATED_NAME, fullName);
 
         if (null != authorization && !"".equals(authorization) && checkBasicAuth()) {
           filterChain.doFilter(multipartRequest, servletResponse);
@@ -133,13 +135,17 @@ public class HandlerFilter implements Filter {
         } else {
           dataRequest = new JSONObject();
         }
+
+        if (request.getMethod().equals(HttpMethod.POST.name())) {
+          dataRequest.put(FieldConstant.CREATED_BY, userName);
+          dataRequest.put(FieldConstant.CREATED_NAME, fullName);
+        } else if (request.getMethod().equals(HttpMethod.PUT.name())) {
+          dataRequest.put(FieldConstant.UPDATED_BY, userName);
+          dataRequest.put(FieldConstant.UPDATED_NAME, fullName);
+        }
         dataRequest.put(FieldConstant.USER_ID, userId);
         dataRequest.put(FieldConstant.USER_NAME, userName);
         dataRequest.put(FieldConstant.REQUEST_ID, requestId);
-        dataRequest.put(FieldConstant.CREATED_BY, userName);
-        dataRequest.put(FieldConstant.CREATED_NAME, fullName);
-        dataRequest.put(FieldConstant.UPDATED_BY, userName);
-        dataRequest.put(FieldConstant.UPDATED_NAME, fullName);
         requestWrapper.setBody(dataRequest.toString());
         if (null != authorization && !"".equals(authorization) && checkBasicAuth()) {
           filterChain.doFilter(requestWrapper, servletResponse);
@@ -182,10 +188,10 @@ public class HandlerFilter implements Filter {
 
   @SneakyThrows
   private boolean checkPermissionByUserId(String userId, HttpServletRequest request) {
-    RequestMappingHandlerMapping req2HandlerMapping = (RequestMappingHandlerMapping) appContext.getBean(RequestMappingHandlerMapping.class);
+    RequestMappingHandlerMapping req2HandlerMapping = appContext.getBean(RequestMappingHandlerMapping.class);
     HandlerExecutionChain handlerExeChain = req2HandlerMapping.getHandler(request);
     if (!Objects.nonNull(handlerExeChain)) {
-      return true;
+      return false;
     }
 
     HandlerMethod handlerMethod = (HandlerMethod) handlerExeChain.getHandler();
