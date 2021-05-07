@@ -54,8 +54,6 @@ public class HandlerFilter implements Filter {
 
   private static final String REQUEST_ID_LOG_VAR_NAME = "request_id";
 
-  static final String REQUEST_MAPPING_HANDLER_MAPPING = "requestMappingHandlerMapping";
-
   private final ApplicationContext appContext;
   private final AuthService authService;
 
@@ -81,7 +79,9 @@ public class HandlerFilter implements Filter {
 
       HttpServletResponse response = (HttpServletResponse) servletResponse;
       HttpServletRequest request = (HttpServletRequest) servletRequest;
-      if(request.getRequestURI().contains("/v2/api-docs")){
+      if(request.getRequestURI().contains("/v2/api-docs")
+          || request.getRequestURI().contains("/actuator/health")
+          || request.getRequestURI().contains("/actuator/info")){
         filterChain.doFilter(servletRequest,servletResponse);
         return;
       }
@@ -101,11 +101,10 @@ public class HandlerFilter implements Filter {
         multipartRequest.setAttribute(FieldConstant.USER_ID, userId);
         multipartRequest.setAttribute(FieldConstant.USER_NAME, userName);
         multipartRequest.setAttribute(FieldConstant.REQUEST_ID, requestId);
-        multipartRequest.setAttribute(FieldConstant.CREATED_BY, userId);
-        multipartRequest.setAttribute(FieldConstant.CREATED_NAME, userName);
-        multipartRequest.setAttribute(FieldConstant.UPDATED_BY, userId);
-        multipartRequest.setAttribute(FieldConstant.UPDATED_NAME, userName);
-        multipartRequest.setAttribute(FieldConstant.FULL_NAME,fullName);
+        multipartRequest.setAttribute(FieldConstant.CREATED_BY, userName);
+        multipartRequest.setAttribute(FieldConstant.CREATED_NAME, fullName);
+        multipartRequest.setAttribute(FieldConstant.UPDATED_BY, userName);
+        multipartRequest.setAttribute(FieldConstant.UPDATED_NAME, fullName);
 
         if (null != authorization && !"".equals(authorization) && checkBasicAuth()) {
           filterChain.doFilter(multipartRequest, servletResponse);
@@ -136,11 +135,10 @@ public class HandlerFilter implements Filter {
         dataRequest.put(FieldConstant.USER_ID, userId);
         dataRequest.put(FieldConstant.USER_NAME, userName);
         dataRequest.put(FieldConstant.REQUEST_ID, requestId);
-        dataRequest.put(FieldConstant.CREATED_BY, userId);
-        dataRequest.put(FieldConstant.CREATED_NAME, userName);
-        dataRequest.put(FieldConstant.UPDATED_BY, userId);
-        dataRequest.put(FieldConstant.UPDATED_NAME, userName);
-        dataRequest.put(FieldConstant.FULL_NAME,fullName);
+        dataRequest.put(FieldConstant.CREATED_BY, userName);
+        dataRequest.put(FieldConstant.CREATED_NAME, fullName);
+        dataRequest.put(FieldConstant.UPDATED_BY, userName);
+        dataRequest.put(FieldConstant.UPDATED_NAME, fullName);
         requestWrapper.setBody(dataRequest.toString());
         if (null != authorization && !"".equals(authorization) && checkBasicAuth()) {
           filterChain.doFilter(requestWrapper, servletResponse);
