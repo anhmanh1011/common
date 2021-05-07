@@ -97,6 +97,7 @@ public class HandlerFilter implements Filter {
         if (requestId == null || requestId.isEmpty()) {
           requestId = UUID.randomUUID().toString();
         }
+        MDC.put(REQUEST_ID_LOG_VAR_NAME, requestId);
 
         multipartRequest.setAttribute(FieldConstant.USER_ID, userId);
         multipartRequest.setAttribute(FieldConstant.USER_NAME, userName);
