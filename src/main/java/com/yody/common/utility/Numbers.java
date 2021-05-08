@@ -197,4 +197,14 @@ public final class Numbers {
         }
         return n1.compareTo(n2) == 0;
     }
+
+    public static boolean compare(Float n1, Float n2) {
+        if(n1 == null && n2 == null) {
+            return  true;
+        }
+        if(n1 == null || n2 == null) {
+            return false;
+        }
+        return n1.compareTo(n2) == 0;
+    }
 }
