@@ -52,7 +52,6 @@ public abstract class AbstractHttpClient {
 
     public <T> Result<T> get(final Request request, final ParameterizedTypeReference<Result<T>> dataClass) {
         this.logRequest(HttpMethod.GET, request);
-        log.error(" URL = "+ this.baseUrl().concat(request.getPath()));
         ResponseEntity<Result<T>> responseEntity = restTemplate.exchange(
                 this.baseUrl().concat(request.getPath()),
                 HttpMethod.GET,

@@ -23,7 +23,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import lombok.val;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.json.JSONObject;
 import org.slf4j.MDC;
@@ -90,7 +89,7 @@ public class HandlerFilter implements Filter {
         MultipartResolver resolver = new CommonsMultipartResolver(request.getSession().getServletContext());
         MultipartHttpServletRequest multipartRequest = resolver.resolveMultipart(request);
         userId = multipartRequest.getHeader(HeaderEnum.HEADER_USER_ID.getValue());
-        userName = multipartRequest.getHeader(HeaderEnum.HEADER_USER_NAME.getValue());
+        userName = multipartRequest.getHeader(HeaderEnum.HEADER_CODE.getValue());
         fullName = multipartRequest.getHeader(HeaderEnum.HEADER_FULL_NAME.getValue());
         authorization = multipartRequest.getHeader(HeaderEnum.HEADER_AUTHORIZATION.getValue());
         requestId = multipartRequest.getHeader(HeaderEnum.HEADER_REQUEST_ID.getValue());
@@ -107,7 +106,7 @@ public class HandlerFilter implements Filter {
           multipartRequest.setAttribute(FieldConstant.UPDATED_NAME, fullName);
         }
         multipartRequest.setAttribute(FieldConstant.USER_ID, userId);
-        multipartRequest.setAttribute(FieldConstant.USER_NAME, userName);
+        multipartRequest.setAttribute(FieldConstant.CODE, userName);
         multipartRequest.setAttribute(FieldConstant.REQUEST_ID, requestId);
 
         if (null != authorization && !"".equals(authorization) && checkBasicAuth()) {
@@ -119,7 +118,7 @@ public class HandlerFilter implements Filter {
         }
       } else {
         userId = request.getHeader(HeaderEnum.HEADER_USER_ID.getValue());
-        userName = request.getHeader(HeaderEnum.HEADER_USER_NAME.getValue());
+        userName = request.getHeader(HeaderEnum.HEADER_CODE.getValue());
         fullName = request.getHeader(HeaderEnum.HEADER_FULL_NAME.getValue());
         requestId = request.getHeader(HeaderEnum.HEADER_REQUEST_ID.getValue());
         authorization = request.getHeader(HeaderEnum.HEADER_AUTHORIZATION.getValue());
@@ -145,7 +144,7 @@ public class HandlerFilter implements Filter {
           dataRequest.put(FieldConstant.UPDATED_NAME, fullName);
         }
         dataRequest.put(FieldConstant.USER_ID, userId);
-        dataRequest.put(FieldConstant.USER_NAME, userName);
+        dataRequest.put(FieldConstant.CODE, userName);
         dataRequest.put(FieldConstant.REQUEST_ID, requestId);
         requestWrapper.setBody(dataRequest.toString());
         if (null != authorization && !"".equals(authorization) && checkBasicAuth()) {
