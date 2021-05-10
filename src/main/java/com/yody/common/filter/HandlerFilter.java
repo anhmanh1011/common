@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import lombok.val;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.json.JSONObject;
 import org.slf4j.MDC;
@@ -139,7 +140,7 @@ public class HandlerFilter implements Filter {
         if (request.getMethod().equals(HttpMethod.POST.name())) {
           dataRequest.put(FieldConstant.CREATED_BY, userName);
           dataRequest.put(FieldConstant.CREATED_NAME, fullName);
-        } else if (request.getMethod().equals(HttpMethod.PUT.name())) {
+        } else if (request.getMethod().equals(HttpMethod.PUT.name()) || request.getMethod().equals(HttpMethod.DELETE.name())){
           dataRequest.put(FieldConstant.UPDATED_BY, userName);
           dataRequest.put(FieldConstant.UPDATED_NAME, fullName);
         }
@@ -218,7 +219,7 @@ public class HandlerFilter implements Filter {
 
     int countPer = 0;
     for (String per : permissionTypes) {
-      for (String permissionCode : permissionsDto.getModules().getPermissions()) {
+   for (String permissionCode : permissionsDto.getModules().getPermissions()) {
         if (per.contains(permissionCode)) {
           countPer++;
           break;
