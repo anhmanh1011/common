@@ -4,6 +4,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yody.common.core.dto.Result;
 import com.yody.common.core.dto.Request;
+import com.yody.common.enums.HeaderEnum;
+import com.yody.common.filter.constant.FieldConstant;
+import com.yody.common.utility.BasicAuthorization;
+import com.yody.common.utility.Strings;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
@@ -86,4 +90,22 @@ public abstract class AbstractHttpClient {
             e.printStackTrace();
         }
     }
+
+    protected  HttpHeaders defaultHeader(Request request){
+        HttpHeaders httpHeaders = new HttpHeaders();
+        if (request.getUserId() != null) { httpHeaders.set(FieldConstant.OPERATOR_KC_ID, request.getUserId()); }
+
+        if (request.getUserName() != null) { httpHeaders.set(FieldConstant.OPERATOR_LOGIN_ID, request.getUserName()); }
+
+        if (request.getRequestId() != null) { httpHeaders.set(HeaderEnum.HEADER_REQUEST_ID.getValue(), request.getRequestId()); }
+
+        if (!Strings.isEmpty(request.getBasicUserName()) && !Strings.isEmpty(request.getBasicPassword())) {
+            httpHeaders.set(HeaderEnum.HEADER_AUTHORIZATION.getValue(), BasicAuthorization.encodeBasicAuthorization(request.getBasicUserName(), request.getBasicPassword()));
+            request.setBasicPassword(null);
+            request.setBasicUserName(null);
+        }
+        return httpHeaders;
+    }
+
+
 }

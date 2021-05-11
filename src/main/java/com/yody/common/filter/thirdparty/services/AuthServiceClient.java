@@ -18,43 +18,26 @@ import org.springframework.web.client.RestTemplate;
 @Order(1)
 public class AuthServiceClient extends AbstractHttpClient {
 
-    @Value("${yody.common.thirdparty.services.auth.base-url}")
-    private String url;
+  @Value("${yody.common.thirdparty.services.auth.base-url}")
+  private String url;
 
-    public AuthServiceClient(RestTemplate restTemplate, ObjectMapper objectMapper) {
-        super(restTemplate, objectMapper);
-    }
+  public AuthServiceClient(RestTemplate restTemplate, ObjectMapper objectMapper) {
+    super(restTemplate, objectMapper);
+  }
 
-    @Override
-    protected HttpHeaders buildHeaders(Request request) {
-        HttpHeaders httpHeaders = new HttpHeaders();
-        if (request.getUserId() != null)
-            httpHeaders.set(FieldConstant.OPERATOR_KC_ID, request.getUserId());
+  @Override
+  protected HttpHeaders buildHeaders(Request request) {
+    return defaultHeader(request);
+  }
 
-        if (request.getUserName() != null)
-            httpHeaders.set(FieldConstant.OPERATOR_LOGIN_ID, request.getUserName());
+  @Override
+  protected HttpHeaders buildHeaders() {
+    return null;
+  }
 
-        if (request.getRequestId() != null)
-            httpHeaders.set(HeaderEnum.HEADER_REQUEST_ID.getValue(), request.getRequestId());
-
-        if (request.getBasicUserName() != null && !"".equals(request.getBasicUserName())
-            && null != request.getBasicPassword() && !"".equals(request.getBasicPassword())) {
-            httpHeaders.set(HeaderEnum.HEADER_AUTHORIZATION.getValue(),
-                BasicAuthorization.encodeBasicAuthorization(request.getBasicUserName(), request.getBasicPassword()));
-            request.setBasicPassword(null);
-            request.setBasicUserName(null);
-        }
-        return httpHeaders;
-    }
-
-    @Override
-    protected HttpHeaders buildHeaders() {
-        return null;
-    }
-
-    @Override
-    protected String baseUrl() {
-        return url;
-    }
+  @Override
+  protected String baseUrl() {
+    return url;
+  }
 
 }
