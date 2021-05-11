@@ -6,8 +6,11 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 import com.yody.common.enums.DateTimeEnum;
 
@@ -215,6 +218,11 @@ public class Dates {
   public static long getDateDiff(Date startDate, Date endDate, TimeUnit timeUnit) {
     long diffInMillies = endDate.getTime() - startDate.getTime();
     return timeUnit.convert(diffInMillies, TimeUnit.MILLISECONDS);
+  }
+
+  public static Date getUTC() {
+    ZonedDateTime now = ZonedDateTime.now(ZoneOffset.UTC);
+    return Date.from(now.toInstant());
   }
 
 }
