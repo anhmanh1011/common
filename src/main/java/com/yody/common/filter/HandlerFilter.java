@@ -59,7 +59,7 @@ public class HandlerFilter implements Filter {
   private final AuthService authService;
 
   String userId = "";
-  String userName = "";
+  String operatorName = "";
   String requestId = "";
   String authorization = "";
   String fullName = "";
@@ -89,7 +89,7 @@ public class HandlerFilter implements Filter {
         MultipartResolver resolver = new CommonsMultipartResolver(request.getSession().getServletContext());
         MultipartHttpServletRequest multipartRequest = resolver.resolveMultipart(request);
         userId = multipartRequest.getHeader(HeaderEnum.HEADER_USER_ID.getValue());
-        userName = multipartRequest.getHeader(HeaderEnum.HEADER_CODE.getValue());
+        operatorName = multipartRequest.getHeader(HeaderEnum.HEADER_OPERATOR_NAME.getValue());
         fullName = multipartRequest.getHeader(HeaderEnum.HEADER_FULL_NAME.getValue());
         authorization = multipartRequest.getHeader(HeaderEnum.HEADER_AUTHORIZATION.getValue());
         requestId = multipartRequest.getHeader(HeaderEnum.HEADER_REQUEST_ID.getValue());
@@ -99,14 +99,14 @@ public class HandlerFilter implements Filter {
         MDC.put(REQUEST_ID_LOG_VAR_NAME, requestId);
 
         if (request.getMethod().equals(HttpMethod.POST.name())) {
-          multipartRequest.setAttribute(FieldConstant.CREATED_BY, userName);
+          multipartRequest.setAttribute(FieldConstant.CREATED_BY, operatorName);
           multipartRequest.setAttribute(FieldConstant.CREATED_NAME, fullName);
         } else if (request.getMethod().equals(HttpMethod.PUT.name())) {
-          multipartRequest.setAttribute(FieldConstant.UPDATED_BY, userName);
+          multipartRequest.setAttribute(FieldConstant.UPDATED_BY, operatorName);
           multipartRequest.setAttribute(FieldConstant.UPDATED_NAME, fullName);
         }
         multipartRequest.setAttribute(FieldConstant.USER_ID, userId);
-        multipartRequest.setAttribute(FieldConstant.CODE, userName);
+        multipartRequest.setAttribute(FieldConstant.OPERATOR_NAME, operatorName);
         multipartRequest.setAttribute(FieldConstant.REQUEST_ID, requestId);
 
         if (null != authorization && !"".equals(authorization) && checkBasicAuth()) {
@@ -118,7 +118,7 @@ public class HandlerFilter implements Filter {
         }
       } else {
         userId = request.getHeader(HeaderEnum.HEADER_USER_ID.getValue());
-        userName = request.getHeader(HeaderEnum.HEADER_CODE.getValue());
+        operatorName = request.getHeader(HeaderEnum.HEADER_OPERATOR_NAME.getValue());
         fullName = request.getHeader(HeaderEnum.HEADER_FULL_NAME.getValue());
         requestId = request.getHeader(HeaderEnum.HEADER_REQUEST_ID.getValue());
         authorization = request.getHeader(HeaderEnum.HEADER_AUTHORIZATION.getValue());
@@ -137,14 +137,14 @@ public class HandlerFilter implements Filter {
         }
 
         if (request.getMethod().equals(HttpMethod.POST.name())) {
-          dataRequest.put(FieldConstant.CREATED_BY, userName);
+          dataRequest.put(FieldConstant.CREATED_BY, operatorName);
           dataRequest.put(FieldConstant.CREATED_NAME, fullName);
         } else if (request.getMethod().equals(HttpMethod.PUT.name()) || request.getMethod().equals(HttpMethod.DELETE.name())){
-          dataRequest.put(FieldConstant.UPDATED_BY, userName);
+          dataRequest.put(FieldConstant.UPDATED_BY, operatorName);
           dataRequest.put(FieldConstant.UPDATED_NAME, fullName);
         }
         dataRequest.put(FieldConstant.USER_ID, userId);
-        dataRequest.put(FieldConstant.CODE, userName);
+        dataRequest.put(FieldConstant.OPERATOR_NAME, operatorName);
         dataRequest.put(FieldConstant.REQUEST_ID, requestId);
         requestWrapper.setBody(dataRequest.toString());
         if (null != authorization && !"".equals(authorization) && checkBasicAuth()) {
@@ -205,7 +205,7 @@ public class HandlerFilter implements Filter {
     PermissionRequestDto requestDto = new PermissionRequestDto();
     requestDto.setRequestId(requestId);
     requestDto.setUserId(userId);
-    requestDto.setUserName(userName);
+    requestDto.setUserName(operatorName);
     Result<PermissionResponseDto> result = authService.getPermissionInfo(requestDto);
     if (result == null) {
       return false;

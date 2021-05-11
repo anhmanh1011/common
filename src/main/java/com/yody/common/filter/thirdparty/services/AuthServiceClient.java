@@ -31,7 +31,7 @@ public class AuthServiceClient extends AbstractHttpClient {
             httpHeaders.set(HeaderEnum.HEADER_USER_ID.getValue(), request.getUserId());
 
         if (request.getUserName() != null)
-            httpHeaders.set(HeaderEnum.HEADER_CODE.getValue(), request.getUserName());
+            httpHeaders.set(HeaderEnum.HEADER_OPERATOR_NAME.getValue(), request.getUserName());
 
         if (request.getRequestId() != null)
             httpHeaders.set(HeaderEnum.HEADER_REQUEST_ID.getValue(), request.getRequestId());
