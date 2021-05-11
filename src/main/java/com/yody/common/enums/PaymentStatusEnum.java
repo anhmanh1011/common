@@ -8,6 +8,7 @@ public enum PaymentStatusEnum implements BaseEnum<String>{
   UNPAID("unpaid","Chưa trả"),
   PAID("paid","Đã trả"),
   PARTIAL_PAID("partial_paid","Đã trả một phần"),
+  REFUNDING("refunding", "Đang hoàn lại"),
   REFUNDED("refunded","Đã hoàn lại");
 
   private final String value;

@@ -5,8 +5,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public enum OrderStatusEnum implements BaseEnum<String>{
   DRAFT("draft","Nháp"),
-  CONFIRMED("confirmed","Đã xác nhận"),
-  IN_PROGRESS("in_progress","Đang xử lý"),
+  FINALIZED("finalized","Đã xác nhận"),
   COMPLETED("completed","Đã hoàn thành"),
   FINISHED("finished","Đã kết thúc"),
   CANCELLED("cancelled","Đã hủy"),
