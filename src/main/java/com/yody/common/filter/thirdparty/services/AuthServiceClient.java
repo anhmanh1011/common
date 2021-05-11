@@ -3,6 +3,7 @@ package com.yody.common.filter.thirdparty.services;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yody.common.core.dto.Request;
 import com.yody.common.enums.HeaderEnum;
+import com.yody.common.filter.constant.FieldConstant;
 import com.yody.common.http.AbstractHttpClient;
 import com.yody.common.utility.BasicAuthorization;
 import lombok.extern.slf4j.Slf4j;
@@ -28,10 +29,10 @@ public class AuthServiceClient extends AbstractHttpClient {
     protected HttpHeaders buildHeaders(Request request) {
         HttpHeaders httpHeaders = new HttpHeaders();
         if (request.getUserId() != null)
-            httpHeaders.set(HeaderEnum.HEADER_USER_ID.getValue(), request.getUserId());
+            httpHeaders.set(FieldConstant.OPERATOR_KC_ID, request.getUserId());
 
         if (request.getUserName() != null)
-            httpHeaders.set(HeaderEnum.HEADER_OPERATOR_NAME.getValue(), request.getUserName());
+            httpHeaders.set(FieldConstant.OPERATOR_LOGIN_ID, request.getUserName());
 
         if (request.getRequestId() != null)
             httpHeaders.set(HeaderEnum.HEADER_REQUEST_ID.getValue(), request.getRequestId());

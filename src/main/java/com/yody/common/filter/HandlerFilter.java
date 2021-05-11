@@ -10,6 +10,7 @@ import com.yody.common.filter.thirdparty.request.PermissionRequestDto;
 import com.yody.common.filter.thirdparty.response.PermissionResponseDto;
 import com.yody.common.filter.thirdparty.services.AuthService;
 import com.yody.common.utility.BasicAuthorization;
+import com.yody.common.utility.Strings;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.Objects;
@@ -58,11 +59,11 @@ public class HandlerFilter implements Filter {
   private final ApplicationContext appContext;
   private final AuthService authService;
 
-  String userId = "";
-  String operatorName = "";
+  String operatorKcId = "";
+  String operatorLoginId = "";
   String requestId = "";
   String authorization = "";
-  String fullName = "";
+  String operatorName = "";
 
   public HandlerFilter(ApplicationContext appContext, AuthService authService) {
     this.appContext = appContext;
@@ -88,46 +89,29 @@ public class HandlerFilter implements Filter {
       if (isMultipart) {
         MultipartResolver resolver = new CommonsMultipartResolver(request.getSession().getServletContext());
         MultipartHttpServletRequest multipartRequest = resolver.resolveMultipart(request);
-        userId = multipartRequest.getHeader(HeaderEnum.HEADER_USER_ID.getValue());
-        operatorName = multipartRequest.getHeader(HeaderEnum.HEADER_OPERATOR_NAME.getValue());
-        fullName = multipartRequest.getHeader(HeaderEnum.HEADER_FULL_NAME.getValue());
-        authorization = multipartRequest.getHeader(HeaderEnum.HEADER_AUTHORIZATION.getValue());
-        requestId = multipartRequest.getHeader(HeaderEnum.HEADER_REQUEST_ID.getValue());
-        if (requestId == null || requestId.isEmpty()) {
-          requestId = UUID.randomUUID().toString();
-        }
-        MDC.put(REQUEST_ID_LOG_VAR_NAME, requestId);
+
+        getHeader(multipartRequest);
 
         if (request.getMethod().equals(HttpMethod.POST.name())) {
-          multipartRequest.setAttribute(FieldConstant.CREATED_BY, operatorName);
-          multipartRequest.setAttribute(FieldConstant.CREATED_NAME, fullName);
+          multipartRequest.setAttribute(FieldConstant.CREATED_BY, operatorLoginId);
+          multipartRequest.setAttribute(FieldConstant.CREATED_NAME, operatorName);
         } else if (request.getMethod().equals(HttpMethod.PUT.name())) {
-          multipartRequest.setAttribute(FieldConstant.UPDATED_BY, operatorName);
-          multipartRequest.setAttribute(FieldConstant.UPDATED_NAME, fullName);
+          multipartRequest.setAttribute(FieldConstant.UPDATED_BY, operatorLoginId);
+          multipartRequest.setAttribute(FieldConstant.UPDATED_NAME, operatorName);
         }
-        multipartRequest.setAttribute(FieldConstant.USER_ID, userId);
-        multipartRequest.setAttribute(FieldConstant.OPERATOR_NAME, operatorName);
+        multipartRequest.setAttribute(FieldConstant.OPERATOR_KC_ID, operatorKcId);
+        multipartRequest.setAttribute(FieldConstant.OPERATOR_LOGIN_ID, operatorLoginId);
         multipartRequest.setAttribute(FieldConstant.REQUEST_ID, requestId);
 
-        if (null != authorization && !"".equals(authorization) && checkBasicAuth()) {
+        if (!Strings.isEmpty(authorization) && checkBasicAuth()) {
           filterChain.doFilter(multipartRequest, servletResponse);
           return;
-        } else if (!"".equals(userId) && null != userId && checkPermissionByUserId(userId, request)) {
+        } else if (!Strings.isEmpty(operatorKcId) && checkPermissionByUserId(operatorKcId, request)) {
           filterChain.doFilter(multipartRequest, servletResponse);
           return;
         }
       } else {
-        userId = request.getHeader(HeaderEnum.HEADER_USER_ID.getValue());
-        operatorName = request.getHeader(HeaderEnum.HEADER_OPERATOR_NAME.getValue());
-        fullName = request.getHeader(HeaderEnum.HEADER_FULL_NAME.getValue());
-        requestId = request.getHeader(HeaderEnum.HEADER_REQUEST_ID.getValue());
-        authorization = request.getHeader(HeaderEnum.HEADER_AUTHORIZATION.getValue());
-
-        if (requestId == null) {
-          requestId = UUID.randomUUID().toString();
-        }
-        MDC.put(REQUEST_ID_LOG_VAR_NAME, requestId);
-
+        getHeader(request);
         VerifyRequestWrapper requestWrapper = new VerifyRequestWrapper(request);
         JSONObject dataRequest;
         if (requestWrapper.getBody() != null && !"".equals(requestWrapper.getBody())) {
@@ -137,20 +121,20 @@ public class HandlerFilter implements Filter {
         }
 
         if (request.getMethod().equals(HttpMethod.POST.name())) {
-          dataRequest.put(FieldConstant.CREATED_BY, operatorName);
-          dataRequest.put(FieldConstant.CREATED_NAME, fullName);
-        } else if (request.getMethod().equals(HttpMethod.PUT.name()) || request.getMethod().equals(HttpMethod.DELETE.name())){
-          dataRequest.put(FieldConstant.UPDATED_BY, operatorName);
-          dataRequest.put(FieldConstant.UPDATED_NAME, fullName);
+          dataRequest.put(FieldConstant.CREATED_BY, operatorLoginId);
+          dataRequest.put(FieldConstant.CREATED_NAME, operatorName);
+        } else if (request.getMethod().equals(HttpMethod.PUT.name()) || request.getMethod().equals(HttpMethod.DELETE.name())) {
+          dataRequest.put(FieldConstant.UPDATED_BY, operatorLoginId);
+          dataRequest.put(FieldConstant.UPDATED_NAME, operatorName);
         }
-        dataRequest.put(FieldConstant.USER_ID, userId);
+        dataRequest.put(FieldConstant.OPERATOR_KC_ID, operatorKcId);
         dataRequest.put(FieldConstant.OPERATOR_NAME, operatorName);
         dataRequest.put(FieldConstant.REQUEST_ID, requestId);
         requestWrapper.setBody(dataRequest.toString());
-        if (null != authorization && !"".equals(authorization) && checkBasicAuth()) {
+        if (!Strings.isEmpty(authorization) && checkBasicAuth()) {
           filterChain.doFilter(requestWrapper, servletResponse);
           return;
-        } else if (!"".equals(userId) && null != userId && checkPermissionByUserId(userId, request)) {
+        } else if (!Strings.isEmpty(operatorKcId) && checkPermissionByUserId(operatorKcId, request)) {
           filterChain.doFilter(requestWrapper, servletResponse);
           return;
         }
@@ -167,6 +151,8 @@ public class HandlerFilter implements Filter {
   public void destroy() {
   }
 
+
+
   private byte[] restResponseBytes(Object result) throws IOException {
     String serialized = new ObjectMapper().writeValueAsString(result);
     return serialized.getBytes();
@@ -180,6 +166,18 @@ public class HandlerFilter implements Filter {
     } catch (IOException ignored) {
       log.error(ignored.toString());
     }
+  }
+
+  private void getHeader(HttpServletRequest request) {
+    operatorKcId = request.getHeader(FieldConstant.OPERATOR_KC_ID);
+    operatorLoginId = request.getHeader(FieldConstant.OPERATOR_LOGIN_ID);
+    operatorName = request.getHeader(FieldConstant.OPERATOR_NAME);
+    authorization = request.getHeader(HeaderEnum.HEADER_AUTHORIZATION.getValue());
+    requestId = request.getHeader(HeaderEnum.HEADER_REQUEST_ID.getValue());
+    if (requestId == null || requestId.isEmpty()) {
+      requestId = UUID.randomUUID().toString();
+    }
+    MDC.put(REQUEST_ID_LOG_VAR_NAME, requestId);
   }
 
   private boolean checkBasicAuth() {
@@ -216,15 +214,13 @@ public class HandlerFilter implements Filter {
       return false;
     }
 
-    int countPer = 0;
     for (String per : permissionTypes) {
-   for (String permissionCode : permissionsDto.getModules().getPermissions()) {
+      for (String permissionCode : permissionsDto.getModules().getPermissions()) {
         if (per.contains(permissionCode)) {
-          countPer++;
-          break;
+          return true;
         }
       }
     }
-    return countPer != 0;
+    return false;
   }
 }
