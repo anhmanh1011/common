@@ -23,14 +23,30 @@ public class ModelMappers {
   }
 
   public static <S, T> List<T> mapList(List<S> source, Class<T> target) {
+    if (source == null) {
+      return null;
+    }
     return source.stream().map(element -> getMapper().map(element, target)).collect(Collectors.toList());
   }
 
   public static <S, T> T mapWithoutSetter(S source, Class<T> target) {
+    if (source == null) {
+      return null;
+    }
     ModelMapper mapper = new ModelMapper();
     mapper.getConfiguration().setFieldAccessLevel(AccessLevel.PRIVATE).setFieldMatchingEnabled(true);
     return mapper.map(source, target);
   }
+
+  public static <S, T> void mapToWithoutSetter(S source, T target) {
+    if (source == null || target == null) {
+      return;
+    }
+    ModelMapper mapper = new ModelMapper();
+    mapper.getConfiguration().setFieldAccessLevel(AccessLevel.PRIVATE).setFieldMatchingEnabled(true);
+    mapper.map(source, target);
+  }
+
 
   public static <S, T> List<T> mapListWithoutSetter(List<S> source, Class<T> target) {
     ModelMapper mapper = new ModelMapper();
