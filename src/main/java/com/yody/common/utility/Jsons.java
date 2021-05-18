@@ -1,9 +1,22 @@
 package com.yody.common.utility;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy.SnakeCaseStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonSyntaxException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -72,6 +85,31 @@ public class Jsons {
     }
     return input;
   }
+
+
+  public static final JSONObject toJson(List<String> fields, Object o) {
+    ObjectMapper mapper = new ObjectMapper();
+    JSONObject object = new JSONObject();
+    try {
+      String json = mapper.writeValueAsString(o);
+      JsonNode root = mapper.readTree(json);
+      fields.forEach(field -> {
+        JsonNode node = root.get(field);
+        if (node != null) {
+          if (Numbers.isNumeric(node.asText())) {
+            object.put(field, new BigDecimal(node.asText()));
+          } else {
+            object.put(field, node.asText());
+          }
+        }
+      });
+    } catch (JsonProcessingException e) {
+      e.printStackTrace();
+    }
+    return object;
+
+  }
+
 
 
 }

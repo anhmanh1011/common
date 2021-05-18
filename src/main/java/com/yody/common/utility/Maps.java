@@ -1,10 +1,12 @@
 package com.yody.common.utility;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
-import com.yody.common.core.dto.BaseDto;
-
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public final class Maps {
 
@@ -55,15 +57,6 @@ public final class Maps {
     return r;
   }
 
-  public static final Map<String, Object> toMap(List<String> fields, Object o) {
-    Gson gson = new Gson();
-    JsonElement json = gson.toJsonTree(o);
-    Map<String, Object> map = new HashMap<>();
-    fields.forEach(
-        field -> {
-          map.put(field, json.getAsJsonObject().get(Strings.snakeToCamel(field)));
-        });
-    return map;
-  }
+
 
 }
