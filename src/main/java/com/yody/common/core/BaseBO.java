@@ -17,12 +17,14 @@ public class BaseBO<T extends AggregateRoot<T>> extends BaseEntity{
     protected boolean modify;
 
     protected  void _setCreate(){
+        this.create = true;
         this.createdDate = System.currentTimeMillis();
         this.createdBy = root.isCreate() ? root.getCreatedBy() : root.getUpdatedBy();
         this.createdName = root.isCreate() ? root.getCreatedName() : root.getUpdatedName();
         _setModify();
     }
     protected void _setModify(){
+        this.modify = true;
         this.updatedBy = root.getUpdatedBy();
         this.updatedName = root.getUpdatedName();
         this.updatedDate = System.currentTimeMillis();
