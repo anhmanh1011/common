@@ -13,7 +13,7 @@ import lombok.Getter;
 import org.springframework.util.Assert;
 
 @Getter
-public abstract class AggregateRoot<T extends AggregateRoot<T>> extends BaseBO {
+public abstract class AggregateRoot<T extends AggregateRoot<T>> extends BaseBO<T> {
 
   // private AtomicInteger version = new AtomicInteger(0);
   private long timestamp = 0;
