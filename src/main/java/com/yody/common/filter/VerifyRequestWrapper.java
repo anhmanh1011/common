@@ -1,5 +1,6 @@
 package com.yody.common.filter;
 
+import lombok.ToString;
 import org.springframework.http.MediaType;
 
 import javax.servlet.ReadListener;
@@ -11,6 +12,7 @@ import java.io.*;
 /**
  * The Class ApiKeyVerifiRequestWrapper.
  */
+@ToString
 public class VerifyRequestWrapper extends HttpServletRequestWrapper {
 
     /**

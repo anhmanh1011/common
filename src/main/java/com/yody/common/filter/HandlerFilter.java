@@ -130,6 +130,11 @@ public class HandlerFilter implements Filter {
         dataRequest.put(FieldConstant.OPERATOR_KC_ID, operatorKcId);
         dataRequest.put(FieldConstant.OPERATOR_NAME, operatorName);
         dataRequest.put(FieldConstant.REQUEST_ID, requestId);
+        log.error(dataRequest.toString());
+        log.error("operationLoginid ="+operatorLoginId);
+        log.error("operatorName =",operatorName);
+        log.error((String) dataRequest.get(FieldConstant.CREATED_BY));
+        log.error((String) dataRequest.get(FieldConstant.CREATED_NAME));
         requestWrapper.setBody(dataRequest.toString());
         if (!Strings.isEmpty(authorization) && checkBasicAuth()) {
           filterChain.doFilter(requestWrapper, servletResponse);
