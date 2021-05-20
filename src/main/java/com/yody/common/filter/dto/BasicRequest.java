@@ -7,7 +7,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
-//@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
+@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class BasicRequest {
   protected String createdBy;
   protected String createdName;
