@@ -43,6 +43,7 @@ compile deploy:
   only:
     refs:
       - develop
+      - uat
 
 tag:
   stage: tag
