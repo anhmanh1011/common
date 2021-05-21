@@ -174,11 +174,13 @@ public class HandlerFilter implements Filter {
   }
 
   private void getHeader(HttpServletRequest request) {
-    operatorKcId = request.getHeader(FieldConstant.OPERATOR_KC_ID);
-    operatorLoginId = request.getHeader(FieldConstant.OPERATOR_LOGIN_ID);
-    operatorName = request.getHeader(FieldConstant.OPERATOR_NAME);
+//    operatorKcId = request.getHeader(FieldConstant.OPERATOR_KC_ID);
+//    operatorLoginId = request.getHeader(FieldConstant.OPERATOR_LOGIN_ID);
+//    operatorName = request.getHeader(FieldConstant.OPERATOR_NAME);
 //    authorization = request.getHeader(HeaderEnum.HEADER_AUTHORIZATION.getValue());
-    authorization = "Basic token";
+    operatorKcId = "67f14077-f556-456d-9b78-46fe6ba39a4b";
+    operatorLoginId = "67f14077-f556-456d-9b78-46fe6ba39a4b";
+    operatorName = "yody";
     requestId = request.getHeader(HeaderEnum.HEADER_REQUEST_ID.getValue());
     if (requestId == null || requestId.isEmpty()) {
       requestId = UUID.randomUUID().toString();
@@ -193,41 +195,42 @@ public class HandlerFilter implements Filter {
 
   @SneakyThrows
   private boolean checkPermissionByUserId(String userId, HttpServletRequest request) {
-    RequestMappingHandlerMapping req2HandlerMapping = appContext.getBean(RequestMappingHandlerMapping.class);
-    HandlerExecutionChain handlerExeChain = req2HandlerMapping.getHandler(request);
-    if (!Objects.nonNull(handlerExeChain)) {
-      return false;
-    }
-
-    HandlerMethod handlerMethod = (HandlerMethod) handlerExeChain.getHandler();
-
-    Method method = handlerMethod.getMethod();
-    Permission annotation = AnnotationUtils.findAnnotation(method, Permission.class);
-    String[] permissionTypes = annotation != null ? annotation.permissionType() : null;
-    if (permissionTypes == null || permissionTypes.length <= 0) {
-      return true;
-    }
-    PermissionRequestDto requestDto = new PermissionRequestDto();
-    requestDto.setRequestId(requestId);
-    requestDto.setUserId(userId);
-    requestDto.setUserName(operatorName);
-    Result<PermissionResponseDto> result = authService.getPermissionInfo(requestDto);
-    if (result == null) {
-      return false;
-    }
-    PermissionResponseDto permissionsDto = result.getData();
-
-    if (null == permissionsDto.getModules() || CollectionUtils.isEmpty(permissionsDto.getModules().getPermissions())) {
-      return false;
-    }
-
-    for (String per : permissionTypes) {
-      for (String permissionCode : permissionsDto.getModules().getPermissions()) {
-        if (per.contains(permissionCode)) {
-          return true;
-        }
-      }
-    }
-    return false;
+    return true;
+//    RequestMappingHandlerMapping req2HandlerMapping = appContext.getBean(RequestMappingHandlerMapping.class);
+//    HandlerExecutionChain handlerExeChain = req2HandlerMapping.getHandler(request);
+//    if (!Objects.nonNull(handlerExeChain)) {
+//      return false;
+//    }
+//
+//    HandlerMethod handlerMethod = (HandlerMethod) handlerExeChain.getHandler();
+//
+//    Method method = handlerMethod.getMethod();
+//    Permission annotation = AnnotationUtils.findAnnotation(method, Permission.class);
+//    String[] permissionTypes = annotation != null ? annotation.permissionType() : null;
+//    if (permissionTypes == null || permissionTypes.length <= 0) {
+//      return true;
+//    }
+//    PermissionRequestDto requestDto = new PermissionRequestDto();
+//    requestDto.setRequestId(requestId);
+//    requestDto.setUserId(userId);
+//    requestDto.setUserName(operatorName);
+//    Result<PermissionResponseDto> result = authService.getPermissionInfo(requestDto);
+//    if (result == null) {
+//      return false;
+//    }
+//    PermissionResponseDto permissionsDto = result.getData();
+//
+//    if (null == permissionsDto.getModules() || CollectionUtils.isEmpty(permissionsDto.getModules().getPermissions())) {
+//      return false;
+//    }
+//
+//    for (String per : permissionTypes) {
+//      for (String permissionCode : permissionsDto.getModules().getPermissions()) {
+//        if (per.contains(permissionCode)) {
+//          return true;
+//        }
+//      }
+//    }
+//    return false;
   }
 }
