@@ -81,7 +81,10 @@ public class HandlerFilter implements Filter {
 
       HttpServletResponse response = (HttpServletResponse) servletResponse;
       HttpServletRequest request = (HttpServletRequest) servletRequest;
-      if (request.getRequestURI().contains("/v2/api-docs") || request.getRequestURI().contains("/actuator/health") || request.getRequestURI().contains("/actuator/info")) {
+      if (request.getRequestURI().contains("/v2/api-docs") ||
+          request.getRequestURI().contains("/actuator/health") ||
+          request.getRequestURI().contains("/actuator/info")||
+          request.getRequestURI().contains("/accounts/login")) {
         filterChain.doFilter(servletRequest, servletResponse);
         return;
       }
