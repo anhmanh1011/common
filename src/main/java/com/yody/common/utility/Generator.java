@@ -1,23 +1,41 @@
 package com.yody.common.utility;
 
-import java.awt.Font;
-import java.awt.image.BufferedImage;
 import java.util.Random;
-import net.sourceforge.barbecue.Barcode;
-import net.sourceforge.barbecue.BarcodeFactory;
-import net.sourceforge.barbecue.BarcodeImageHandler;
+import java.util.UUID;
 
 public class Generator {
 
   public static String generate() {
+
+    return gen(12);
+  }
+
+  private static String gen(int length) {
     int leftLimit = 48; // numeral '0'
     int rightLimit = 122; // letter 'z'
-    int targetStringLength = 12;
     Random random = new Random();
-    String generatedString = random.ints(leftLimit, rightLimit + 1).filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97)).limit(targetStringLength)
+    String generatedString = random.ints(leftLimit, rightLimit + 1).filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97)).limit(length)
         .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append).toString();
     return generatedString;
   }
+
+
+  public static String genApiKey() {
+    String key = gen(30);
+    Random random = new Random();
+    String[] specialCharacter = {"-", "+", "="};
+    for(int i=0;i<3;i++) {
+      int n = random.nextInt();
+      while (n <= 0) {
+        n = random.nextInt();
+      }
+      String c = specialCharacter[n % specialCharacter.length];
+      int x = n % key.length();
+      key = key.substring(0, x).concat(c).concat(key.substring(x));
+    }
+    return key;
+  }
+
 
   public static String barcode(Long sequence) {
     int length = 13 - 2 - sequence.toString().length();
