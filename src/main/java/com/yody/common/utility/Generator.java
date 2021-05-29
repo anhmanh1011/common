@@ -1,14 +1,21 @@
 package com.yody.common.utility;
 
+import static java.util.Base64.*;
+
+import com.yody.common.enums.ProductEventEnum;
+import  org.apache.commons.codec.binary.Base64;
+
 import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
-import java.util.Base64;
 import java.util.Random;
 import java.util.UUID;
+import javax.crypto.Mac;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
+import javax.crypto.spec.SecretKeySpec;
+import lombok.val;
 
 public class Generator {
 
@@ -36,9 +43,22 @@ public class Generator {
     byte[] hash = new byte[SALT.length + dk.length];
     System.arraycopy(SALT, 0, hash, 0, SALT.length);
     System.arraycopy(dk, 0, hash, SALT.length, dk.length);
-    Base64.Encoder enc = Base64.getUrlEncoder().withoutPadding();
+    Encoder enc = getUrlEncoder().withoutPadding();
     return enc.encodeToString(hash);
   }
+
+  public static String hmac(String key, String data) {
+    try {
+      val sha256_HMAC = Mac.getInstance("HmacSHA256");
+      val secret_key = new SecretKeySpec(key.getBytes(), "HmacSHA256");
+      sha256_HMAC.init(secret_key);
+      return new String(Base64.encodeBase64(sha256_HMAC.doFinal(data.getBytes("UTF-8")))).trim();
+    } catch (Exception e) {
+      return null;
+    }
+  }
+
+
 
 
   public static String barcode(Long sequence) {
