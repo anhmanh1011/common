@@ -1,9 +1,18 @@
 package com.yody.common.utility;
 
+import java.nio.charset.StandardCharsets;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.KeySpec;
+import java.util.Base64;
 import java.util.Random;
 import java.util.UUID;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
 
 public class Generator {
+
+  private static final byte[] SALT ="y0dy_Unjc0rn_2O25".getBytes(StandardCharsets.UTF_8);
 
   public static String generate() {
 
@@ -20,20 +29,15 @@ public class Generator {
   }
 
 
-  public static String genApiKey() {
-    String key = gen(30);
-    Random random = new Random();
-    String[] specialCharacter = {"-", "+", "="};
-    for(int i=0;i<3;i++) {
-      int n = random.nextInt();
-      while (n <= 0) {
-        n = random.nextInt();
-      }
-      String c = specialCharacter[n % specialCharacter.length];
-      int x = n % key.length();
-      key = key.substring(0, x).concat(c).concat(key.substring(x));
-    }
-    return key;
+  public static String genApiKey(String input) throws NoSuchAlgorithmException, InvalidKeySpecException {
+    KeySpec spec = new PBEKeySpec(input.toCharArray(), SALT, 6500, 128); // 6500 tham số cường độ là số lần lặp thuật toán này chạy
+    SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
+    byte[] dk = factory.generateSecret(spec).getEncoded();
+    byte[] hash = new byte[SALT.length + dk.length];
+    System.arraycopy(SALT, 0, hash, 0, SALT.length);
+    System.arraycopy(dk, 0, hash, SALT.length, dk.length);
+    Base64.Encoder enc = Base64.getUrlEncoder().withoutPadding();
+    return enc.encodeToString(hash);
   }
 
 
