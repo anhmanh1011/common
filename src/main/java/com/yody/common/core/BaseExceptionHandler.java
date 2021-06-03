@@ -21,6 +21,7 @@ import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.multipart.support.MissingServletRequestPartException;
@@ -38,7 +39,11 @@ public class BaseExceptionHandler extends ResponseEntityExceptionHandler {
       logger.error(ex.getMessage());
       response.setErrors(Arrays.asList(ex.getMessage()));
       response.setCode(((BaseException) ex).getCode());
-    } else {
+    }else if(ex instanceof HttpClientErrorException ){
+      response.setErrors(Arrays.asList(CommonResponseCode.UNAUTHORIZE.getDisplayName()));
+      response.setCode(CommonResponseCode.UNAUTHORIZE.getValue());
+    }
+    else {
       logger.error(ex.getMessage());
       InternalServerException internalErr = new InternalServerException();
       response.setCode(internalErr.getCode());
