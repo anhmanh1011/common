@@ -2,6 +2,7 @@ package com.yody.common.core;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.yody.common.core.domain.AggregateRoot;
+import com.yody.common.utility.Dates;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,7 +19,7 @@ public class BaseBO<T extends AggregateRoot<T>> extends BaseEntity{
 
     protected  void _setCreate(){
         this.create = true;
-        this.createdDate = System.currentTimeMillis();
+        this.createdDate = Dates.getUTC();
         this.createdBy = root.isCreate() ? root.getCreatedBy() : root.getUpdatedBy();
         this.createdName = root.isCreate() ? root.getCreatedName() : root.getUpdatedName();
         _setModify();
@@ -27,6 +28,6 @@ public class BaseBO<T extends AggregateRoot<T>> extends BaseEntity{
         this.modify = true;
         this.updatedBy = root.getUpdatedBy();
         this.updatedName = root.getUpdatedName();
-        this.updatedDate = System.currentTimeMillis();
+        this.updatedDate = Dates.getUTC();
     }
 }

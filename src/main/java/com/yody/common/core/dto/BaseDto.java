@@ -2,6 +2,7 @@ package com.yody.common.core.dto;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategy.SnakeCaseStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import java.util.Date;
 import lombok.Data;
 
 @Data
@@ -12,8 +13,8 @@ public class BaseDto {
     protected Integer version;
     protected String createdBy;
     protected String createdName;
-    protected long createdDate;
+    protected Date createdDate;
     protected String updatedBy;
     protected String updatedName;
-    protected long updatedDate;
+    protected Date updatedDate;
 }
