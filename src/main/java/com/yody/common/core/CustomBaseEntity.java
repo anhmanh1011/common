@@ -1,5 +1,7 @@
 package com.yody.common.core;
 
+import com.yody.common.utility.Dates;
+import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
@@ -29,9 +31,9 @@ public class CustomBaseEntity {
   @Column(name = "updated_name", nullable = false)
   protected String updatedName;
   @Column(name = "created_date")
-  protected Long createdDate;
+  protected Date createdDate;
   @Column(name = "updated_date")
-  protected Long updatedDate;
+  protected Date updatedDate;
 
   public CustomBaseEntity() {
   }
@@ -39,11 +41,11 @@ public class CustomBaseEntity {
   @PrePersist
   protected void onCreate() {
     this.version = 1;
-    this.createdDate = this.updatedDate = System.currentTimeMillis();
+    this.createdDate = this.updatedDate = Dates.getUTC();
   }
 
   @PreUpdate
   protected void onUpdate() {
-    this.updatedDate = System.currentTimeMillis();
+    this.updatedDate = Dates.getUTC();
   }
 }
