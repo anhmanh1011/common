@@ -44,7 +44,7 @@ import org.springframework.web.servlet.HandlerExecutionChain;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
 @Component
-@Order(Ordered.HIGHEST_PRECEDENCE)
+@Order(-2147483647)
 @Slf4j
 public class HandlerFilter implements Filter {
 
@@ -101,6 +101,7 @@ public class HandlerFilter implements Filter {
         } else if (request.getMethod().equals(HttpMethod.PUT.name())) {
           multipartRequest.setAttribute(FieldConstant.UPDATED_BY, operatorLoginId);
           multipartRequest.setAttribute(FieldConstant.UPDATED_NAME, operatorName);
+
         }
         multipartRequest.setAttribute(FieldConstant.OPERATOR_KC_ID, operatorKcId);
         multipartRequest.setAttribute(FieldConstant.OPERATOR_LOGIN_ID, operatorLoginId);
