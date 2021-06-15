@@ -13,4 +13,8 @@ public class Metadata implements Serializable {
     private long total;
     private int page;
     private int limit;
+
+    public int getPage() {
+        return page + 1;
+    }
 }
