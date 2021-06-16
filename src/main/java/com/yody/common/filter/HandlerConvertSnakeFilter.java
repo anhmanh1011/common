@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 @Component
-@Order(-2147483648)
+@Order(-2147483647)
 @Slf4j
 public class HandlerConvertSnakeFilter extends OncePerRequestFilter {
   @Override

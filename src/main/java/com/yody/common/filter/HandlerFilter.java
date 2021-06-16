@@ -44,7 +44,7 @@ import org.springframework.web.servlet.HandlerExecutionChain;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
 @Component
-@Order(-2147483647)
+@Order(-2147483648)
 @Slf4j
 public class HandlerFilter implements Filter {
 
