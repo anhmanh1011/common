@@ -1,8 +1,8 @@
-package com.yody.common.filter.thirdparty.services;
+package com.yody.common.filter.thirdparty.authoz.services;
 
 import com.yody.common.core.dto.Result;
-import com.yody.common.filter.thirdparty.request.PermissionRequestDto;
-import com.yody.common.filter.thirdparty.response.PermissionResponseDto;
+import com.yody.common.filter.thirdparty.authoz.request.PermissionRequestDto;
+import com.yody.common.filter.thirdparty.authoz.response.PermissionResponseDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.annotation.Order;
