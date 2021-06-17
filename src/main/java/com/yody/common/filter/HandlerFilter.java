@@ -63,7 +63,7 @@ public class HandlerFilter implements Filter {
   private final AuthService authService;
   private final AuthenService authenService;
 
-  RequestInfo requestInfo;
+  RequestInfo requestInfo = new RequestInfo();
 
   public HandlerFilter(ApplicationContext appContext, AuthService authService, AuthenService authenService) {
     this.appContext = appContext;
@@ -86,15 +86,17 @@ public class HandlerFilter implements Filter {
         filterChain.doFilter(servletRequest, servletResponse);
         return;
       }
-      if (this.getUserInfo(request)) {
+      if (!this.getUserInfo(request)) {
         buildErrorResponse(response, requestInfo.getRequestId(), HttpServletResponse.SC_UNAUTHORIZED,
             CommonResponseCode.UNAUTHORIZE.getValue(), CommonResponseCode.UNAUTHORIZE.getDisplayName());
         return;
       }
       boolean isMultipart = ServletFileUpload.isMultipartContent(request);
       if (isMultipart && this.processMultipartRequest(request, response, filterChain)) {
+        filterChain.doFilter(request, servletResponse);
         return;
       } else if (!isMultipart && this.processRequest(request, response, filterChain)) {
+        filterChain.doFilter(request, servletResponse);
         return;
       }
       buildErrorResponse(response, requestInfo.getRequestId(), HttpServletResponse.SC_UNAUTHORIZED,
@@ -122,7 +124,6 @@ public class HandlerFilter implements Filter {
       multipartRequest.setAttribute(FieldConstant.OPERATOR_LOGIN_ID, requestInfo.getOperatorLoginId());
       multipartRequest.setAttribute(FieldConstant.REQUEST_ID, requestInfo.getRequestId());
 
-      filterChain.doFilter(multipartRequest, servletResponse);
       return (requestInfo.isBasicAuth() && checkBasicAuth()) || (StringUtils.isNotBlank(requestInfo.getOperatorKcId())
           && checkPermissionByUserId(requestInfo.getOperatorKcId(), request));
     } catch (Exception ex) {
@@ -152,7 +153,6 @@ public class HandlerFilter implements Filter {
       dataRequest.put(FieldConstant.OPERATOR_NAME, requestInfo.getOperatorName());
       dataRequest.put(FieldConstant.REQUEST_ID, requestInfo.getRequestId());
       requestWrapper.setBody(dataRequest.toString());
-      filterChain.doFilter(request, servletResponse);
 
       return (requestInfo.isBasicAuth() && checkBasicAuth()) || (StringUtils.isNotBlank(requestInfo.getOperatorKcId())
           && checkPermissionByUserId(requestInfo.getOperatorKcId(), request));
@@ -195,7 +195,7 @@ public class HandlerFilter implements Filter {
       return true;
     }
     GetUserInfoRequest getUserInfoRequest = new GetUserInfoRequest();
-    getUserInfoRequest.setToken(token);
+    getUserInfoRequest.setToken(String.format("Bearer %s", token));
 
     GetUserInfoResponse getUserInfoResponse = authenService.getUserInfo(getUserInfoRequest);
 //    operatorKcId = request.getHeader(FieldConstant.OPERATOR_KC_ID);
