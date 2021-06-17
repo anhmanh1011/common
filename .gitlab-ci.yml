@@ -35,6 +35,7 @@ compile test:
   except:
     refs:
       - master
+      - uat
 
 compile deploy:
   stage: deploy
@@ -43,6 +44,7 @@ compile deploy:
   only:
     refs:
       - develop
+      - uat
 
 tag:
   stage: tag
