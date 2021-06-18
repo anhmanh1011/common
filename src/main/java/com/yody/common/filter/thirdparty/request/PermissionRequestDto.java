@@ -4,6 +4,6 @@ import com.yody.common.core.dto.Request;
 
 public class PermissionRequestDto extends Request {
     public PermissionRequestDto(){
-        this.setPath("/auth/profile");
+        this.setPath("/profile");
     }
 }
