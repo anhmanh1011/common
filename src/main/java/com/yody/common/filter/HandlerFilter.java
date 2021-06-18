@@ -93,10 +93,8 @@ public class HandlerFilter implements Filter {
       }
       boolean isMultipart = ServletFileUpload.isMultipartContent(request);
       if (isMultipart && this.processMultipartRequest(request, response, filterChain)) {
-        filterChain.doFilter(request, servletResponse);
         return;
       } else if (!isMultipart && this.processRequest(request, response, filterChain)) {
-        filterChain.doFilter(request, servletResponse);
         return;
       }
       buildErrorResponse(response, requestInfo.getRequestId(), HttpServletResponse.SC_UNAUTHORIZED,
@@ -124,8 +122,12 @@ public class HandlerFilter implements Filter {
       multipartRequest.setAttribute(FieldConstant.OPERATOR_LOGIN_ID, requestInfo.getOperatorLoginId());
       multipartRequest.setAttribute(FieldConstant.REQUEST_ID, requestInfo.getRequestId());
 
-      return (requestInfo.isBasicAuth() && checkBasicAuth()) || (StringUtils.isNotBlank(requestInfo.getOperatorKcId())
-          && checkPermissionByUserId(requestInfo.getOperatorKcId(), request));
+      if ((requestInfo.isBasicAuth() && checkBasicAuth()) || (StringUtils.isNotBlank(requestInfo.getOperatorKcId())
+          && checkPermissionByUserId(requestInfo.getOperatorKcId(), request))) {
+        filterChain.doFilter(multipartRequest, servletResponse);
+        return true;
+      }
+      return false;
     } catch (Exception ex) {
       log.error(ex.getMessage());
       return false;
@@ -154,8 +156,12 @@ public class HandlerFilter implements Filter {
       dataRequest.put(FieldConstant.REQUEST_ID, requestInfo.getRequestId());
       requestWrapper.setBody(dataRequest.toString());
 
-      return (requestInfo.isBasicAuth() && checkBasicAuth()) || (StringUtils.isNotBlank(requestInfo.getOperatorKcId())
-          && checkPermissionByUserId(requestInfo.getOperatorKcId(), request));
+      if ((requestInfo.isBasicAuth() && checkBasicAuth()) || (StringUtils.isNotBlank(requestInfo.getOperatorKcId())
+          && checkPermissionByUserId(requestInfo.getOperatorKcId(), request))) {
+        filterChain.doFilter(requestWrapper, servletResponse);
+        return true;
+      }
+      return false;
     } catch (Exception ex) {
       log.error(ex.getMessage());
       return false;
