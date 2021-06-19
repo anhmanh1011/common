@@ -199,6 +199,7 @@ public class HandlerFilter implements Filter {
     String token = authorization.split(" ")[1];
     if (authorization.toLowerCase().contains("basic")) {
       requestInfo.setBasicAuth(true);
+      requestInfo.setOperatorKcId(request.getHeader(FieldConstant.OPERATOR_KC_ID));
       return true;
     }
     GetUserInfoRequest getUserInfoRequest = new GetUserInfoRequest();
