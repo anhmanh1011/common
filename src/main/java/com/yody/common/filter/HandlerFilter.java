@@ -63,7 +63,7 @@ public class HandlerFilter implements Filter {
   private final AuthService authService;
   private final AuthenService authenService;
 
-  RequestInfo requestInfo = new RequestInfo();
+  RequestInfo requestInfo;
 
   public HandlerFilter(ApplicationContext appContext, AuthService authService, AuthenService authenService) {
     this.appContext = appContext;
@@ -189,6 +189,7 @@ public class HandlerFilter implements Filter {
   }
 
   private boolean getUserInfo(HttpServletRequest request) {
+    requestInfo = new RequestInfo();
     String authorization = request.getHeader(HeaderEnum.HEADER_AUTHORIZATION.getValue());
     if (StringUtils.isBlank(authorization)) {
       return false;
