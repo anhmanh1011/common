@@ -82,7 +82,7 @@ public class HandlerFilter implements Filter {
       HttpServletResponse response = (HttpServletResponse) servletResponse;
       HttpServletRequest request = (HttpServletRequest) servletRequest;
       if (request.getRequestURI().contains("/v2/api-docs") || request.getRequestURI().contains("/actuator/health") || request.getRequestURI().contains("/actuator/info") || request
-          .getRequestURI().contains("/accounts/login") || request.getMethod().equalsIgnoreCase("OPTIONS")) {
+          .getRequestURI().contains("/accounts/login")) {
         log.info("Allow cors options method");
         filterChain.doFilter(servletRequest, servletResponse);
         return;
