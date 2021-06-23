@@ -20,13 +20,23 @@ import org.springframework.web.filter.OncePerRequestFilter;
 @Order(-2147483647)
 @Slf4j
 public class HandlerConvertSnakeFilter extends OncePerRequestFilter {
+
   @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
     final Map<String, String[]> formattedParams = new ConcurrentHashMap<>();
 
     for (String param : request.getParameterMap().keySet()) {
       String formattedParam = CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, param);
-      formattedParams.put(formattedParam, request.getParameterValues(param));
+      String[] values = request.getParameterValues(param);
+      for (String v : values) {
+        if (v.contains(",")) {
+          String[] s = v.split(",");
+          formattedParams.put(formattedParam, s);
+        } else {
+          formattedParams.put(formattedParam, new String[]{v});
+        }
+      }
+
     }
 
     filterChain.doFilter(new HttpServletRequestWrapper(request) {
