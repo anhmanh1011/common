@@ -193,6 +193,7 @@ public class HandlerFilter implements Filter {
     requestInfo = new RequestInfo();
     String authorization = request.getHeader(HeaderEnum.HEADER_AUTHORIZATION.getValue());
     if (StringUtils.isBlank(authorization)) {
+      log.error("missing authorization");
       return false;
     }
     requestInfo.setAuthorization(authorization);
@@ -234,6 +235,7 @@ public class HandlerFilter implements Filter {
     RequestMappingHandlerMapping req2HandlerMapping = appContext.getBean(RequestMappingHandlerMapping.class);
     HandlerExecutionChain handlerExeChain = req2HandlerMapping.getHandler(request);
     if (!Objects.nonNull(handlerExeChain)) {
+      log.error("check permission by user id: handler null");
       return false;
     }
 
