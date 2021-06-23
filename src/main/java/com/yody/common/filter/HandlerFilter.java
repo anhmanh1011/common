@@ -83,17 +83,14 @@ public class HandlerFilter implements Filter {
       HttpServletRequest request = (HttpServletRequest) servletRequest;
       if (request.getRequestURI().contains("/v2/api-docs") || request.getRequestURI().contains("/actuator/health") || request.getRequestURI().contains("/actuator/info") || request
           .getRequestURI().contains("/accounts/login") || request.getMethod().equalsIgnoreCase("OPTIONS")) {
-        log.info("Allow cors options method");
         filterChain.doFilter(servletRequest, servletResponse);
         return;
       }
-      log.error("get user info");
       if (!this.getUserInfo(request)) {
         buildErrorResponse(response, requestInfo.getRequestId(), HttpServletResponse.SC_UNAUTHORIZED,
             CommonResponseCode.UNAUTHORIZE.getValue(), CommonResponseCode.UNAUTHORIZE.getDisplayName());
         return;
       }
-      log.error("get user info success");
       boolean isMultipart = ServletFileUpload.isMultipartContent(request);
       if (isMultipart && this.processMultipartRequest(request, response, filterChain)) {
         return;
@@ -139,7 +136,6 @@ public class HandlerFilter implements Filter {
 
   public boolean processRequest(HttpServletRequest request, HttpServletResponse servletResponse, FilterChain filterChain) {
     try {
-      log.error("verify request");
       VerifyRequestWrapper requestWrapper = new VerifyRequestWrapper(request);
       JSONObject dataRequest;
       if (requestWrapper.getBody() != null && !"".equals(requestWrapper.getBody())) {
@@ -160,10 +156,8 @@ public class HandlerFilter implements Filter {
       dataRequest.put(FieldConstant.REQUEST_ID, requestInfo.getRequestId());
       requestWrapper.setBody(dataRequest.toString());
 
-      log.error("check auth");
       if ((requestInfo.isBasicAuth() && checkBasicAuth()) || (StringUtils.isNotBlank(requestInfo.getOperatorKcId())
           && checkPermissionByUserId(requestInfo.getOperatorKcId(), request))) {
-        log.error("check auth success");
         filterChain.doFilter(requestWrapper, servletResponse);
         return true;
       }
@@ -196,7 +190,6 @@ public class HandlerFilter implements Filter {
 
   private boolean getUserInfo(HttpServletRequest request) {
     requestInfo = new RequestInfo();
-    log.error("get authorization");
     String authorization = request.getHeader(HeaderEnum.HEADER_AUTHORIZATION.getValue());
     if (StringUtils.isBlank(authorization)) {
       log.error("missing authorization");
@@ -206,7 +199,6 @@ public class HandlerFilter implements Filter {
 
     String token = authorization.split(" ")[1];
     if (authorization.toLowerCase().contains("basic")) {
-      log.error("set basic auth");
       requestInfo.setBasicAuth(true);
       requestInfo.setOperatorKcId(request.getHeader(FieldConstant.OPERATOR_KC_ID));
       requestInfo.setOperatorLoginId(FieldConstant.OPERATOR_LOGIN_ID);
@@ -216,7 +208,6 @@ public class HandlerFilter implements Filter {
     GetUserInfoRequest getUserInfoRequest = new GetUserInfoRequest();
     getUserInfoRequest.setToken(String.format("Bearer %s", token));
 
-    log.error("call api get user info");
     GetUserInfoResponse getUserInfoResponse = authenService.getUserInfo(getUserInfoRequest);
 //    operatorKcId = request.getHeader(FieldConstant.OPERATOR_KC_ID);
 //    operatorLoginId = request.getHeader(FieldConstant.OPERATOR_LOGIN_ID);
@@ -224,7 +215,6 @@ public class HandlerFilter implements Filter {
     requestInfo.setOperatorKcId(getUserInfoResponse.getSub());
     requestInfo.setOperatorLoginId(getUserInfoResponse.getName());
     requestInfo.setOperatorName(getUserInfoResponse.getPreferredUsername());
-    log.error("call api get user info success");
     String requestId = request.getHeader(HeaderEnum.HEADER_REQUEST_ID.getValue());
     if (requestId == null || requestId.isEmpty()) {
       requestId = UUID.randomUUID().toString();
@@ -240,11 +230,9 @@ public class HandlerFilter implements Filter {
 
   @SneakyThrows
   private boolean checkPermissionByUserId(String userId, HttpServletRequest request) {
-    log.error("checkPermissionByUserId");
     RequestMappingHandlerMapping req2HandlerMapping = appContext.getBean(RequestMappingHandlerMapping.class);
     HandlerExecutionChain handlerExeChain = req2HandlerMapping.getHandler(request);
     if (!Objects.nonNull(handlerExeChain)) {
-      log.error("check permission by user id: handler null");
       return false;
     }
 
@@ -254,7 +242,6 @@ public class HandlerFilter implements Filter {
     Permission annotation = AnnotationUtils.findAnnotation(method, Permission.class);
     String[] permissionTypes = annotation != null ? annotation.permissionType() : null;
     if (permissionTypes == null || permissionTypes.length <= 0) {
-      log.error("checkPermissionByUserId no need check permission");
       return true;
     }
     PermissionRequestDto requestDto = new PermissionRequestDto();
@@ -263,13 +250,11 @@ public class HandlerFilter implements Filter {
     requestDto.setUserName(requestInfo.getOperatorName());
     Result<PermissionResponseDto> result = authService.getPermissionInfo(requestDto);
     if (result == null) {
-      log.error("can not get permission list");
       return false;
     }
     PermissionResponseDto permissionsDto = result.getData();
 
     if (null == permissionsDto.getModules() || CollectionUtils.isEmpty(permissionsDto.getModules().getPermissions())) {
-      log.error("can not get permission list empty");
       return false;
     }
 
@@ -280,7 +265,6 @@ public class HandlerFilter implements Filter {
         }
       }
     }
-    log.error("permission list not match");
     return false;
   }
 }
