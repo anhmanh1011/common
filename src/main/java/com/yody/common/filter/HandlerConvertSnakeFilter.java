@@ -22,8 +22,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.support.DefaultMultipartHttpServletRequest;
 
-@Component
-@Order(-2147483647)
+//@Component
+//@Order(-2147483647)
 @Slf4j
 public class HandlerConvertSnakeFilter extends OncePerRequestFilter {
 
