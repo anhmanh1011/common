@@ -77,8 +77,20 @@ public class Generator {
 //  }
 //
   public static String supplierCode(Integer sequence) {
-    int length = 4 - sequence.toString().length();
-    StringBuilder r = new StringBuilder("NCC");
+    return generateCode(sequence, "NCC", 4);
+  }
+
+  public static String customerCode(Integer sequence) {
+    return generateCode(sequence, "CYD", 10);
+  }
+
+  public static String purchaseOrderCode(Integer sequence) {
+    return generateCode(sequence, "PYD", 10);
+  }
+
+  public static String generateCode(Integer sequence, String prefix, int lengthNumber) {
+    int length = lengthNumber - sequence.toString().length();
+    StringBuilder r = new StringBuilder(prefix);
 
     for (int i = 0; i < length; ++i) {
       r.append("0");
