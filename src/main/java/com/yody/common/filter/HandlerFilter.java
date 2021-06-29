@@ -86,6 +86,7 @@ public class HandlerFilter implements Filter {
         filterChain.doFilter(servletRequest, servletResponse);
         return;
       }
+      log.info("Do filter request");
       if (!this.getUserInfo(request)) {
         buildErrorResponse(response, requestInfo.getRequestId(), HttpServletResponse.SC_UNAUTHORIZED,
             CommonResponseCode.UNAUTHORIZE.getValue(), CommonResponseCode.UNAUTHORIZE.getDisplayName());
