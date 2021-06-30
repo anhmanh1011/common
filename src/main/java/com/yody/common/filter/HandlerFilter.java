@@ -157,6 +157,7 @@ public class HandlerFilter implements Filter {
       dataRequest.put(FieldConstant.REQUEST_ID, requestInfo.getRequestId());
       if (Strings.isEmpty(requestInfo.getOperatorName())) {
         dataRequest.put(FieldConstant.CREATED_NAME, "admin");
+        dataRequest.put(FieldConstant.UPDATED_NAME, "admin");
       }
       requestWrapper.setBody(dataRequest.toString());
 
