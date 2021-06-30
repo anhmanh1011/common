@@ -148,13 +148,16 @@ public class HandlerFilter implements Filter {
       if (request.getMethod().equals(HttpMethod.POST.name())) {
         dataRequest.put(FieldConstant.CREATED_BY, requestInfo.getOperatorLoginId());
         dataRequest.put(FieldConstant.CREATED_NAME, requestInfo.getOperatorName());
+        log.info("POST", requestInfo);
       } else if (request.getMethod().equals(HttpMethod.PUT.name()) || request.getMethod().equals(HttpMethod.DELETE.name())) {
         dataRequest.put(FieldConstant.UPDATED_BY, requestInfo.getOperatorLoginId());
         dataRequest.put(FieldConstant.UPDATED_NAME, requestInfo.getOperatorName());
+        log.info("PUT", requestInfo);
       }
       dataRequest.put(FieldConstant.OPERATOR_KC_ID, requestInfo.getOperatorKcId());
       dataRequest.put(FieldConstant.OPERATOR_NAME, requestInfo.getOperatorName());
       dataRequest.put(FieldConstant.REQUEST_ID, requestInfo.getRequestId());
+      log.info("final", requestInfo);
       requestWrapper.setBody(dataRequest.toString());
 
       if ((requestInfo.isBasicAuth() && checkBasicAuth()) || (StringUtils.isNotBlank(requestInfo.getOperatorKcId())
