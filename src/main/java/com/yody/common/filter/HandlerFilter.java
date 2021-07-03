@@ -155,9 +155,14 @@ public class HandlerFilter implements Filter {
       dataRequest.put(FieldConstant.OPERATOR_KC_ID, requestInfo.getOperatorKcId());
       dataRequest.put(FieldConstant.OPERATOR_NAME, requestInfo.getOperatorName());
       dataRequest.put(FieldConstant.REQUEST_ID, requestInfo.getRequestId());
+      //todo: can check lai li do tai sao null
       if (Strings.isEmpty(requestInfo.getOperatorName())) {
         dataRequest.put(FieldConstant.CREATED_NAME, "admin");
         dataRequest.put(FieldConstant.UPDATED_NAME, "admin");
+      }
+      if (Strings.isEmpty(requestInfo.getOperatorLoginId())) {
+        dataRequest.put(FieldConstant.CREATED_BY, "admin");
+        dataRequest.put(FieldConstant.UPDATED_BY, "admin");
       }
       requestWrapper.setBody(dataRequest.toString());
 
