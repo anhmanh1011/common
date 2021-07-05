@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.config.Configuration.AccessLevel;
+import org.modelmapper.convention.MatchingStrategies;
 
 public class ModelMappers {
 
@@ -12,6 +13,7 @@ public class ModelMappers {
   private static ModelMapper getMapper() {
     if (mapper == null) {
       mapper = new ModelMapper();
+      mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
       mapper.getConfiguration().setAmbiguityIgnored(true);
     }
     return mapper;
