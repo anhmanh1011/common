@@ -87,6 +87,7 @@ public class HandlerFilter implements Filter {
         filterChain.doFilter(servletRequest, servletResponse);
         return;
       }
+      log.info("Do filter request");
       if (!this.getUserInfo(request)) {
         buildErrorResponse(response, requestInfo.getRequestId(), HttpServletResponse.SC_UNAUTHORIZED,
             CommonResponseCode.UNAUTHORIZE.getValue(), CommonResponseCode.UNAUTHORIZE.getDisplayName());
@@ -155,6 +156,15 @@ public class HandlerFilter implements Filter {
       dataRequest.put(FieldConstant.OPERATOR_KC_ID, requestInfo.getOperatorKcId());
       dataRequest.put(FieldConstant.OPERATOR_NAME, requestInfo.getOperatorName());
       dataRequest.put(FieldConstant.REQUEST_ID, requestInfo.getRequestId());
+      //todo: can check lai li do tai sao null
+      if (Strings.isEmpty(requestInfo.getOperatorName())) {
+        dataRequest.put(FieldConstant.CREATED_NAME, "admin");
+        dataRequest.put(FieldConstant.UPDATED_NAME, "admin");
+      }
+      if (Strings.isEmpty(requestInfo.getOperatorLoginId())) {
+        dataRequest.put(FieldConstant.CREATED_BY, "admin");
+        dataRequest.put(FieldConstant.UPDATED_BY, "admin");
+      }
       requestWrapper.setBody(dataRequest.toString());
 
       if ((requestInfo.isBasicAuth() && checkBasicAuth()) || (StringUtils.isNotBlank(requestInfo.getOperatorKcId())
