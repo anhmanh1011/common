@@ -7,6 +7,7 @@ import com.yody.common.core.dto.Result;
 import com.yody.common.enums.CommonResponseCode;
 import com.yody.common.enums.HeaderEnum;
 import com.yody.common.filter.constant.FieldConstant;
+import com.yody.common.filter.constant.PermissionConstant;
 import com.yody.common.filter.thirdparty.authen.request.GetUserInfoRequest;
 import com.yody.common.filter.thirdparty.authen.response.GetUserInfoResponse;
 import com.yody.common.filter.thirdparty.authen.services.AuthenService;
@@ -34,7 +35,6 @@ import org.json.JSONObject;
 import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
-import org.springframework.core.Ordered;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
@@ -111,6 +111,14 @@ public class HandlerFilter implements Filter {
 
   public boolean processMultipartRequest(HttpServletRequest request, HttpServletResponse servletResponse, FilterChain filterChain) {
     try {
+      if (requestInfo.isBasicAuth() && !checkBasicAuth()) {
+        return false;
+      }
+      if (StringUtils.isBlank(requestInfo.getOperatorKcId()) || !checkPermissionByUserId(requestInfo.getOperatorKcId(), request)) {
+        buildErrorResponse(servletResponse, requestInfo.getRequestId(), HttpServletResponse.SC_FORBIDDEN, CommonResponseCode.FORBIDDEN.getValue(),
+            CommonResponseCode.FORBIDDEN.getDisplayName());
+        return true;
+      }
       MultipartResolver resolver = new CommonsMultipartResolver(request.getSession().getServletContext());
       MultipartHttpServletRequest multipartRequest = resolver.resolveMultipart(request);
 
@@ -125,12 +133,8 @@ public class HandlerFilter implements Filter {
       multipartRequest.setAttribute(FieldConstant.OPERATOR_LOGIN_ID, requestInfo.getOperatorLoginId());
       multipartRequest.setAttribute(FieldConstant.REQUEST_ID, requestInfo.getRequestId());
 
-      if ((requestInfo.isBasicAuth() && checkBasicAuth()) || (StringUtils.isNotBlank(requestInfo.getOperatorKcId())
-          && checkPermissionByUserId(requestInfo.getOperatorKcId(), request))) {
-        filterChain.doFilter(multipartRequest, servletResponse);
-        return true;
-      }
-      return false;
+      filterChain.doFilter(multipartRequest, servletResponse);
+      return true;
     } catch (Exception ex) {
       log.error(ex.getMessage());
       return false;
@@ -139,6 +143,14 @@ public class HandlerFilter implements Filter {
 
   public boolean processRequest(HttpServletRequest request, HttpServletResponse servletResponse, FilterChain filterChain) {
     try {
+      if (requestInfo.isBasicAuth() && !checkBasicAuth()) {
+        return false;
+      }
+      if (StringUtils.isBlank(requestInfo.getOperatorKcId()) || !checkPermissionByUserId(requestInfo.getOperatorKcId(), request)) {
+        buildErrorResponse(servletResponse, requestInfo.getRequestId(), HttpServletResponse.SC_FORBIDDEN,
+            CommonResponseCode.FORBIDDEN.getValue(), CommonResponseCode.FORBIDDEN.getDisplayName());
+        return true;
+      }
       VerifyRequestWrapper requestWrapper = new VerifyRequestWrapper(request);
       JSONObject dataRequest;
       if (requestWrapper.getBody() != null && !"".equals(requestWrapper.getBody())) {
@@ -167,13 +179,8 @@ public class HandlerFilter implements Filter {
         dataRequest.put(FieldConstant.UPDATED_BY, "admin");
       }
       requestWrapper.setBody(dataRequest.toString());
-
-      if ((requestInfo.isBasicAuth() && checkBasicAuth()) || (StringUtils.isNotBlank(requestInfo.getOperatorKcId())
-          && checkPermissionByUserId(requestInfo.getOperatorKcId(), request))) {
-        filterChain.doFilter(requestWrapper, servletResponse);
-        return true;
-      }
-      return false;
+      filterChain.doFilter(requestWrapper, servletResponse);
+      return true;
     } catch (Exception ex) {
       log.error(ex.getMessage());
       return false;
@@ -269,7 +276,9 @@ public class HandlerFilter implements Filter {
     if (null == permissionsDto.getModules() || CollectionUtils.isEmpty(permissionsDto.getModules().getPermissions())) {
       return false;
     }
-
+    if (permissionsDto.getModules().getPermissions().contains(PermissionConstant.ADMIN_ALL)) {
+      return true;
+    }
     for (String per : permissionTypes) {
       for (String permissionCode : permissionsDto.getModules().getPermissions()) {
         if (per.contains(permissionCode)) {
