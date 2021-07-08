@@ -93,13 +93,23 @@ public abstract class AbstractHttpClient {
 
     protected  HttpHeaders defaultHeader(Request request){
         HttpHeaders httpHeaders = new HttpHeaders();
-        if (request.getUserId() != null) { httpHeaders.set(FieldConstant.OPERATOR_KC_ID, request.getUserId()); }
+        if (request.getUserId() != null) {
+            log.info("Set operator_kc_id: {}", request.getUserId());
+            httpHeaders.set(FieldConstant.OPERATOR_KC_ID, request.getUserId());
+        }
 
-        if (request.getUserName() != null) { httpHeaders.set(FieldConstant.OPERATOR_LOGIN_ID, request.getUserName()); }
+        if (request.getUserName() != null) {
+            log.info("Set operator_login_id: {}", request.getUserName());
+            httpHeaders.set(FieldConstant.OPERATOR_LOGIN_ID, request.getUserName());
+        }
 
-        if (request.getRequestId() != null) { httpHeaders.set(HeaderEnum.HEADER_REQUEST_ID.getValue(), request.getRequestId()); }
+        if (request.getRequestId() != null) {
+            log.info("Set request_id: {}", request.getRequestId());
+            httpHeaders.set(HeaderEnum.HEADER_REQUEST_ID.getValue(), request.getRequestId());
+        }
 
         if (!Strings.isEmpty(request.getBasicUserName()) && !Strings.isEmpty(request.getBasicPassword())) {
+            log.info("Set basic auth: {} - {}", request.getBasicUserName(), request.getBasicPassword());
             httpHeaders.set(HeaderEnum.HEADER_AUTHORIZATION.getValue(), BasicAuthorization.encodeBasicAuthorization(request.getBasicUserName(), request.getBasicPassword()));
             request.setBasicPassword(null);
             request.setBasicUserName(null);
