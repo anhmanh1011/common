@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public enum ProductUnitEnum implements BaseEnum<String>{
     PIECE("piece","Cái"),
+    COUPLE("couple","Cặp"),
     SET("set","Bộ");
     private final String value;
     private final String displayName;
