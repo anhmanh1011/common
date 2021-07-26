@@ -196,6 +196,7 @@ public class BaseExceptionHandler extends ResponseEntityExceptionHandler {
     return new ResponseEntity<Object>(result, new HttpHeaders(), HttpStatus.OK);
   }
 
+
   protected Result setupResult() {
     Result result = new Result();
     result.setResponseTime(new Timestamp(System.currentTimeMillis()));

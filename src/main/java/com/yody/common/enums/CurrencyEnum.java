@@ -7,8 +7,7 @@ import lombok.Getter;
 @Getter
 public enum CurrencyEnum implements BaseEnum<String> {
   VND("VNĐ", "đ", 0, "Việt Nam Đồng"),
-  THB("THB","฿",2,"Thai Baht")
-    ;
+  THB("THB","฿",2,"Thai Baht");
   private String value;
   private String symbol;
   private Integer scale;

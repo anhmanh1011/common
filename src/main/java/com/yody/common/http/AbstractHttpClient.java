@@ -2,6 +2,7 @@ package com.yody.common.http;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.yody.common.core.RestTemplateErrorHandler;
 import com.yody.common.core.dto.Result;
 import com.yody.common.core.dto.Request;
 import com.yody.common.enums.HeaderEnum;
@@ -28,6 +29,7 @@ public abstract class AbstractHttpClient {
     public AbstractHttpClient(RestTemplate restTemplate, ObjectMapper objectMapper) {
         this.restTemplate = restTemplate;
         this.objectMapper = objectMapper;
+        this.restTemplate.setErrorHandler(new RestTemplateErrorHandler());
     }
 
     public <T> Result<T> post(final Request request, final ParameterizedTypeReference<Result<T>> dataClass) {
