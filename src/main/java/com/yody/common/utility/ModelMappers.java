@@ -4,10 +4,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.config.Configuration.AccessLevel;
+import org.modelmapper.convention.MatchingStrategies;
 
 public class ModelMappers {
 
   private static ModelMapper mapper = null;
+  private static ModelMapper strictMapper = null;
 
   private static ModelMapper getMapper() {
     if (mapper == null) {
@@ -17,9 +19,22 @@ public class ModelMappers {
     return mapper;
   }
 
+  private static ModelMapper getStrictMapper() {
+    if (strictMapper == null) {
+      strictMapper = new ModelMapper();
+      strictMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+      strictMapper.getConfiguration().setAmbiguityIgnored(true);
+    }
+    return strictMapper;
+  }
+
 
   public static <S, T> T map(S source, Class<T> target) {
     return getMapper().map(source, target);
+  }
+
+  public static <S, T> T mapStrict(S source, Class<T> target) {
+    return getStrictMapper().map(source, target);
   }
 
   public static <S, T> List<T> mapList(List<S> source, Class<T> target) {

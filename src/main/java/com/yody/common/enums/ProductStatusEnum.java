@@ -6,8 +6,8 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum ProductStatusEnum implements BaseEnum<String> {
-  ACTIVE("active", "Đang bán"),
-  IN_ACTIVE("inactive", "Ngừng bán");
+  ACTIVE("active", "Hoạt động"),
+  IN_ACTIVE("inactive", "Dừng hoạt động");
 
   private String value;
   private String displayName;

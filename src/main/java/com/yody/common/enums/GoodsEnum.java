@@ -6,9 +6,10 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum GoodsEnum  implements BaseEnum<String> {
-    FOOTWEAR("foot_wear", "Giày dép"),
-    CLOTHES("clothes", "Quần áo"),
-    ACCESSORIES("accessories", "Phụ kiện thời trang");
+    FASHION("fashion", "Thời trang");
+//    FOOTWEAR("foot_wear", "Giày dép"),
+//    CLOTHES("clothes", "Quần áo"),
+//    ACCESSORIES("accessories", "Phụ kiện thời trang");
 
     private final String value;
     private final String displayName;

@@ -10,4 +10,5 @@ public class FieldConstant {
   public static final String OPERATOR_KC_ID = "operator_kc_id";
   public static final String OPERATOR_NAME ="operator_name";
   public static String REQUEST_ID = "request_id";
+  public static String REQUEST_ID_LOG_VAR_NAME = "request_id";
 }

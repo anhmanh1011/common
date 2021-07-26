@@ -1,4 +1,4 @@
-package com.yody.common.filter.thirdparty.request;
+package com.yody.common.filter.thirdparty.authoz.request;
 
 import com.yody.common.core.dto.Request;
 

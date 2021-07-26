@@ -1,4 +1,4 @@
-package com.yody.common.filter.thirdparty.response;
+package com.yody.common.filter.thirdparty.authoz.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
