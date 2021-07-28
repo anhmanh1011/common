@@ -9,17 +9,24 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.ConversionNotSupportedException;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.http.converter.HttpMessageNotWritableException;
+import org.springframework.lang.Nullable;
 import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
+import org.springframework.web.HttpMediaTypeNotAcceptableException;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingPathVariableException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
+import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.context.request.WebRequest;
@@ -146,6 +153,16 @@ public class BaseExceptionHandler extends ResponseEntityExceptionHandler {
     return new ResponseEntity<Object>(result, new HttpHeaders(), HttpStatus.OK);
   }
 
+  @Override
+  protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+    final String error = "Message not readable: " + ex.getMessage();
+
+    Result result = setupResult();
+    result.setMessage(CommonResponseCode.BAD_REQUEST.getDisplayName());
+    result.setErrors(Arrays.asList(error));
+    result.setCode(CommonResponseCode.BAD_REQUEST.getValue());
+    return new ResponseEntity<Object>(result, new HttpHeaders(), HttpStatus.OK);
+  }
   // 404
 
   @Override
@@ -196,6 +213,24 @@ public class BaseExceptionHandler extends ResponseEntityExceptionHandler {
     return new ResponseEntity<Object>(result, new HttpHeaders(), HttpStatus.OK);
   }
 
+  @Override
+  protected ResponseEntity<Object> handleExceptionInternal(Exception ex, @Nullable Object body, HttpHeaders headers, HttpStatus status, WebRequest request) {
+    Result result = setupResult();
+    if (ex instanceof BaseException) {
+      this.logger.error(ex.getMessage());
+      result.setErrors(Arrays.asList(ex.getMessage()));
+      result.setCode(((BaseException)ex).getCode());
+    } else if (ex instanceof HttpClientErrorException) {
+      result.setErrors(Arrays.asList(CommonResponseCode.UNAUTHORIZE.getDisplayName()));
+      result.setCode(CommonResponseCode.UNAUTHORIZE.getValue());
+    } else {
+      final String error = "Exception Internal: " + ex.getMessage();
+      result.setMessage(CommonResponseCode.INTERNAL_ERROR.getDisplayName());
+      result.setErrors(Arrays.asList(error));
+      result.setCode(CommonResponseCode.INTERNAL_ERROR.getValue());
+    }
+    return new ResponseEntity<Object>(result, new HttpHeaders(), HttpStatus.OK);
+  }
 
   protected Result setupResult() {
     Result result = new Result();
