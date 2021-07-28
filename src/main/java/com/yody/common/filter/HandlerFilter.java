@@ -73,7 +73,6 @@ public class HandlerFilter implements Filter {
 
   @Override
   public void init(FilterConfig filterConfig) {
-    // do nothing
   }
 
   @Override
