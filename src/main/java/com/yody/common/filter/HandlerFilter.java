@@ -76,6 +76,9 @@ public class HandlerFilter implements Filter {
     // do nothing
   }
 
+
+
+
   @Override
   public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) {
     try {
@@ -84,7 +87,8 @@ public class HandlerFilter implements Filter {
       if (request.getRequestURI().contains("api-docs") || request.getRequestURI().contains("swagger-ui") ||
           request.getRequestURI().contains("favicon.ico") || request.getRequestURI().contains("swagger-config") ||
           request.getRequestURI().contains("/actuator/health") || request.getRequestURI().contains("/actuator/info") ||
-          request.getRequestURI().contains("/accounts/login") || request.getMethod().equalsIgnoreCase("OPTIONS")) {
+          request.getRequestURI().contains("/accounts/login") || request.getMethod().equalsIgnoreCase("OPTIONS") ||
+          request.getRequestURI().contains("/public/")) {
         filterChain.doFilter(servletRequest, servletResponse);
         return;
       }
