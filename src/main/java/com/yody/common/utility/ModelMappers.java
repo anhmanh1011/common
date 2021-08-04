@@ -44,6 +44,13 @@ public class ModelMappers {
     return source.stream().map(element -> getMapper().map(element, target)).collect(Collectors.toList());
   }
 
+  public static <S, T> List<T> mapListStrict(List<S> source, Class<T> target) {
+    if (source == null) {
+      return null;
+    }
+    return source.stream().map(element -> getStrictMapper().map(element, target)).collect(Collectors.toList());
+  }
+
   public static <S, T> T mapWithoutSetter(S source, Class<T> target) {
     if (source == null) {
       return null;
