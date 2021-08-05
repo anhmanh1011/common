@@ -213,24 +213,24 @@ public class BaseExceptionHandler extends ResponseEntityExceptionHandler {
     return new ResponseEntity<Object>(result, new HttpHeaders(), HttpStatus.OK);
   }
 
-  @Override
-  protected ResponseEntity<Object> handleExceptionInternal(Exception ex, @Nullable Object body, HttpHeaders headers, HttpStatus status, WebRequest request) {
-    Result result = setupResult();
-    if (ex instanceof BaseException) {
-      this.logger.error(ex.getMessage());
-      result.setErrors(Arrays.asList(ex.getMessage()));
-      result.setCode(((BaseException)ex).getCode());
-    } else if (ex instanceof HttpClientErrorException) {
-      result.setErrors(Arrays.asList(CommonResponseCode.UNAUTHORIZE.getDisplayName()));
-      result.setCode(CommonResponseCode.UNAUTHORIZE.getValue());
-    } else {
-      final String error = "Exception Internal: " + ex.getMessage();
-      result.setMessage(CommonResponseCode.INTERNAL_ERROR.getDisplayName());
-      result.setErrors(Arrays.asList(error));
-      result.setCode(CommonResponseCode.INTERNAL_ERROR.getValue());
-    }
-    return new ResponseEntity<Object>(result, new HttpHeaders(), HttpStatus.OK);
-  }
+//  @Override
+//  protected ResponseEntity<Object> handleExceptionInternal(Exception ex, @Nullable Object body, HttpHeaders headers, HttpStatus status, WebRequest request) {
+//    Result result = setupResult();
+//    if (ex instanceof BaseException) {
+//      this.logger.error(ex.getMessage());
+//      result.setErrors(Arrays.asList(ex.getMessage()));
+//      result.setCode(((BaseException)ex).getCode());
+//    } else if (ex instanceof HttpClientErrorException) {
+//      result.setErrors(Arrays.asList(CommonResponseCode.UNAUTHORIZE.getDisplayName()));
+//      result.setCode(CommonResponseCode.UNAUTHORIZE.getValue());
+//    } else {
+//      final String error = "Exception Internal: " + ex.getMessage();
+//      result.setMessage(CommonResponseCode.INTERNAL_ERROR.getDisplayName());
+//      result.setErrors(Arrays.asList(error));
+//      result.setCode(CommonResponseCode.INTERNAL_ERROR.getValue());
+//    }
+//    return new ResponseEntity<Object>(result, new HttpHeaders(), HttpStatus.OK);
+//  }
 
   protected Result setupResult() {
     Result result = new Result();
