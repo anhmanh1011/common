@@ -190,6 +190,7 @@ public class HandlerFilter implements Filter {
 
   @Override
   public void destroy() {
+    MDC.remove(FieldConstant.REQUEST_ID_LOG_VAR_NAME);
   }
 
 
