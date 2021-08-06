@@ -16,6 +16,7 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 import lombok.val;
+import org.apache.commons.lang3.StringUtils;
 
 public class Generator {
 
@@ -61,6 +62,8 @@ public class Generator {
 
 
 
+
+
   public static String barcode(Long sequence) {
     int length = 13 - 2 - sequence.toString().length();
     StringBuilder r = new StringBuilder("29");
@@ -98,5 +101,14 @@ public class Generator {
 
     r.append(sequence);
     return r.toString();
+  }
+
+  public static String genCode(String prefix, Integer length, Long id){
+    if(id.toString().length()>=length){
+      return prefix + id.toString();
+    }
+    else{
+      return prefix + StringUtils.leftPad(id.toString(), length - id.toString().length(), "0");
+    }
   }
 }
