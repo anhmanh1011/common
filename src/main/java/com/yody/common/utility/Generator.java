@@ -20,7 +20,7 @@ import org.apache.commons.lang3.StringUtils;
 
 public class Generator {
 
-  private static final byte[] SALT ="y0dy_Unjc0rn_2O25".getBytes(StandardCharsets.UTF_8);
+  private static final byte[] SALT = "y0dy_Unjc0rn_2O25".getBytes(StandardCharsets.UTF_8);
 
   public static String generate() {
 
@@ -58,10 +58,6 @@ public class Generator {
       return null;
     }
   }
-
-
-
-
 
 
   public static String barcode(Long sequence) {
@@ -103,12 +99,7 @@ public class Generator {
     return r.toString();
   }
 
-  public static String genCode(String prefix, Integer length, Long id){
-    if(id.toString().length()>=length){
-      return prefix + id.toString();
-    }
-    else{
-      return prefix + StringUtils.leftPad(id.toString(), length - id.toString().length(), "0");
-    }
+  public static String genCode(String prefix, Integer length, Long id) {
+    return id.toString().length() >= length ? prefix + id.toString() : prefix + StringUtils.leftPad(id.toString(), length, "0");
   }
 }
