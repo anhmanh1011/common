@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public enum PrintProductVariableEnum implements BaseEnum<String> {
+public enum PrintProductVariableEnum implements BasePrintEnum<String> {
     PRODUCT_CODE("{product_code}", "Mã sản phẩm", "APM3681"),
     PRODUCT_NAME("{product_name}", "Tên sản phẩm", "Áo Polo Nam Coolmax Phối Bo Kẻ"),
     PRODUCT_BRAND("{product_brand}", "Thương hiệu sản phẩm", "Coolmax"),

@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public enum PrintOrderVariableEnum implements BaseEnum<String> {
+public enum PrintOrderVariableEnum implements BasePrintEnum<String> {
     ORDER_CODE("{order_code}", "Mã đơn hàng", "SO0001"),
     ORDER_QR_CODE("{order_qr_code}", "Mã đơn hàng dạng QR code", ""),
     BAR_CODE("{bar_code(code)}", "Mã đơn hàng dạng mã vạch", ""),

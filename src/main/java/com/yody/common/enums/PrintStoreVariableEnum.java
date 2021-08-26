@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public enum PrintStoreVariableEnum implements BaseEnum<String> {
+public enum PrintStoreVariableEnum implements BasePrintEnum<String> {
     COMPANY_LOGO("{company_logo}", "Logo doanh nghiệp", ""),
     COMPANY_NAME("{company_name}", "Tên doanh nghiệp", "Công ty cổ phần thời trang YODY"),
     COMPANY_ADDRESS("{company_address}", "Địa chỉ doanh nghiệp",
