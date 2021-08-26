@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public enum PrintShipmentVariableEnum implements BaseEnum<String> {
+public enum PrintShipmentVariableEnum implements BasePrintEnum<String> {
     SENDER_FULL_NAME("{sender_full_name}", "Tên người gửi", "Trịnh Thị Tí"),
     SENDER_PHONE("{sender_phone}", "Số điện thoại người gửi", "0933445566"),
     SENDER_ADDRESS("{sender_address}", "Địa chỉ người gửi", "Hải Dương"),
