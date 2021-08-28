@@ -9,30 +9,25 @@ import freemarker.template.TemplateExceptionHandler;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 public class Prints {
-  public static String process(String printForm, Object model, HashMap<String, String> variableMaps)
+  public static String process(String printForm, Map<String, Object> model, Map<String, String> variableMaps)
       throws IOException, TemplateException {
 
     String freemarkerTemplateSource = getSourceTemplateFromPrintForm(printForm, variableMaps);
 
     Template template = getTemplate(freemarkerTemplateSource);
 
-    HashMap<String, Object> models = new HashMap<String, Object>();
-    models.put("model", model);
-
     Writer writer = new StringWriter();
 
-    template.process(models, writer);
+    template.process(model, writer);
 
-    String htmlResult = writer.toString();
-
-    return htmlResult;
+    return writer.toString();
   }
 
-  private static String getSourceTemplateFromPrintForm(String printForm, HashMap<String, String> variableMaps) {
+  private static String getSourceTemplateFromPrintForm(String printForm, Map<String, String> variableMaps) {
     Set<String> keys = variableMaps.keySet();
     for (String key : keys) {
       printForm = printForm.replace(key, variableMaps.get(key));
@@ -47,8 +42,7 @@ public class Prints {
 
     Configuration configuration = config(stringLoader);
 
-    Template template = configuration.getTemplate("template");
-    return template;
+    return configuration.getTemplate("template");
   }
 
   private static Configuration config(StringTemplateLoader stringLoader) {
