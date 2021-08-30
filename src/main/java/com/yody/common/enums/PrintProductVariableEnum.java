@@ -11,7 +11,7 @@ public enum PrintProductVariableEnum implements BasePrintEnum<String> {
     PRODUCT_BRAND("{product_brand}", "Thương hiệu sản phẩm", "Coolmax"),
     PRODUCT_QUANTITY("{product_quantity}", "Số lượng sản phẩm", "2"),
     GIFT("{gift}", "Quà tặng sản phẩm", "Tất lưới"),
-    PRODUCT_BARCODE("{product_barcode}", "Mã vạch sản phẩm", "<img src=\"https://www.baeldung.com/wp-content/uploads/2020/01/upca-1.png\" width=\"100\" height=\"50\">"),
+    PRODUCT_BARCODE("{product_barcode}", "Mã vạch sản phẩm", "<img src=\"https://cdn.yody.io/product_barcode.png\" width=\"100\" height=\"50\">"),
     PRODUCT_WEIGHT("{product_weight}", "Khối lượng sản phẩm (gram)", "200g"),
     PRODUCT_PRICE_INCLUDED_VAT("{product_price_included_vat}", "Giá sản phẩm (đã bao gồm VAT)",
         "110,000"),
