@@ -6,12 +6,12 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum PrintStoreVariableEnum implements BasePrintEnum<String> {
-    COMPANY_LOGO("{company_logo}", "Logo doanh nghiệp", ""),
+    COMPANY_LOGO("{company_logo}", "Logo doanh nghiệp", "<img src=\"https://cdn.yody.io/yody_official_logo.png\" width=\"150\" height=\"70\">"),
     COMPANY_NAME("{company_name}", "Tên doanh nghiệp", "Công ty cổ phần thời trang YODY"),
     COMPANY_ADDRESS("{company_address}", "Địa chỉ doanh nghiệp",
         "An Định, Việt Hoà, Thành phố Hải Dương, Hải Dương 03125"),
     COMPANY_PHONE("{company_phone}", "Số điện thoại doanh nghiệp", "1800 2086"),
-    STORE_LOGO("{store_logo}", "Logo cửa hàng", ""),
+    STORE_LOGO("{store_logo}", "Logo cửa hàng", "<img src=\"https://cdn.yody.io/yody_logo.png\" width=\"150\" height=\"70\">\""),
     STORE_NAME("{store_name}", "Tên cửa hàng", "Cửa hàng thời trang YODY"),
     STORE_ADDRESS("{store_address}", "Địa chỉ cửa hàng",
         "61 Trần Hưng Đạo, P. Trần Hưng Đạo, Thành phố Hải Dương, Hải Dương 170000"),

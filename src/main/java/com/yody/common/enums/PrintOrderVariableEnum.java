@@ -8,7 +8,7 @@ import lombok.Getter;
 public enum PrintOrderVariableEnum implements BasePrintEnum<String> {
     ORDER_CODE("{order_code}", "Mã đơn hàng", "SO0001"),
     ORDER_QR_CODE("{order_qr_code}", "Mã đơn hàng dạng QR code", ""),
-    BAR_CODE("{bar_code(code)}", "Mã đơn hàng dạng mã vạch", ""),
+    BAR_CODE("{bar_code}", "Mã đơn hàng dạng mã vạch", "<img src=\"https://cdn.yody.io/order_barcode.png\" width=\"100\" height=\"50\">"),
     MODIFIED_ON("{modified_on}", "Ngày cập nhật", "30-08-2016"),
     MODIFIED_ON_TIME("{modified_on_time}", "Thời gian cập nhật", "15:27:59"),
     SHIP_ON_MIN("{ship_on_min}", "Ngày hẹn giao hàng từ", "30-08-2016"),
