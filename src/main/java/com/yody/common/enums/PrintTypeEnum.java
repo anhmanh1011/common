@@ -7,7 +7,9 @@ import lombok.Getter;
 @Getter
 public enum PrintTypeEnum implements BaseEnum<String> {
     ORDER("order", "Hoá đơn bán hàng"),
-    PURCHASE_ORDER("purchase_order", "Hoá đơn nhập hàng");
+    PURCHASE_ORDER("purchase_order", "Hoá đơn nhập hàng"),
+    SHIPMENT("shipment", "Phiếu giao hàng"),
+    STOCK_EXPORT("stock_export", "Phiếu xuất kho");
 
     private String  value;
     private String displayName;

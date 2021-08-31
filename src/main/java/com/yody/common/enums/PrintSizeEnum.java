@@ -6,8 +6,8 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum PrintSizeEnum implements BaseEnum<String> {
-    A4("a4", "Mẫu in A4"),
-    K80("k80", "Mẫu in K80");
+    A4("a4", "Khổ giấy A4 | A5"),
+    K80("k80", "Khổ giấy K56 | K80");
 
     private String  value;
     private String displayName;
