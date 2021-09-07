@@ -3,6 +3,11 @@ package com.yody.common.utility;
 import static java.util.Base64.*;
 
 import com.yody.common.enums.ProductEventEnum;
+import java.awt.Font;
+import java.awt.image.BufferedImage;
+import net.sourceforge.barbecue.Barcode;
+import net.sourceforge.barbecue.BarcodeFactory;
+import net.sourceforge.barbecue.BarcodeImageHandler;
 import  org.apache.commons.codec.binary.Base64;
 
 import java.nio.charset.StandardCharsets;
@@ -21,6 +26,7 @@ import org.apache.commons.lang3.StringUtils;
 public class Generator {
 
   private static final byte[] SALT = "y0dy_Unjc0rn_2O25".getBytes(StandardCharsets.UTF_8);
+  private static final Font BARCODE_TEXT_FONT = new Font(Font.SANS_SERIF, Font.PLAIN, 12);
 
   public static String generate() {
 
@@ -70,11 +76,17 @@ public class Generator {
     return r.toString();
   }
 
-  //  public static BufferedImage generateEAN13BarcodeImage(String barcodeText) throws Exception {
-//    Barcode barcode = BarcodeFactory.createEAN13(barcodeText);
-//    return BarcodeImageHandler.getImage(barcode);
-//  }
-//
+    public static BufferedImage generate128BarcodeImage(String barcodeText) {
+        try {
+            Barcode barcode = BarcodeFactory.createCode128(barcodeText);
+            barcode.setFont(BARCODE_TEXT_FONT);
+            barcode.setResolution(400);
+            return BarcodeImageHandler.getImage(barcode);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
   public static String supplierCode(Integer sequence) {
     return generateCode(sequence, "NCC", 4);
   }

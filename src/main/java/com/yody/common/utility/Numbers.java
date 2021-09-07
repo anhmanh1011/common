@@ -4,7 +4,11 @@ import static java.math.BigDecimal.TEN;
 import static java.math.BigDecimal.ZERO;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.math.RoundingMode;
+import java.util.Base64;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 
 public final class Numbers {
 
@@ -206,5 +210,20 @@ public final class Numbers {
             return false;
         }
         return n1.compareTo(n2) == 0;
+    }
+
+    public static BigDecimal stringToDecimal(String s) {
+        if (StringUtils.isBlank(s)) {
+            return null;
+        }
+        if (NumberUtils.isCreatable(s)) {
+            return new BigDecimal(s).setScale(2, RoundingMode.HALF_UP);
+        }
+        try {
+            return new BigDecimal(new BigInteger(Base64.getDecoder().decode(s)), 2);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }
