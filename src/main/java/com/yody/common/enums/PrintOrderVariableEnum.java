@@ -7,8 +7,8 @@ import lombok.Getter;
 @Getter
 public enum PrintOrderVariableEnum implements BasePrintEnum<String> {
     ORDER_CODE("{order_code}", "Mã đơn hàng", "SO0001"),
-    ORDER_QR_CODE("{order_qr_code}", "Mã đơn hàng dạng QR code", ""),
-    BAR_CODE("{bar_code}", "Mã đơn hàng dạng mã vạch", "<img src=\"https://cdn.yody.io/order_barcode.png\" width=\"100\" height=\"50\">"),
+    ORDER_QR_CODE("{order_qr_code}", "Mã đơn hàng dạng QR code", "<img src=\"https://cdn.yody.io/order-qr.png\">"),
+    BAR_CODE("{order_barcode}", "Mã đơn hàng dạng mã vạch", "<img src=\"https://cdn.yody.io/order_barcode.png\" width=\"100\" height=\"50\">"),
     MODIFIED_ON("{modified_on}", "Ngày cập nhật", "30-08-2016"),
     MODIFIED_ON_TIME("{modified_on_time}", "Thời gian cập nhật", "15:27:59"),
     SHIP_ON_MIN("{ship_on_min}", "Ngày hẹn giao hàng từ", "30-08-2016"),
@@ -35,6 +35,7 @@ public enum PrintOrderVariableEnum implements BasePrintEnum<String> {
     CUSTOMER_CARE_STAFF("{customer_care_staff}", "Nhân viên chăm sóc khách hàng",
         "Nguyễn Thùy Chi"),
     DELIVERY_CODE("{delivery_code}", "Mã vạch hãng vận chuyển", "S1.A1.17373471"),
+    DELIVERY_BARCODE("{delivery_barcode}", "Mã vạch hãng vận chuyển", "<img src=\"https://cdn.yody.io/delivery-barcode.png\" width=\"100\" height=\"50\">"),
     DELIVERY_NAME("{delivery_name}", "Hãng vận chuyển", "GHTK"),
     DELIVERY_LOGO("{delivery_logo}", "Logo hãng vận chuyển", ""),
     PACKING_STAFF("{packing_staff}", "Nhân viên đóng gói", "Nguyễn Thùy Chi"),
@@ -43,6 +44,7 @@ public enum PrintOrderVariableEnum implements BasePrintEnum<String> {
     ORDER_MONEY_AFTER_DISCOUNT_BY_TEXT("{order_money_after_discount_by_text}",
         "Tổng tiền sau chiết khấu (bằng chữ)", "Chín mươi nghìn đồng"),
     ORDER_DISCOUNT("{order_discount}", "Tiền chiết khấu đơn hàng", "0"),
+    TOTAL_QUANTITY_PRODUCT("{total_quantity_product}", "Tổng số lượng sản phẩm", "2"),
     DOWN_PAYMENT("{down_payment}", "Tiền đặt cọc", "10,000"),
     ORDER_WEIGHT("{order_weight}", "Khối lượng đơn hàng", "500g"),
     DISCOUNT_PERCENT("{discount_percent}", "Phần trăm chiết khấu đơn hàng", "10%"),
