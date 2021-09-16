@@ -45,6 +45,7 @@ compile deploy:
     refs:
       - develop
       - uat
+      - feature/refactor-config
 
 tag:
   stage: tag
