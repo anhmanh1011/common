@@ -27,7 +27,7 @@ import org.springframework.web.client.RestTemplate;
 @Slf4j
 public class AuthenServiceClient {
 
-  @Value("${yody.common.thirdparty.services.authen.base-url}")
+  @Value("${yody.core.3rd.authen.base-url}")
   private String url;
   private final RestTemplate restTemplate;
   private final ObjectMapper objectMapper;

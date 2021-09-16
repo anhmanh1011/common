@@ -15,10 +15,10 @@ import org.springframework.stereotype.Service;
 public class AuthService {
     private final AuthServiceClient authServiceClient;
 
-    @Value("${yody.common.thirdparty.services.auth.username}")
+    @Value("${yody.core.3rd.auth.basic.username}")
     private String username;
 
-    @Value("${yody.common.thirdparty.services.auth.password}")
+    @Value("${yody.core.3rd.auth.basic.password}")
     private String password;
 
     public AuthService(AuthServiceClient authServiceClient) {
