@@ -45,6 +45,7 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
+import org.springframework.web.multipart.support.DefaultMultipartHttpServletRequest;
 import org.springframework.web.servlet.HandlerExecutionChain;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
@@ -121,8 +122,8 @@ public class HandlerFilter implements Filter {
             CommonResponseCode.FORBIDDEN.getDisplayName());
         return true;
       }
-      MultipartResolver resolver = new CommonsMultipartResolver(request.getSession().getServletContext());
-      MultipartHttpServletRequest multipartRequest = resolver.resolveMultipart(request);
+      CommonsMultipartResolver commonsMultipartResolver = new CommonsMultipartResolver();
+      MultipartHttpServletRequest multipartRequest = commonsMultipartResolver.resolveMultipart(request);
 
       if (request.getMethod().equals(HttpMethod.POST.name())) {
         multipartRequest.setAttribute(FieldConstant.CREATED_BY, requestInfo.getOperatorLoginId());
