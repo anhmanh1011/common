@@ -122,8 +122,8 @@ public class HandlerFilter implements Filter {
             CommonResponseCode.FORBIDDEN.getDisplayName());
         return true;
       }
-      CommonsMultipartResolver commonsMultipartResolver = new CommonsMultipartResolver();
-      MultipartHttpServletRequest multipartRequest = commonsMultipartResolver.resolveMultipart(request);
+      MultipartResolver resolver = new CommonsMultipartResolver(request.getSession().getServletContext());
+      MultipartHttpServletRequest multipartRequest = resolver.resolveMultipart(request);
 
       if (request.getMethod().equals(HttpMethod.POST.name())) {
         multipartRequest.setAttribute(FieldConstant.CREATED_BY, requestInfo.getOperatorLoginId());

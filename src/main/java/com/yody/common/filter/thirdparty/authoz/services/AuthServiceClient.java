@@ -15,7 +15,7 @@ import org.springframework.web.client.RestTemplate;
 @Order(1)
 public class AuthServiceClient extends AbstractHttpClient {
 
-  @Value("${yody.common.thirdparty.services.auth.base-url}")
+  @Value("${yody.core.3rd.auth.base-url}")
   private String url;
 
   public AuthServiceClient(RestTemplate restTemplate, ObjectMapper objectMapper) {
