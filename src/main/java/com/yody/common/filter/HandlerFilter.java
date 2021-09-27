@@ -92,7 +92,6 @@ public class HandlerFilter implements Filter {
         filterChain.doFilter(servletRequest, servletResponse);
         return;
       }
-      log.info("Do filter request");
       if (!this.getUserInfo(request)) {
         buildErrorResponse(response, requestInfo.getRequestId(), HttpServletResponse.SC_UNAUTHORIZED,
             CommonResponseCode.UNAUTHORIZE.getValue(), CommonResponseCode.UNAUTHORIZE.getDisplayName());
@@ -214,7 +213,6 @@ public class HandlerFilter implements Filter {
     requestInfo = new RequestInfo();
     String authorization = request.getHeader(HeaderEnum.HEADER_AUTHORIZATION.getValue());
     if (StringUtils.isBlank(authorization)) {
-      log.error("missing authorization");
       return false;
     }
     requestInfo.setAuthorization(authorization);
