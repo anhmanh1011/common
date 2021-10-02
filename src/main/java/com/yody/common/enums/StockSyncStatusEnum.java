@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 public enum StockSyncStatusEnum implements BaseEnum<String> {
     DONE("done", "Thành công"),
     IN_PROGRESS("in_progress", "Đang xử lý"),
-    ERROR("error", "Không thành công");
+    ERROR("error", "Thất bại");
     private final String value;
     private final String displayName;
 
