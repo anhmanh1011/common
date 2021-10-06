@@ -76,9 +76,6 @@ public class HandlerFilter implements Filter {
   public void init(FilterConfig filterConfig) {
   }
 
-
-
-
   @Override
   public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) {
     try {
@@ -230,9 +227,6 @@ public class HandlerFilter implements Filter {
     getUserInfoRequest.setToken(String.format("Bearer %s", token));
 
     GetUserInfoResponse getUserInfoResponse = authenService.getUserInfo(getUserInfoRequest);
-//    operatorKcId = request.getHeader(FieldConstant.OPERATOR_KC_ID);
-//    operatorLoginId = request.getHeader(FieldConstant.OPERATOR_LOGIN_ID);
-//    operatorName = request.getHeader(FieldConstant.OPERATOR_NAME);
     requestInfo.setOperatorKcId(getUserInfoResponse.getSub());
     requestInfo.setOperatorLoginId(getUserInfoResponse.getName());
     requestInfo.setOperatorName(getUserInfoResponse.getPreferredUsername());
