@@ -6,8 +6,8 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum WeightUnitEnum implements BaseEnum<String> {
-    G("g", "G"),
-    KG("kg", "KG");
+    G("g", "Gram"),
+    KG("kg", "Kilogram");
     private String  value;
     private String displayName;
 
