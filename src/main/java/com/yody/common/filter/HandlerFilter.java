@@ -2,6 +2,7 @@ package com.yody.common.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yody.common.annotation.Permission;
+import com.yody.common.constant.HeaderInfo;
 import com.yody.common.core.RequestInfo;
 import com.yody.common.core.dto.Result;
 import com.yody.common.enums.CommonResponseCode;
@@ -18,6 +19,7 @@ import com.yody.common.utility.BasicAuthorization;
 import com.yody.common.utility.Strings;
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.util.Collections;
 import java.util.Objects;
 import java.util.UUID;
 import javax.servlet.Filter;
@@ -45,7 +47,6 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
-import org.springframework.web.multipart.support.DefaultMultipartHttpServletRequest;
 import org.springframework.web.servlet.HandlerExecutionChain;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
@@ -133,6 +134,8 @@ public class HandlerFilter implements Filter {
       multipartRequest.setAttribute(FieldConstant.OPERATOR_LOGIN_ID, requestInfo.getOperatorLoginId());
       multipartRequest.setAttribute(FieldConstant.REQUEST_ID, requestInfo.getRequestId());
 
+      multipartRequest.getRequestHeaders().put(HeaderInfo.X_USER_NAME, Collections.singletonList(requestInfo.getFullName()));
+      multipartRequest.getRequestHeaders().put(HeaderInfo.X_USER_CODE, Collections.singletonList(requestInfo.getCode()));
       filterChain.doFilter(multipartRequest, servletResponse);
       return true;
     } catch (Exception ex) {
@@ -178,6 +181,8 @@ public class HandlerFilter implements Filter {
         dataRequest.put(FieldConstant.UPDATED_BY, "admin");
       }
       requestWrapper.setBody(dataRequest.toString());
+      requestWrapper.addHeader(HeaderInfo.X_USER_NAME, requestInfo.getFullName());
+      requestWrapper.addHeader(HeaderInfo.X_USER_CODE, requestInfo.getCode());
       filterChain.doFilter(requestWrapper, servletResponse);
       return true;
     } catch (Exception ex) {
@@ -230,6 +235,8 @@ public class HandlerFilter implements Filter {
     requestInfo.setOperatorKcId(getUserInfoResponse.getSub());
     requestInfo.setOperatorLoginId(getUserInfoResponse.getName());
     requestInfo.setOperatorName(getUserInfoResponse.getPreferredUsername());
+    requestInfo.setFullName(getUserInfoResponse.getFullName());
+    requestInfo.setCode(getUserInfoResponse.getCode());
     String requestId = request.getHeader(HeaderEnum.HEADER_REQUEST_ID.getValue());
     if (requestId == null || requestId.isEmpty()) {
       requestId = UUID.randomUUID().toString();

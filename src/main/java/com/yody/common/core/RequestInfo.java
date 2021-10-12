@@ -10,5 +10,7 @@ public class RequestInfo {
   private String authorization = "";
   private String token = "";
   private String operatorName = "";
+  private String fullName = "";
+  private String code = "";
   private boolean isBasicAuth = false;
 }

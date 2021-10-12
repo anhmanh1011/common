@@ -17,4 +17,6 @@ public class GetUserInfoResponse {
   public String givenName;
   public String familyName;
   public String email;
+  public String fullName;
+  public String code;
 }
