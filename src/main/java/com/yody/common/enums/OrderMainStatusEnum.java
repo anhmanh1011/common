@@ -14,7 +14,7 @@ public enum OrderMainStatusEnum implements BaseEnum<String> {
     FINISHED(6, "finished", "Kết thúc"),
     CANCELLED(-1, "cancelled", "Hủy đơn");
 
-    private final Integer intValue;
+    private final int intValue;
     private final String value;
     private final String displayName;
 

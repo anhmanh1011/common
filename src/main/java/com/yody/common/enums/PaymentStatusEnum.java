@@ -13,7 +13,7 @@ public enum PaymentStatusEnum implements BaseEnum<String> {
     REFUNDING(4, "refunding", "Đang hoàn lại"),
     REFUNDED(5, "refunded", "Đã hoàn lại");
 
-    private final Integer intValue;
+    private final int intValue;
     private final String value;
     private final String displayName;
 
