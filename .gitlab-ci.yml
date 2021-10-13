@@ -29,6 +29,8 @@ before_script:
   - *before_script
 
 compile test:
+  tags:
+    - build-yody-tag
   stage: test
   script:
     - mvn -s maven/settings.xml --batch-mode -U clean verify
@@ -38,6 +40,8 @@ compile test:
       - uat
 
 compile deploy:
+  tags:
+    - build-yody-tag
   stage: deploy
   script:
     - mvn -s maven/settings.xml --batch-mode -U clean package deploy
