@@ -5,8 +5,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public enum StoreStatusEnum implements BaseEnum<String> {
     ACTIVE("active", "Đang hoạt động"),
-    INACTIVE("inactive", "Ngừng hoạt động"),
-    INVENTORY_CHECKING("checking", "Đang kiểm kho");
+    INACTIVE("inactive", "Ngừng hoạt động");
 
     private final String value;
     private final String displayName;
