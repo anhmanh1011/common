@@ -12,7 +12,8 @@ public enum OrderMainStatusEnum implements BaseEnum<String> {
   SHIPPING(4, "shipping", "Xuất kho"),
   COMPLETED(5, "completed", "Hoàn thành"),
   FINISHED(6, "finished", "Kết thúc"),
-  CANCELLED(-1, "cancelled", "Hủy đơn");
+  CANCELLED(-1, "cancelled", "Hủy đơn"),
+  SPLITTED(-2, "splitted", "Đã tách");
 
   private final int intValue;
   private final String value;

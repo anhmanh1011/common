@@ -15,7 +15,8 @@ public enum FulfillmentStatusEnum implements BaseEnum<String> {
   SHIPPED(6, "shipped", "Đã giao"),
   RETURNING(7, "returning", "Đang trả lại"),
   RETURNED(8, "returned", "Đã trả lại"),
-  CANCELLED(-1, "cancelled", "Đã hủy");
+  CANCELLED(-1, "cancelled", "Đã hủy"),
+  SPLITTED(-2, "splitted", "Đã tách");
 
   private final int intValue;
   private final String value;
