@@ -7,6 +7,7 @@ import com.yody.common.enums.CommonResponseCode;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.TypeMismatchException;
@@ -32,6 +33,9 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 @Slf4j
 public class BaseExceptionHandler extends ResponseEntityExceptionHandler {
+
+  private ObjectError error;
+  private ObjectError error1;
 
   @ExceptionHandler(Exception.class)
   public ResponseEntity<Result> handleException(Exception ex) {
@@ -59,19 +63,26 @@ public class BaseExceptionHandler extends ResponseEntityExceptionHandler {
   @Override
   protected ResponseEntity<Object> handleMethodArgumentNotValid(final MethodArgumentNotValidException ex, final HttpHeaders headers, final HttpStatus status,
       final WebRequest request) {
-    final List<String> errors = new ArrayList<>();
-    for (final FieldError error : ex.getBindingResult().getFieldErrors()) {
-      errors.add(error.getField() + ": " + error.getDefaultMessage());
+    List<String> errors = new ArrayList<>();
+    Iterator var6 = ex.getBindingResult().getFieldErrors().iterator();
+
+    while(var6.hasNext()) {
+      FieldError error = (FieldError)var6.next();
+      errors.add(error.getField() + ": "+ error.getDefaultMessage());
     }
-    for (final ObjectError error : ex.getBindingResult().getGlobalErrors()) {
+
+    var6 = ex.getBindingResult().getGlobalErrors().iterator();
+
+    while(var6.hasNext()) {
+      error = (ObjectError)var6.next();
       errors.add(error.getDefaultMessage());
     }
-    Result result = setupResult();
+
+    Result result = this.setupResult();
     result.setErrors(errors);
-    // result.setMessage(ex.getLocalizedMessage());
     result.setCode(CommonResponseCode.BAD_REQUEST.getValue());
     ex.printStackTrace();
-    return handleExceptionInternal(ex, result, headers, HttpStatus.OK, request);
+    return new ResponseEntity(result, new HttpHeaders(), HttpStatus.OK);
   }
 
   @Override

@@ -7,8 +7,12 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 public class BaseBO<T extends AggregateRoot<T>> extends BaseEntity {
+  private final List<Event> events = new ArrayList<>();
 
   @JsonIgnore
   protected T root;
@@ -33,4 +37,21 @@ public class BaseBO<T extends AggregateRoot<T>> extends BaseEntity {
     this.updatedName = root.getUpdatedName();
     this.updatedDate = Dates.getUTC();
   }
+
+  protected void addEvents(Event event) {
+    events.add(event);
+  }
+
+  protected void clearEvents() {
+    events.clear();
+  }
+
+  protected void removeEvents(Event event) {
+    events.remove(event);
+  }
+
+  protected int nextVersion() {
+    return version++;
+  }
+
 }
