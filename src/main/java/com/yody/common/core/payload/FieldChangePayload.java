@@ -8,8 +8,8 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
-public class FieldChangePayload {
+public class FieldChangePayload<T> {
   private String filedName;
-  private String oldValue;
-  private String newValue;
+  private T oldValue;
+  private T newValue;
 }
