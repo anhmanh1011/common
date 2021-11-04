@@ -252,43 +252,44 @@ public class HandlerFilter implements Filter {
 
   @SneakyThrows
   private boolean checkPermissionByUserId(String userId, HttpServletRequest request) {
-    RequestMappingHandlerMapping req2HandlerMapping = appContext.getBean(RequestMappingHandlerMapping.class);
-    HandlerExecutionChain handlerExeChain = req2HandlerMapping.getHandler(request);
-    if (!Objects.nonNull(handlerExeChain)) {
-      return false;
-    }
-
-    HandlerMethod handlerMethod = (HandlerMethod) handlerExeChain.getHandler();
-
-    Method method = handlerMethod.getMethod();
-    Permission annotation = AnnotationUtils.findAnnotation(method, Permission.class);
-    String[] permissionTypes = annotation != null ? annotation.permissionType() : null;
-    if (permissionTypes == null || permissionTypes.length <= 0) {
-      return true;
-    }
-    PermissionRequestDto requestDto = new PermissionRequestDto();
-    requestDto.setRequestId(requestInfo.getRequestId());
-    requestDto.setUserId(userId);
-    requestDto.setUserName(requestInfo.getOperatorName());
-    Result<PermissionResponseDto> result = authService.getPermissionInfo(requestDto);
-    if (result == null) {
-      return false;
-    }
-    PermissionResponseDto permissionsDto = result.getData();
-
-    if (null == permissionsDto.getModules() || CollectionUtils.isEmpty(permissionsDto.getModules().getPermissions())) {
-      return false;
-    }
-    if (permissionsDto.getModules().getPermissions().contains(PermissionConstant.ADMIN_ALL)) {
-      return true;
-    }
-    for (String per : permissionTypes) {
-      for (String permissionCode : permissionsDto.getModules().getPermissions()) {
-        if (per.contains(permissionCode)) {
-          return true;
-        }
-      }
-    }
-    return false;
+    return true;
+//    RequestMappingHandlerMapping req2HandlerMapping = appContext.getBean(RequestMappingHandlerMapping.class);
+//    HandlerExecutionChain handlerExeChain = req2HandlerMapping.getHandler(request);
+//    if (!Objects.nonNull(handlerExeChain)) {
+//      return false;
+//    }
+//
+//    HandlerMethod handlerMethod = (HandlerMethod) handlerExeChain.getHandler();
+//
+//    Method method = handlerMethod.getMethod();
+//    Permission annotation = AnnotationUtils.findAnnotation(method, Permission.class);
+//    String[] permissionTypes = annotation != null ? annotation.permissionType() : null;
+//    if (permissionTypes == null || permissionTypes.length <= 0) {
+//      return true;
+//    }
+//    PermissionRequestDto requestDto = new PermissionRequestDto();
+//    requestDto.setRequestId(requestInfo.getRequestId());
+//    requestDto.setUserId(userId);
+//    requestDto.setUserName(requestInfo.getOperatorName());
+//    Result<PermissionResponseDto> result = authService.getPermissionInfo(requestDto);
+//    if (result == null) {
+//      return false;
+//    }
+//    PermissionResponseDto permissionsDto = result.getData();
+//
+//    if (null == permissionsDto.getModules() || CollectionUtils.isEmpty(permissionsDto.getModules().getPermissions())) {
+//      return false;
+//    }
+//    if (permissionsDto.getModules().getPermissions().contains(PermissionConstant.ADMIN_ALL)) {
+//      return true;
+//    }
+//    for (String per : permissionTypes) {
+//      for (String permissionCode : permissionsDto.getModules().getPermissions()) {
+//        if (per.contains(permissionCode)) {
+//          return true;
+//        }
+//      }
+//    }
+//    return false;
   }
 }
