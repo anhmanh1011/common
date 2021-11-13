@@ -9,7 +9,7 @@ import lombok.Data;
 @AllArgsConstructor
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class FieldChangePayload<T> {
-  private String filedName;
+  private String fieldName;
   private T oldValue;
   private T newValue;
 }
