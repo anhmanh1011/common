@@ -176,14 +176,14 @@
   <repositories>
     <repository>
       <id>yody-dev-snapshot</id>
-      <url>http://dev.nexus.yody.vn:8081/repository/maven-snapshots</url>
+      <url>https://nexus.yody.io/repository/maven-snapshots</url>
     </repository>
   </repositories>
 
   <distributionManagement>
     <repository>
       <id>yody-dev-snapshot</id>
-      <url>http://dev.nexus.yody.vn:8081/repository/maven-snapshots</url>
+      <url>https://nexus.yody.io/repository/maven-snapshots</url>
     </repository>
   </distributionManagement>
 </project>
