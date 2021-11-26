@@ -124,11 +124,11 @@ public class HandlerFilter implements Filter {
       MultipartHttpServletRequest multipartRequest = resolver.resolveMultipart(request);
 
       if (request.getMethod().equals(HttpMethod.POST.name())) {
-        multipartRequest.setAttribute(FieldConstant.CREATED_BY, requestInfo.getOperatorLoginId());
-        multipartRequest.setAttribute(FieldConstant.CREATED_NAME, requestInfo.getOperatorName());
+        multipartRequest.setAttribute(FieldConstant.CREATED_BY, requestInfo.getCode());
+        multipartRequest.setAttribute(FieldConstant.CREATED_NAME, requestInfo.getFullName());
       } else if (request.getMethod().equals(HttpMethod.PUT.name())) {
-        multipartRequest.setAttribute(FieldConstant.UPDATED_BY, requestInfo.getOperatorLoginId());
-        multipartRequest.setAttribute(FieldConstant.UPDATED_NAME, requestInfo.getOperatorName());
+        multipartRequest.setAttribute(FieldConstant.UPDATED_BY, requestInfo.getCode());
+        multipartRequest.setAttribute(FieldConstant.UPDATED_NAME, requestInfo.getFullName());
       }
       multipartRequest.setAttribute(FieldConstant.OPERATOR_KC_ID, requestInfo.getOperatorKcId());
       multipartRequest.setAttribute(FieldConstant.OPERATOR_LOGIN_ID, requestInfo.getOperatorLoginId());
