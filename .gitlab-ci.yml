@@ -16,28 +16,31 @@ variables:
   MAVEN_OPTS: "-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository"
   GIT_SUBMODULE_STRATEGY: recursive
 
-stages:
-  - test
-  - deploy
-  - tag
-  - notify
-
 .before_script: &before_script |
   mkdir -p $CI_PROJECT_DIR/.m2/repository
 
 before_script:
   - *before_script
 
-compile test:
+stages:
+  - test
+  - deploy
+  - tag
+  - notify
+  - sona_check
+
+sornaqube check:
+  image: 610881553522.dkr.ecr.ap-southeast-1.amazonaws.com/maven:3.6.1-jdk-8
+  stage: sona_check
+  when: manual
   tags:
     - build-yody-tag
-  stage: test
+  before_script:
+    - mkdir -p $CI_PROJECT_DIR/.m2/repository
   script:
-    - mvn -s maven/settings.xml --batch-mode -U clean verify
-  except:
-    refs:
-      - master
-      - uat
+    - mvn -s maven/settings.xml clean install sonar:sonar -Dsonar.projectKey=yody-$CI_PROJECT_NAME -Dsonar.host.url=https://sonarqube.yody.io -Dsonar.login=$SONA_TOKEN
+  only:
+    - develop
 
 compile deploy:
   tags:
