@@ -10,13 +10,13 @@ import lombok.NoArgsConstructor;
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class GetUserInfoResponse {
 
-  public String sub;
-  public boolean emailVerified;
-  public String name;
-  public String preferredUsername;
-  public String givenName;
-  public String familyName;
-  public String email;
-  public String fullName;
-  public String code;
+  private String sub;
+  private boolean emailVerified;
+  private String name;
+  private String preferredUsername;
+  private String givenName;
+  private String familyName;
+  private String email;
+  private String fullName;
+  private String code;
 }
