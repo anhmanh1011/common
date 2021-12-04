@@ -71,16 +71,18 @@ public class HandlerFilter implements Filter {
     try {
       HttpServletResponse response = (HttpServletResponse) servletResponse;
       HttpServletRequest request = (HttpServletRequest) servletRequest;
-      if (request.getRequestURI().contains("api-docs") || request.getRequestURI().contains("swagger-ui") || request.getRequestURI().contains("favicon.ico")
-          || request.getRequestURI().contains("swagger-config") || request.getRequestURI().contains("/actuator/health") || request.getRequestURI().contains("/actuator/info")
-          || request.getRequestURI().contains("/accounts/login") || request.getMethod().equalsIgnoreCase("OPTIONS") || request.getRequestURI().contains("/public/")
-          || request.getRequestURI().contains("/profile") || request.getRequestURI().contains("/ping")) {
+      if (request.getRequestURI().contains("api-docs") || request.getRequestURI().contains("swagger-ui") ||
+          request.getRequestURI().contains("favicon.ico") || request.getRequestURI().contains("swagger-config") ||
+          request.getRequestURI().contains("/actuator/health") || request.getRequestURI().contains("/actuator/info") ||
+          request.getRequestURI().contains("/accounts/login") || request.getMethod().equalsIgnoreCase("OPTIONS") ||
+          request.getRequestURI().contains("/public/") || request.getRequestURI().contains("/profile") ||
+          request.getRequestURI().contains("/ping")) {
         filterChain.doFilter(servletRequest, servletResponse);
         return;
       }
       if (!this.getUserInfo(request)) {
-        buildErrorResponse(response, requestInfo.getRequestId(), HttpServletResponse.SC_UNAUTHORIZED, CommonResponseCode.UNAUTHORIZE.getValue(),
-            CommonResponseCode.UNAUTHORIZE.getDisplayName());
+        buildErrorResponse(response, requestInfo.getRequestId(), HttpServletResponse.SC_UNAUTHORIZED,
+            CommonResponseCode.UNAUTHORIZE.getValue(), CommonResponseCode.UNAUTHORIZE.getDisplayName());
         return;
       }
       boolean isMultipart = ServletFileUpload.isMultipartContent(request);
@@ -89,8 +91,8 @@ public class HandlerFilter implements Filter {
       } else if (!isMultipart && this.processRequest(request, response, filterChain)) {
         return;
       }
-      buildErrorResponse(response, requestInfo.getRequestId(), HttpServletResponse.SC_UNAUTHORIZED, CommonResponseCode.UNAUTHORIZE.getValue(),
-          CommonResponseCode.UNAUTHORIZE.getDisplayName());
+      buildErrorResponse(response, requestInfo.getRequestId(), HttpServletResponse.SC_UNAUTHORIZED,
+          CommonResponseCode.UNAUTHORIZE.getValue(), CommonResponseCode.UNAUTHORIZE.getDisplayName());
     } catch (Exception exception) {
       log.error("Error when process check permission: {}", exception.getMessage());
       buildErrorResponse((HttpServletResponse) servletResponse, UUID.randomUUID().toString(), HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
@@ -101,7 +103,7 @@ public class HandlerFilter implements Filter {
   public boolean processMultipartRequest(HttpServletRequest request, HttpServletResponse servletResponse, FilterChain filterChain) {
     try {
       if (requestInfo.isBasicAuth()) {
-        if (!checkBasicAuth()) {return false;}
+        if (!checkBasicAuth()) return false;
       } else if (StringUtils.isBlank(requestInfo.getOperatorKcId()) || !checkPermissionByUserId(requestInfo.getOperatorKcId(), request)) {
         buildErrorResponse(servletResponse, requestInfo.getRequestId(), HttpServletResponse.SC_FORBIDDEN, CommonResponseCode.FORBIDDEN.getValue(),
             CommonResponseCode.FORBIDDEN.getDisplayName());
@@ -134,10 +136,10 @@ public class HandlerFilter implements Filter {
   public boolean processRequest(HttpServletRequest request, HttpServletResponse servletResponse, FilterChain filterChain) {
     try {
       if (requestInfo.isBasicAuth()) {
-        if (!checkBasicAuth()) {return false;}
+        if (!checkBasicAuth()) return false;
       } else if (StringUtils.isBlank(requestInfo.getOperatorKcId()) || !checkPermissionByUserId(requestInfo.getOperatorKcId(), request)) {
-        buildErrorResponse(servletResponse, requestInfo.getRequestId(), HttpServletResponse.SC_FORBIDDEN, CommonResponseCode.FORBIDDEN.getValue(),
-            CommonResponseCode.FORBIDDEN.getDisplayName());
+        buildErrorResponse(servletResponse, requestInfo.getRequestId(), HttpServletResponse.SC_FORBIDDEN,
+            CommonResponseCode.FORBIDDEN.getValue(), CommonResponseCode.FORBIDDEN.getDisplayName());
         return true;
       }
       VerifyRequestWrapper requestWrapper = new VerifyRequestWrapper(request);
