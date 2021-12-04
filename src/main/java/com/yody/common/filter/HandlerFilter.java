@@ -1,26 +1,20 @@
 package com.yody.common.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.yody.common.annotation.Permission;
 import com.yody.common.constant.HeaderInfo;
 import com.yody.common.core.RequestInfo;
 import com.yody.common.core.dto.Result;
 import com.yody.common.enums.CommonResponseCode;
 import com.yody.common.enums.HeaderEnum;
 import com.yody.common.filter.constant.FieldConstant;
-import com.yody.common.filter.constant.PermissionConstant;
 import com.yody.common.filter.thirdparty.authen.request.GetUserInfoRequest;
 import com.yody.common.filter.thirdparty.authen.response.GetUserInfoResponse;
 import com.yody.common.filter.thirdparty.authen.services.AuthenService;
-import com.yody.common.filter.thirdparty.authoz.request.PermissionRequestDto;
-import com.yody.common.filter.thirdparty.authoz.response.PermissionResponseDto;
 import com.yody.common.filter.thirdparty.authoz.services.AuthService;
 import com.yody.common.utility.BasicAuthorization;
 import com.yody.common.utility.Strings;
 import java.io.IOException;
-import java.lang.reflect.Method;
 import java.util.Collections;
-import java.util.Objects;
 import java.util.UUID;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -37,18 +31,13 @@ import org.json.JSONObject;
 import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
-import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
-import org.springframework.util.CollectionUtils;
-import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
-import org.springframework.web.servlet.HandlerExecutionChain;
-import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
 @Component
 @Order(-2147483647)
@@ -82,18 +71,16 @@ public class HandlerFilter implements Filter {
     try {
       HttpServletResponse response = (HttpServletResponse) servletResponse;
       HttpServletRequest request = (HttpServletRequest) servletRequest;
-      if (request.getRequestURI().contains("api-docs") || request.getRequestURI().contains("swagger-ui") ||
-          request.getRequestURI().contains("favicon.ico") || request.getRequestURI().contains("swagger-config") ||
-          request.getRequestURI().contains("/actuator/health") || request.getRequestURI().contains("/actuator/info") ||
-          request.getRequestURI().contains("/accounts/login") || request.getMethod().equalsIgnoreCase("OPTIONS") ||
-          request.getRequestURI().contains("/public/") || request.getRequestURI().contains("/profile") ||
-          request.getRequestURI().contains("/ping")) {
+      if (request.getRequestURI().contains("api-docs") || request.getRequestURI().contains("swagger-ui") || request.getRequestURI().contains("favicon.ico")
+          || request.getRequestURI().contains("swagger-config") || request.getRequestURI().contains("/actuator/health") || request.getRequestURI().contains("/actuator/info")
+          || request.getRequestURI().contains("/accounts/login") || request.getMethod().equalsIgnoreCase("OPTIONS") || request.getRequestURI().contains("/public/")
+          || request.getRequestURI().contains("/profile") || request.getRequestURI().contains("/ping")) {
         filterChain.doFilter(servletRequest, servletResponse);
         return;
       }
       if (!this.getUserInfo(request)) {
-        buildErrorResponse(response, requestInfo.getRequestId(), HttpServletResponse.SC_UNAUTHORIZED,
-            CommonResponseCode.UNAUTHORIZE.getValue(), CommonResponseCode.UNAUTHORIZE.getDisplayName());
+        buildErrorResponse(response, requestInfo.getRequestId(), HttpServletResponse.SC_UNAUTHORIZED, CommonResponseCode.UNAUTHORIZE.getValue(),
+            CommonResponseCode.UNAUTHORIZE.getDisplayName());
         return;
       }
       boolean isMultipart = ServletFileUpload.isMultipartContent(request);
@@ -102,8 +89,8 @@ public class HandlerFilter implements Filter {
       } else if (!isMultipart && this.processRequest(request, response, filterChain)) {
         return;
       }
-      buildErrorResponse(response, requestInfo.getRequestId(), HttpServletResponse.SC_UNAUTHORIZED,
-          CommonResponseCode.UNAUTHORIZE.getValue(), CommonResponseCode.UNAUTHORIZE.getDisplayName());
+      buildErrorResponse(response, requestInfo.getRequestId(), HttpServletResponse.SC_UNAUTHORIZED, CommonResponseCode.UNAUTHORIZE.getValue(),
+          CommonResponseCode.UNAUTHORIZE.getDisplayName());
     } catch (Exception exception) {
       log.error("Error when process check permission: {}", exception.getMessage());
       buildErrorResponse((HttpServletResponse) servletResponse, UUID.randomUUID().toString(), HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
@@ -114,7 +101,7 @@ public class HandlerFilter implements Filter {
   public boolean processMultipartRequest(HttpServletRequest request, HttpServletResponse servletResponse, FilterChain filterChain) {
     try {
       if (requestInfo.isBasicAuth()) {
-        if (!checkBasicAuth()) return false;
+        if (!checkBasicAuth()) {return false;}
       } else if (StringUtils.isBlank(requestInfo.getOperatorKcId()) || !checkPermissionByUserId(requestInfo.getOperatorKcId(), request)) {
         buildErrorResponse(servletResponse, requestInfo.getRequestId(), HttpServletResponse.SC_FORBIDDEN, CommonResponseCode.FORBIDDEN.getValue(),
             CommonResponseCode.FORBIDDEN.getDisplayName());
@@ -147,10 +134,10 @@ public class HandlerFilter implements Filter {
   public boolean processRequest(HttpServletRequest request, HttpServletResponse servletResponse, FilterChain filterChain) {
     try {
       if (requestInfo.isBasicAuth()) {
-        if (!checkBasicAuth()) return false;
+        if (!checkBasicAuth()) {return false;}
       } else if (StringUtils.isBlank(requestInfo.getOperatorKcId()) || !checkPermissionByUserId(requestInfo.getOperatorKcId(), request)) {
-        buildErrorResponse(servletResponse, requestInfo.getRequestId(), HttpServletResponse.SC_FORBIDDEN,
-            CommonResponseCode.FORBIDDEN.getValue(), CommonResponseCode.FORBIDDEN.getDisplayName());
+        buildErrorResponse(servletResponse, requestInfo.getRequestId(), HttpServletResponse.SC_FORBIDDEN, CommonResponseCode.FORBIDDEN.getValue(),
+            CommonResponseCode.FORBIDDEN.getDisplayName());
         return true;
       }
       VerifyRequestWrapper requestWrapper = new VerifyRequestWrapper(request);
@@ -232,13 +219,17 @@ public class HandlerFilter implements Filter {
     getUserInfoRequest.setToken(String.format("Bearer %s", token));
 
     GetUserInfoResponse getUserInfoResponse = authenService.getUserInfo(getUserInfoRequest);
+    if (getUserInfoResponse == null || StringUtils.isBlank(getUserInfoResponse.getName()) || StringUtils.isBlank(getUserInfoResponse.getCode()) || StringUtils.isBlank(
+        getUserInfoResponse.getFullName())) {
+      return false;
+    }
     requestInfo.setOperatorKcId(getUserInfoResponse.getSub());
     requestInfo.setOperatorLoginId(getUserInfoResponse.getName());
     requestInfo.setOperatorName(getUserInfoResponse.getPreferredUsername());
     requestInfo.setFullName(getUserInfoResponse.getFullName());
     requestInfo.setCode(getUserInfoResponse.getCode());
     String requestId = request.getHeader(HeaderEnum.HEADER_REQUEST_ID.getValue());
-    if (requestId == null || requestId.isEmpty()) {
+    if (StringUtils.isBlank(requestId)) {
       requestId = UUID.randomUUID().toString();
     }
     requestInfo.setRequestId(requestId);

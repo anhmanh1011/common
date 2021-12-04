@@ -19,7 +19,6 @@ public class AuthenService {
         ParameterizedTypeReference<GetUserInfoResponse> parameterizedTypeReference
             = new ParameterizedTypeReference<GetUserInfoResponse>() {
         };
-        GetUserInfoResponse result = authenServiceClient.get(request, parameterizedTypeReference);
-        return result;
+        return authenServiceClient.get(request, parameterizedTypeReference);
     }
 }
