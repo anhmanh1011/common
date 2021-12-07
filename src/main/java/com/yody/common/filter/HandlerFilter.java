@@ -105,8 +105,8 @@ public class HandlerFilter implements Filter {
       if (requestInfo.isBasicAuth()) {
         if (!checkBasicAuth()) return false;
       } else if (StringUtils.isBlank(requestInfo.getOperatorKcId()) || !checkPermissionByUserId(requestInfo.getOperatorKcId(), request)) {
-        buildErrorResponse(servletResponse, requestInfo.getRequestId(), HttpServletResponse.SC_FORBIDDEN, CommonResponseCode.FORBIDDEN.getValue(),
-            CommonResponseCode.FORBIDDEN.getDisplayName());
+        buildErrorResponse(servletResponse, requestInfo.getRequestId(), HttpServletResponse.SC_OK,
+            CommonResponseCode.UNAUTHORIZE.getValue(), CommonResponseCode.UNAUTHORIZE.getDisplayName());
         return true;
       }
       MultipartResolver resolver = new CommonsMultipartResolver(request.getSession().getServletContext());
@@ -138,8 +138,8 @@ public class HandlerFilter implements Filter {
       if (requestInfo.isBasicAuth()) {
         if (!checkBasicAuth()) return false;
       } else if (StringUtils.isBlank(requestInfo.getOperatorKcId()) || !checkPermissionByUserId(requestInfo.getOperatorKcId(), request)) {
-        buildErrorResponse(servletResponse, requestInfo.getRequestId(), HttpServletResponse.SC_FORBIDDEN,
-            CommonResponseCode.FORBIDDEN.getValue(), CommonResponseCode.FORBIDDEN.getDisplayName());
+        buildErrorResponse(servletResponse, requestInfo.getRequestId(), HttpServletResponse.SC_OK,
+            CommonResponseCode.UNAUTHORIZE.getValue(), CommonResponseCode.UNAUTHORIZE.getDisplayName());
         return true;
       }
       VerifyRequestWrapper requestWrapper = new VerifyRequestWrapper(request);
