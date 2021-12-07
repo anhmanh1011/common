@@ -81,7 +81,7 @@ public class HandlerFilter implements Filter {
         return;
       }
       if (!this.getUserInfo(request)) {
-        buildErrorResponse(response, requestInfo.getRequestId(), HttpServletResponse.SC_UNAUTHORIZED,
+        buildErrorResponse(response, requestInfo.getRequestId(), HttpServletResponse.SC_OK,
             CommonResponseCode.UNAUTHORIZE.getValue(), CommonResponseCode.UNAUTHORIZE.getDisplayName());
         return;
       }
@@ -91,7 +91,7 @@ public class HandlerFilter implements Filter {
       } else if (!isMultipart && this.processRequest(request, response, filterChain)) {
         return;
       }
-      buildErrorResponse(response, requestInfo.getRequestId(), HttpServletResponse.SC_UNAUTHORIZED,
+      buildErrorResponse(response, requestInfo.getRequestId(), HttpServletResponse.SC_OK,
           CommonResponseCode.UNAUTHORIZE.getValue(), CommonResponseCode.UNAUTHORIZE.getDisplayName());
     } catch (Exception exception) {
       log.error("Error when process check permission: {}", exception.getMessage());
