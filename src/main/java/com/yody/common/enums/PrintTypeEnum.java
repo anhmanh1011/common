@@ -9,10 +9,11 @@ public enum PrintTypeEnum implements BaseEnum<String> {
     ORDER("order", "Hoá đơn bán hàng"),
     PURCHASE_ORDER("purchase_order", "Hoá đơn nhập hàng"),
     SHIPMENT("shipment", "Phiếu giao hàng"),
-    STOCK_EXPORT("stock_export", "Phiếu xuất kho");
+    STOCK_EXPORT("stock_export", "Phiếu xuất kho"),
+    ORDER_DRAFT("order_draft", "Đơn bán hàng nháp");
 
-    private String  value;
-    private String displayName;
+    private final String  value;
+    private final String displayName;
 
     public static PrintTypeEnum parse(String value) {
         for (PrintTypeEnum type : PrintTypeEnum.values()) {
