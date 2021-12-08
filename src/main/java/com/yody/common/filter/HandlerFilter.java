@@ -1,20 +1,26 @@
 package com.yody.common.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.yody.common.annotation.Permission;
 import com.yody.common.constant.HeaderInfo;
 import com.yody.common.core.RequestInfo;
 import com.yody.common.core.dto.Result;
 import com.yody.common.enums.CommonResponseCode;
 import com.yody.common.enums.HeaderEnum;
 import com.yody.common.filter.constant.FieldConstant;
+import com.yody.common.filter.constant.PermissionConstant;
 import com.yody.common.filter.thirdparty.authen.request.GetUserInfoRequest;
 import com.yody.common.filter.thirdparty.authen.response.GetUserInfoResponse;
 import com.yody.common.filter.thirdparty.authen.services.AuthenService;
+import com.yody.common.filter.thirdparty.authoz.request.PermissionRequestDto;
+import com.yody.common.filter.thirdparty.authoz.response.PermissionResponseDto;
 import com.yody.common.filter.thirdparty.authoz.services.AuthService;
 import com.yody.common.utility.BasicAuthorization;
 import com.yody.common.utility.Strings;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.util.Collections;
+import java.util.Objects;
 import java.util.UUID;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -31,13 +37,18 @@ import org.json.JSONObject;
 import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
+import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
+import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
+import org.springframework.web.servlet.HandlerExecutionChain;
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
 @Component
 @Order(-2147483647)
@@ -245,44 +256,49 @@ public class HandlerFilter implements Filter {
 
   @SneakyThrows
   private boolean checkPermissionByUserId(String userId, HttpServletRequest request) {
-    return true;
-//    RequestMappingHandlerMapping req2HandlerMapping = appContext.getBean(RequestMappingHandlerMapping.class);
-//    HandlerExecutionChain handlerExeChain = req2HandlerMapping.getHandler(request);
-//    if (!Objects.nonNull(handlerExeChain)) {
-//      return false;
-//    }
-//
-//    HandlerMethod handlerMethod = (HandlerMethod) handlerExeChain.getHandler();
-//
-//    Method method = handlerMethod.getMethod();
-//    Permission annotation = AnnotationUtils.findAnnotation(method, Permission.class);
-//    String[] permissionTypes = annotation != null ? annotation.permissionType() : null;
-//    if (permissionTypes == null || permissionTypes.length <= 0) {
-//      return true;
-//    }
-//    PermissionRequestDto requestDto = new PermissionRequestDto();
-//    requestDto.setRequestId(requestInfo.getRequestId());
-//    requestDto.setUserId(userId);
-//    requestDto.setUserName(requestInfo.getOperatorName());
-//    Result<PermissionResponseDto> result = authService.getPermissionInfo(requestDto);
-//    if (result == null) {
-//      return false;
-//    }
-//    PermissionResponseDto permissionsDto = result.getData();
-//
-//    if (null == permissionsDto.getModules() || CollectionUtils.isEmpty(permissionsDto.getModules().getPermissions())) {
-//      return false;
-//    }
-//    if (permissionsDto.getModules().getPermissions().contains(PermissionConstant.ADMIN_ALL)) {
-//      return true;
-//    }
-//    for (String per : permissionTypes) {
-//      for (String permissionCode : permissionsDto.getModules().getPermissions()) {
-//        if (per.contains(permissionCode)) {
-//          return true;
-//        }
-//      }
-//    }
-//    return false;
+    try {
+      RequestMappingHandlerMapping req2HandlerMapping =
+          appContext.getBean(RequestMappingHandlerMapping.class);
+      HandlerExecutionChain handlerExeChain = req2HandlerMapping.getHandler(request);
+      if (!Objects.nonNull(handlerExeChain)) {
+        return false;
+      }
+
+      HandlerMethod handlerMethod = (HandlerMethod) handlerExeChain.getHandler();
+
+      Method method = handlerMethod.getMethod();
+      Permission annotation = AnnotationUtils.findAnnotation(method, Permission.class);
+      String[] permissionTypes = annotation != null ? annotation.permissionType() : null;
+      if (permissionTypes == null || permissionTypes.length <= 0) {
+        return true;
+      }
+      PermissionRequestDto requestDto = new PermissionRequestDto();
+      requestDto.setRequestId(requestInfo.getRequestId());
+      requestDto.setUserId(userId);
+      requestDto.setUserName(requestInfo.getOperatorName());
+      Result<PermissionResponseDto> result = authService.getPermissionInfo(requestDto);
+      if (result == null) {
+        return false;
+      }
+      PermissionResponseDto permissionsDto = result.getData();
+
+      if (null == permissionsDto.getModules()
+          || CollectionUtils.isEmpty(permissionsDto.getModules().getPermissions())) {
+        return false;
+      }
+      if (permissionsDto.getModules().getPermissions().contains(PermissionConstant.ADMIN_ALL)) {
+        return true;
+      }
+      for (String per : permissionTypes) {
+        for (String permissionCode : permissionsDto.getModules().getPermissions()) {
+          if (per.contains(permissionCode)) {
+            return true;
+          }
+        }
+      }
+      return false;
+    } catch (Throwable var4) {
+      throw var4;
+    }
   }
 }
