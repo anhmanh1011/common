@@ -12,28 +12,6 @@ import java.util.List;
 @NoArgsConstructor
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class PermissionResponseDto {
-
-    private List<Role> role;
-    private Module modules;
-    private DataWhitelist dataWhitelist;
-
-    @Data
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class Role {
-        private String roleCode;
-        private int position;
-    }
-
-    @Data
-    @NoArgsConstructor
-    public static class Module {
-        private List<String> permissions;
-    }
-
-    @Data
-    @NoArgsConstructor
-    public static class DataWhitelist {
-        private List<String> column;
-    }
+    private String userId;
+    private List<String> permissions;
 }

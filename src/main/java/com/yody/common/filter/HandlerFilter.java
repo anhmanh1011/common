@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yody.common.annotation.Permission;
 import com.yody.common.constant.HeaderInfo;
 import com.yody.common.core.RequestInfo;
+import com.yody.common.core.dto.PermissionResponseDto;
 import com.yody.common.core.dto.Result;
 import com.yody.common.enums.CommonResponseCode;
 import com.yody.common.enums.HeaderEnum;
@@ -13,7 +14,6 @@ import com.yody.common.filter.thirdparty.authen.request.GetUserInfoRequest;
 import com.yody.common.filter.thirdparty.authen.response.GetUserInfoResponse;
 import com.yody.common.filter.thirdparty.authen.services.AuthenService;
 import com.yody.common.filter.thirdparty.authoz.request.PermissionRequestDto;
-import com.yody.common.filter.thirdparty.authoz.response.PermissionResponseDto;
 import com.yody.common.filter.thirdparty.authoz.services.AuthService;
 import com.yody.common.utility.BasicAuthorization;
 import com.yody.common.utility.Strings;
@@ -31,6 +31,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
@@ -42,7 +43,6 @@ import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.MultipartResolver;
@@ -117,7 +117,7 @@ public class HandlerFilter implements Filter {
         if (!checkBasicAuth()) return false;
       } else if (StringUtils.isBlank(requestInfo.getOperatorKcId()) || !checkPermissionByUserId(requestInfo.getOperatorKcId(), request)) {
         buildErrorResponse(servletResponse, requestInfo.getRequestId(), HttpServletResponse.SC_OK,
-            CommonResponseCode.UNAUTHORIZE.getValue(), CommonResponseCode.UNAUTHORIZE.getDisplayName());
+            CommonResponseCode.FORBIDDEN.getValue(), CommonResponseCode.FORBIDDEN.getDisplayName());
         return true;
       }
       MultipartResolver resolver = new CommonsMultipartResolver(request.getSession().getServletContext());
@@ -150,7 +150,7 @@ public class HandlerFilter implements Filter {
         if (!checkBasicAuth()) return false;
       } else if (StringUtils.isBlank(requestInfo.getOperatorKcId()) || !checkPermissionByUserId(requestInfo.getOperatorKcId(), request)) {
         buildErrorResponse(servletResponse, requestInfo.getRequestId(), HttpServletResponse.SC_OK,
-            CommonResponseCode.UNAUTHORIZE.getValue(), CommonResponseCode.UNAUTHORIZE.getDisplayName());
+            CommonResponseCode.FORBIDDEN.getValue(), CommonResponseCode.FORBIDDEN.getDisplayName());
         return true;
       }
       VerifyRequestWrapper requestWrapper = new VerifyRequestWrapper(request);
@@ -256,49 +256,44 @@ public class HandlerFilter implements Filter {
 
   @SneakyThrows
   private boolean checkPermissionByUserId(String userId, HttpServletRequest request) {
-    try {
-      RequestMappingHandlerMapping req2HandlerMapping =
-          appContext.getBean(RequestMappingHandlerMapping.class);
-      HandlerExecutionChain handlerExeChain = req2HandlerMapping.getHandler(request);
-      if (!Objects.nonNull(handlerExeChain)) {
-        return false;
-      }
+//    return true;
+    RequestMappingHandlerMapping req2HandlerMapping = appContext.getBean(RequestMappingHandlerMapping.class);
+    HandlerExecutionChain handlerExeChain = req2HandlerMapping.getHandler(request);
+    if (!Objects.nonNull(handlerExeChain)) {
+      return false;
+    }
 
-      HandlerMethod handlerMethod = (HandlerMethod) handlerExeChain.getHandler();
+    HandlerMethod handlerMethod = (HandlerMethod) handlerExeChain.getHandler();
 
-      Method method = handlerMethod.getMethod();
-      Permission annotation = AnnotationUtils.findAnnotation(method, Permission.class);
-      String[] permissionTypes = annotation != null ? annotation.permissionType() : null;
-      if (permissionTypes == null || permissionTypes.length <= 0) {
-        return true;
-      }
-      PermissionRequestDto requestDto = new PermissionRequestDto();
-      requestDto.setRequestId(requestInfo.getRequestId());
-      requestDto.setUserId(userId);
-      requestDto.setUserName(requestInfo.getOperatorName());
-      Result<PermissionResponseDto> result = authService.getPermissionInfo(requestDto);
-      if (result == null) {
-        return false;
-      }
-      PermissionResponseDto permissionsDto = result.getData();
+    Method method = handlerMethod.getMethod();
+    Permission annotation = AnnotationUtils.findAnnotation(method, Permission.class);
+    String[] permissionTypes = annotation != null ? annotation.permissionType() : null;
+    if (permissionTypes == null || permissionTypes.length <= 0) {
+      return true;
+    }
+    PermissionRequestDto requestDto = new PermissionRequestDto();
+    requestDto.setRequestId(requestInfo.getRequestId());
+    requestDto.setUserId(userId);
+    requestDto.setUserName(requestInfo.getOperatorName());
+    Result<PermissionResponseDto> result = authService.getPermissionInfo(requestDto);
+    if (result == null) {
+      return false;
+    }
+    PermissionResponseDto permissionsDto = result.getData();
 
-      if (null == permissionsDto.getModules()
-          || CollectionUtils.isEmpty(permissionsDto.getModules().getPermissions())) {
-        return false;
-      }
-      if (permissionsDto.getModules().getPermissions().contains(PermissionConstant.ADMIN_ALL)) {
-        return true;
-      }
-      for (String per : permissionTypes) {
-        for (String permissionCode : permissionsDto.getModules().getPermissions()) {
-          if (per.contains(permissionCode)) {
-            return true;
-          }
+    if (null == permissionsDto.getPermissions() || CollectionUtils.isEmpty(permissionsDto.getPermissions())) {
+      return false;
+    }
+    if (permissionsDto.getPermissions().contains(PermissionConstant.ADMIN_ALL)) {
+      return true;
+    }
+    for (String per : permissionTypes) {
+      for (String permissionCode : permissionsDto.getPermissions()) {
+        if (per.contains(permissionCode)) {
+          return true;
         }
       }
-      return false;
-    } catch (Throwable var4) {
-      throw var4;
     }
+    return false;
   }
 }

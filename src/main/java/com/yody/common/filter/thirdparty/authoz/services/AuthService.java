@@ -1,8 +1,8 @@
 package com.yody.common.filter.thirdparty.authoz.services;
 
+import com.yody.common.core.dto.PermissionResponseDto;
 import com.yody.common.core.dto.Result;
 import com.yody.common.filter.thirdparty.authoz.request.PermissionRequestDto;
-import com.yody.common.filter.thirdparty.authoz.response.PermissionResponseDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
@@ -31,7 +31,6 @@ public class AuthService {
         ParameterizedTypeReference<Result<PermissionResponseDto>> parameterizedTypeReference
             = new ParameterizedTypeReference<Result<PermissionResponseDto>>() {
         };
-        Result<PermissionResponseDto> result = authServiceClient.get(request, parameterizedTypeReference);
-        return result;
+        return authServiceClient.get(request, parameterizedTypeReference);
     }
 }
