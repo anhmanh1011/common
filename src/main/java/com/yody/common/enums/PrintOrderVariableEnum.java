@@ -33,7 +33,7 @@ public enum PrintOrderVariableEnum implements BasePrintEnum<String> {
   SHIPPING_FEE_INFORMED_TO_CUSTOMER("{shipping_fee_informed_to_customer}", "Phí ship báo khách",
       "100,000"),
   TOTAL("{total}", "Tổng tiền (giá trị đơn hàng)", "100,000"),
-  TOTAL_BEFORE_DISCOUNT("{total_before_discount}", "trước chiết khấu", "120,000"),
+  TOTAL_BEFORE_DISCOUNT("{total_before_discount}", "Tổng tiền trước chiết khấu", "120,000"),
   TOTAL_VAT("{total_vat}", "Tổng giá trị VAT", "10,000"),
   CUSTOMER_CARE_STAFF("{customer_care_staff}", "Nhân viên chăm sóc khách hàng",
       "Nguyễn Thùy Chi"),
@@ -48,6 +48,7 @@ public enum PrintOrderVariableEnum implements BasePrintEnum<String> {
   ORDER_MONEY_AFTER_DISCOUNT_BY_TEXT("{order_money_after_discount_by_text}",
       "Tổng tiền sau chiết khấu (bằng chữ)", "Chín mươi nghìn đồng"),
   ORDER_DISCOUNT("{order_discount}", "Tiền chiết khấu đơn hàng", "0"),
+  POINT("{point}", "Tiêu điểm", "0"),
   TOTAL_QUANTITY_PRODUCT("{total_quantity_product}", "Tổng số lượng sản phẩm", "2"),
   DOWN_PAYMENT("{down_payment}", "Tiền đặt cọc", "10,000"),
   ORDER_WEIGHT("{order_weight}", "Khối lượng đơn hàng", "500g"),
@@ -70,9 +71,9 @@ public enum PrintOrderVariableEnum implements BasePrintEnum<String> {
       "68 Triều Khúc - Tân Triều - Thanh Trì - Hà Nội"),
   ;
 
-  private String value;
-  private String displayName;
-  private String previewValue;
+  private final String value;
+  private final String displayName;
+  private final String previewValue;
 
   public static PrintOrderVariableEnum parse(String value) {
     for (PrintOrderVariableEnum type : PrintOrderVariableEnum.values()) {
