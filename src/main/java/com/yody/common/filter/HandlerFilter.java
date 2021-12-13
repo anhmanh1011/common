@@ -87,7 +87,7 @@ public class HandlerFilter implements Filter {
           request.getRequestURI().contains("/actuator/health") || request.getRequestURI().contains("/actuator/info") ||
           request.getRequestURI().contains("/accounts/login") || request.getMethod().equalsIgnoreCase("OPTIONS") ||
           request.getRequestURI().contains("/public/") || request.getRequestURI().contains("/profile") ||
-          request.getRequestURI().contains("/ping")) {
+          request.getRequestURI().contains("/ping") || request.getRequestURI().contains("/login") ) {
         filterChain.doFilter(servletRequest, servletResponse);
         return;
       }
@@ -289,7 +289,7 @@ public class HandlerFilter implements Filter {
     }
     for (String per : permissionTypes) {
       for (String permissionCode : permissionsDto.getPermissions()) {
-        if (per.contains(permissionCode)) {
+        if (permissionCode.contains(per)) {
           return true;
         }
       }
