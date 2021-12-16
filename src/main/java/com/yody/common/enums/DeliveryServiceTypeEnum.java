@@ -9,8 +9,9 @@ public enum DeliveryServiceTypeEnum implements BaseEnum<String> {
   EMPLOYEE("employee", "Nhân viên"),
   EXTERNAL_SERVICE("external_service", "Dịch vụ bên ngoài"),
   EXTERNAL_SHIPPER("external_shipper", "Shipper bên ngoài");
-  private String value;
-  private String displayName;
+
+  private final String value;
+  private final String displayName;
 
   public static DeliveryServiceTypeEnum parse(String code) {
     for (DeliveryServiceTypeEnum type : DeliveryServiceTypeEnum.values()) {

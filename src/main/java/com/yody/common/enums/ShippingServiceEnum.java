@@ -5,11 +5,13 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public enum ShippingServiceEnum implements BaseEnum<String> {
 
-  EXPRESS("express","Hỏa tốc"),
-  STANDARD("standard","Tiêu chuẩn");
+  EXPRESS("express", "Hỏa tốc"),
+  STANDARD("standard", "Tiêu chuẩn"),
+  FOUR_HOURS_DELIVERY("4h_delivery", "Giao hàng 4 giờ");
 
   private final String value;
   private final String displayName;
+
   @Override
   public String getValue() {
     return this.value;
