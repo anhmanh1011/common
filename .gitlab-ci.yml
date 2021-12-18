@@ -31,7 +31,7 @@ sornaqube check:
 compile deploy:
   tags:
     - build-yody-tag
-  stage: deploy
+  stage: deploy_server
   script:
     - mvn -s maven/settings.xml --batch-mode -U clean package deploy
   only:
