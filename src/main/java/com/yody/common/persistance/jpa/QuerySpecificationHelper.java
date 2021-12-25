@@ -9,6 +9,7 @@ import static com.yody.common.enums.SearchOperation.LESS_THAN_EQUAL;
 import static com.yody.common.enums.SearchOperation.MATCH;
 import static com.yody.common.enums.SearchOperation.MATCH_END;
 import static com.yody.common.enums.SearchOperation.MATCH_START;
+import static com.yody.common.enums.SearchOperation.NOT_EQUAL;
 import static com.yody.common.enums.SearchOperation.NOT_IN;
 
 import com.yody.common.enums.SearchOperation;
@@ -51,6 +52,11 @@ public class QuerySpecificationHelper {
         return builder.equal(root.<Date>get(criteria.getKey()), (Date) criteria.getValue());
       }
       return builder.equal(root.get(criteria.getKey()), criteria.getValue());
+    } else if (criteria.getOperation() == NOT_EQUAL) {
+      if (criteria.isDate()) {
+        return builder.notEqual(root.<Date>get(criteria.getKey()), (Date) criteria.getValue());
+      }
+      return builder.notEqual(root.get(criteria.getKey()), criteria.getValue());
     } else if (criteria.getOperation() == MATCH) {
       return builder.like(root.<String>get(criteria.getKey()), "%" + criteria.getValue() + "%");
     } else if (criteria.getOperation() == MATCH_START) {
