@@ -7,6 +7,9 @@ import lombok.Getter;
 @Getter
 public enum PrintTypeEnum implements BaseEnum<String> {
     ORDER("order", "Hoá đơn bán hàng"),
+    INVENTORY_TRANSFER("inventory_transfer", "Mẫu in phiếu chuyển kho"),
+    INVENTORY_TRANSFER_BILL("inventory_transfer_bill", "Mẫu in vận đơn chuyển kho"),
+    INVENTORY_ADJUSTMENT("inventory_adjustment", "Mẫu in biên bản xử lý hàng thừa thiếu"),
     PURCHASE_ORDER("purchase_order", "Hoá đơn nhập hàng"),
     SHIPMENT("shipment", "Phiếu giao hàng"),
     STOCK_EXPORT("stock_export", "Phiếu xuất kho"),
