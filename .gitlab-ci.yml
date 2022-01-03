@@ -19,22 +19,18 @@ variables:
   IMAGE_TAG: $CI_COMMIT_SHORT_SHA
 
 stages:
-  - compile_build
-  - docker_build
-  - deploy_config
-  - deploy_server
   - sona_check
+  - deploy_server
 
 sornaqube check:
   extends: .sornaqube
 
 compile deploy:
   tags:
-    - build-yody-tag
+    - npd-dev
   stage: deploy_server
   script:
     - mvn -s maven/settings.xml --batch-mode -U clean package deploy
   only:
-    refs:
-      - develop
-      - uat
+    - develop
+    - uat
