@@ -1,13 +1,7 @@
 include:
   - project: yody-system/devops/cicd-templates
-    file: compile-build.yml
-    ref: master
-  - project: yody-system/devops/cicd-templates
     file: sonar.yml
     ref: master
-
-default:
-  image: maven:3.6.1-jdk-8
 
 cache:
   key: $CI_PROJECT_NAMESPACE:$CI_PROJECT_NAME
@@ -26,6 +20,7 @@ sornaqube check:
   extends: .sornaqube
 
 compile deploy:
+  image: 610881553522.dkr.ecr.ap-southeast-1.amazonaws.com/maven:3.6.1-jdk-8
   tags:
     - npd-dev
   stage: deploy_server
@@ -33,4 +28,3 @@ compile deploy:
     - mvn -s maven/settings.xml --batch-mode -U clean package deploy
   only:
     - develop
-    - uat
