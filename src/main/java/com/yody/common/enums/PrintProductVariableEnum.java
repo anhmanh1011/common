@@ -33,7 +33,8 @@ public enum PrintProductVariableEnum implements BasePrintEnum<String> {
     MADE_IN("{made_in}", "Xuất xứ sản phẩm", "Việt Nam"),
     PRODUCT_NOTE("{product_note}", "Ghi chú sản phẩm",
         "Bảo quản sản phẩm nơi thông thoáng, khô ráo."),
-    PRODUCT_CATEGORY("{product_category}", "Mã danh mục sản phẩm", "APM");
+    PRODUCT_CATEGORY("{product_category}", "Mã danh mục sản phẩm", "APM"),
+    PRODUCT_INDEX("{product_index}", "Số thứ tự", "1");
 
     private String value;
     private String displayName;

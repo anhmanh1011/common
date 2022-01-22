@@ -33,6 +33,8 @@ public enum PrintOrderVariableEnum implements BasePrintEnum<String> {
   SHIPPING_FEE_INFORMED_TO_CUSTOMER("{shipping_fee_informed_to_customer}", "Phí ship báo khách",
       "100,000"),
   TOTAL("{total}", "Tổng tiền (giá trị đơn hàng)", "100,000"),
+  PAID_AMOUNT("{paid_amount}", "Tiền khách trả", "100,000"),
+  ORDER_QUANTITY_LINE_ITEM("{order_quantity_line_item}", "Tổng sản phẩm line item", "3"),
   TOTAL_BEFORE_DISCOUNT("{total_before_discount}", "Tổng tiền trước chiết khấu", "120,000"),
   TOTAL_VAT("{total_vat}", "Tổng giá trị VAT", "10,000"),
   CUSTOMER_CARE_STAFF("{customer_care_staff}", "Nhân viên chăm sóc khách hàng",
