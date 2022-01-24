@@ -12,6 +12,7 @@ public enum PrintShipmentVariableEnum implements BasePrintEnum<String> {
     SENDER_EMAIL("{sender_email}", "Email người gửi", "tinatasha@gmail.com"),
     SHIPPING_FULL_NAME("{shipping_full_name}", "Tên người nhận", "Lê Văn Cáp"),
     SHIPPING_PHONE("{shipping_phone}", "Số điện thoại người nhận", "0988334881"),
+    SHIPPING_SECOND_PHONE("{shipping_second_phone}", "Thông tin người nhận 2", "Vợ - 0988334881"),
     SHIPPING_ADDRESS("{shipping_address}", "Địa chỉ người nhận", "Hà Nội"),
     SHIPPING_EMAIL("{shipping_email}", "Email người nhận", "steverogers@gmail.com"),
     SHIPPING_FULL_ADDRESS("{shipping_full_address}",
