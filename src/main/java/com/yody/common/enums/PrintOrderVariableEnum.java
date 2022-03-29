@@ -72,6 +72,7 @@ public enum PrintOrderVariableEnum implements BasePrintEnum<String> {
   SHIPPING_NOTE("{shipping_note}", "Ghi chú vận chuyển", "Ship gấp"),
   CUSTOMER_NAME("{customer_name}", "Tên khách hàng", "Chu Văn Toàn"),
   CUSTOMER_PHONE("{customer_phone}", "SĐT khách hàng", "0123456789"),
+  CUSTOMER_LOYALTY_LEVEL("{customer_loyalty_level}", "Hạng khách hàng", "Vip S"),
   CUSTOMER_ADDRESS("{customer_address}", "Địa chỉ KH",
       "68 Triều Khúc - Tân Triều - Thanh Trì - Hà Nội"),
   ;
