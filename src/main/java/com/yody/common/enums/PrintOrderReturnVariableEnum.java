@@ -17,6 +17,9 @@ public enum PrintOrderReturnVariableEnum implements BasePrintEnum<String> {
   RECEIVE_TIME("{receive_time}", "Thời gian nhận", "15:27:59"),
   ACCOUNT("{account}", "Nhân viên trả hàng", "15:27:59"),
   ACCOUNT_CODE("{account_code}", "Mã nhân viên trả hàng", "15:27:59"),
+  BACK_MONEY_TO_CUSTOMER("{back_money_to_customer}", "Tiền trả khách", "100,000"),
+  BACK_MONEY_TO_CUSTOMER_TEXT("{back_money_to_customer_text}", "Tiền trả khách bằng chữ", "Một trăm nghìn đồng"),
+  CONTENT("{content}", "Nội dung thanh toán tiền", "Khách cần trả"),
   ;
 
   private final String value;
