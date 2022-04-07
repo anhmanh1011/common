@@ -84,7 +84,7 @@ public class HandlerFilter implements Filter {
                 request.getRequestURI().contains("favicon.ico") || request.getRequestURI().contains("swagger-config") ||
                 request.getRequestURI().contains("/actuator/health") || request.getRequestURI().contains("/actuator/info") ||
                 request.getRequestURI().contains("/accounts/login") || request.getMethod().equalsIgnoreCase("OPTIONS") ||
-                request.getRequestURI().contains("/public/") || request.getRequestURI().contains("/profile") ||
+                request.getRequestURI().contains("/public/") || (request.getRequestURI().contains("/profile") && !request.getRequestURI().contains("/user/profile")) ||
                 request.getRequestURI().contains("/ping") || request.getRequestURI().contains("/login")) {
                 filterChain.doFilter(servletRequest, servletResponse);
                 return;
