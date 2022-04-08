@@ -7,6 +7,7 @@ import lombok.Getter;
 @Getter
 public enum PrintPurchaseOrderEnum implements BasePrintEnum<String> {
   PURCHASE_ORDER_ID("{purchase_order_id}", "Mã đơn hàng", "1"),
+  PURCHASE_ORDER_CODE("{purchase_order_code}", "Mã đơn hàng", "PO000000001"),
   PO_MERCHANDISER_NAME("{po_merchandiser_name}", "Merchandiser", "Nguyễn Bảo Quỳnh"),
   PO_DESIGNER_NAME("{po_designer_name}", "Nhà thiết kế", "Nguyễn Bảo Quỳnh"),
   MERCHANDISER_PHONE_NUMBERS("{merchandiser_phone_numbers}", "SĐT Merchandiser", "G096123456"),
@@ -35,11 +36,12 @@ public enum PrintPurchaseOrderEnum implements BasePrintEnum<String> {
   PO_PROCUREMENT_PLAN_ARRAY("{po_procurement_plan_array}", "Bảng kế hoạch nhập kho", ""),
   PO_PAYMENT_TERM("{po_payment_term}", "Điều khoản thanh toán", ""),
   PO_PAYMENT_NOTE("{po_payment_note}", "Diễn giải thanh toán", ""),
-  PO_PAYMENT_PLAN_ARRAY("{po_payment_plan_array}", "Bảng kế hoạch thanh toán", "");
+  PO_PAYMENT_PLAN_ARRAY("{po_payment_plan_array}", "Bảng kế hoạch thanh toán", ""),
+  PO_REFERENCE("{po_reference}", "Mã tham chiếu", "D00000001");
 
-  private String value;
-  private String displayName;
-  private String previewValue;
+  private final String value;
+  private final String displayName;
+  private final String previewValue;
 
   public static PrintProductVariableEnum parse(String value) {
     for (PrintProductVariableEnum type : PrintProductVariableEnum.values()) {
