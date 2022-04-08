@@ -7,6 +7,7 @@ import lombok.Getter;
 @Getter
 public enum PrintPurchaseOrderEnum implements BasePrintEnum<String> {
   PURCHASE_ORDER_ID("{purchase_order_id}", "Mã đơn hàng", "1"),
+  PURCHASE_ORDER_CODE("{purchase_order_code}", "Mã đơn hàng", "PO000000001"),
   PO_MERCHANDISER_NAME("{po_merchandiser_name}", "Merchandiser", "Nguyễn Bảo Quỳnh"),
   PO_DESIGNER_NAME("{po_designer_name}", "Nhà thiết kế", "Nguyễn Bảo Quỳnh"),
   MERCHANDISER_PHONE_NUMBERS("{merchandiser_phone_numbers}", "SĐT Merchandiser", "G096123456"),
@@ -15,6 +16,8 @@ public enum PrintPurchaseOrderEnum implements BasePrintEnum<String> {
   SUPPLIER_KEYCONTACT_NAME("{supplier_keycontact_name}", "Đại diện", "Nguyễn Dương"),
   SUPPLIER_KEYCONTACT_POSITION("{supplier_keycontact_position}", "Chức vụ", "Người đại diện"),
   SUPPLIER_PHONE_NUMBER("{supplier_phone_number}", "Điện thoại", "G096123456"),
+  SUPPLIER_DEBT_TIME("{supplier_debt_time}", "Thanh toán sau số ngày", "45"),
+  SUPPLIER_DEBT_TIME_UNIT_NAME("{supplier_debt_time_unit_name}", "Thời gian thanh toán sau", "Ngày"),
   BANK_ACCOUNT_NUMBERS("{bank_account_numbers}", "TK ngân hàng", "123456789"),
   BANK_ACCOUNT_NAME("{bank_account_name}", "Tên TK", "123456789"),
   BANK_NAME("{bank_name}", "Ngân hàng", "Techcombank"),
@@ -35,11 +38,12 @@ public enum PrintPurchaseOrderEnum implements BasePrintEnum<String> {
   PO_PROCUREMENT_PLAN_ARRAY("{po_procurement_plan_array}", "Bảng kế hoạch nhập kho", ""),
   PO_PAYMENT_TERM("{po_payment_term}", "Điều khoản thanh toán", ""),
   PO_PAYMENT_NOTE("{po_payment_note}", "Diễn giải thanh toán", ""),
-  PO_PAYMENT_PLAN_ARRAY("{po_payment_plan_array}", "Bảng kế hoạch thanh toán", "");
+  PO_PAYMENT_PLAN_ARRAY("{po_payment_plan_array}", "Bảng kế hoạch thanh toán", ""),
+  PO_REFERENCE("{po_reference}", "Mã tham chiếu", "D00000001");
 
-  private String value;
-  private String displayName;
-  private String previewValue;
+  private final String value;
+  private final String displayName;
+  private final String previewValue;
 
   public static PrintProductVariableEnum parse(String value) {
     for (PrintProductVariableEnum type : PrintProductVariableEnum.values()) {
