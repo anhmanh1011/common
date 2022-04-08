@@ -16,6 +16,8 @@ public enum PrintPurchaseOrderEnum implements BasePrintEnum<String> {
   SUPPLIER_KEYCONTACT_NAME("{supplier_keycontact_name}", "Đại diện", "Nguyễn Dương"),
   SUPPLIER_KEYCONTACT_POSITION("{supplier_keycontact_position}", "Chức vụ", "Người đại diện"),
   SUPPLIER_PHONE_NUMBER("{supplier_phone_number}", "Điện thoại", "G096123456"),
+  SUPPLIER_DEBT_TIME("{supplier_debt_time}", "Thanh toán sau số ngày", "45"),
+  SUPPLIER_DEBT_TIME_UNIT_NAME("{supplier_debt_time_unit_name}", "Thời gian thanh toán sau", "Ngày"),
   BANK_ACCOUNT_NUMBERS("{bank_account_numbers}", "TK ngân hàng", "123456789"),
   BANK_ACCOUNT_NAME("{bank_account_name}", "Tên TK", "123456789"),
   BANK_NAME("{bank_name}", "Ngân hàng", "Techcombank"),
