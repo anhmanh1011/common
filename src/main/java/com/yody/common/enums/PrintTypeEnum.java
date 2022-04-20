@@ -19,7 +19,8 @@ public enum PrintTypeEnum implements BaseEnum<String> {
     GOODS_RECEIPT_RECEIVE("goods_receipt_receive", "Biên bản nhận chuyển hoàn từ hãng vận chuyển rút gọn"),
     GOODS_RECEIPT_RECEIVE_DETAIL("goods_receipt_receive_detail", "Biên bản nhận chuyển hoàn từ hãng vận chuyển đầy đủ"),
     ORDER_EXCHANGE("order_exchange", "Hóa đơn đổi hàng"),
-    ORDER_RETURN("order_return", "Hóa đơn trả hàng");
+    ORDER_RETURN("order_return", "Hóa đơn trả hàng"),
+    WARRANTY("warranty","Phiếu bảo hành");
 
     private final String  value;
     private final String displayName;
