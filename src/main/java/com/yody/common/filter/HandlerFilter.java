@@ -150,6 +150,7 @@ public class HandlerFilter implements Filter {
             } else if (StringUtils.isBlank(requestInfo.getOperatorKcId()) || !checkPermissionByUserId(requestInfo.getOperatorKcId(), request)) {
                 buildErrorResponse(servletResponse, requestInfo.getRequestId(), HttpServletResponse.SC_OK,
                     CommonResponseCode.FORBIDDEN.getValue(), CommonResponseCode.FORBIDDEN.getDisplayName());
+                log.info("process request with operatorKcId " + requestInfo.getOperatorKcId());
                 return true;
             }
             VerifyRequestWrapper requestWrapper = new VerifyRequestWrapper(request);
