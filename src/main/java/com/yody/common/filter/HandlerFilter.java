@@ -98,6 +98,7 @@ public class HandlerFilter implements Filter {
             if (isMultipart && this.processMultipartRequest(request, response, filterChain)) {
                 return;
             } else if (!isMultipart && this.processRequest(request, response, filterChain)) {
+                log.info("RequestInfor: " + this.requestInfo.getFullName());
                 return;
             }
             buildErrorResponse(response, requestInfo.getRequestId(), HttpServletResponse.SC_OK,
@@ -230,6 +231,7 @@ public class HandlerFilter implements Filter {
         getUserInfoRequest.setToken(String.format("Bearer %s", token));
 
         GetUserInfoResponse getUserInfoResponse = authenService.getUserInfo(getUserInfoRequest);
+        log.info("HandlerFilter get user infor: " + getUserInfoResponse.getFullName());
         if (getUserInfoResponse == null || StringUtils.isBlank(getUserInfoResponse.getName()) || StringUtils.isBlank(getUserInfoResponse.getCode()) || StringUtils.isBlank(
             getUserInfoResponse.getFullName())) {
             return false;
