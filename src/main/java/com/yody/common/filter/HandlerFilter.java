@@ -63,8 +63,6 @@ public class HandlerFilter implements Filter {
     private final AuthService authService;
     private final AuthenService authenService;
 
-    RequestInfo requestInfo;
-
     public HandlerFilter(ApplicationContext appContext, AuthService authService, AuthenService authenService) {
         this.appContext = appContext;
         this.authService = authService;
@@ -89,16 +87,17 @@ public class HandlerFilter implements Filter {
                 filterChain.doFilter(servletRequest, servletResponse);
                 return;
             }
-            if (!this.getUserInfo(request)) {
+            RequestInfo requestInfo = new RequestInfo();
+            if (!this.getUserInfo(request, requestInfo)) {
                 buildErrorResponse(response, requestInfo.getRequestId(), HttpServletResponse.SC_OK,
                     CommonResponseCode.UNAUTHORIZE.getValue(), CommonResponseCode.UNAUTHORIZE.getDisplayName());
                 return;
             }
             boolean isMultipart = ServletFileUpload.isMultipartContent(request);
-            if (isMultipart && this.processMultipartRequest(request, response, filterChain)) {
+            if (isMultipart && this.processMultipartRequest(request, response, requestInfo, filterChain)) {
                 return;
-            } else if (!isMultipart && this.processRequest(request, response, filterChain)) {
-                log.info("RequestInfor method=" +request.getMethod()+ " user= " + this.requestInfo.getFullName() + " URI=" + request.getRequestURL().toString());
+            } else if (!isMultipart && this.processRequest(request, response, requestInfo, filterChain)) {
+                log.info("RequestInfor method=" +request.getMethod()+ " user= " + requestInfo.getFullName() + " URI=" + request.getRequestURL().toString());
                 return;
             }
             buildErrorResponse(response, requestInfo.getRequestId(), HttpServletResponse.SC_OK,
@@ -110,11 +109,11 @@ public class HandlerFilter implements Filter {
         }
     }
 
-    public boolean processMultipartRequest(HttpServletRequest request, HttpServletResponse servletResponse, FilterChain filterChain) {
+    public boolean processMultipartRequest(HttpServletRequest request, HttpServletResponse servletResponse, RequestInfo requestInfo, FilterChain filterChain) {
         try {
             if (requestInfo.isBasicAuth()) {
-                if (!checkBasicAuth()) return false;
-            } else if (StringUtils.isBlank(requestInfo.getOperatorKcId()) || !checkPermissionByUserId(requestInfo.getOperatorKcId(), request)) {
+                if (!checkBasicAuth(requestInfo)) return false;
+            } else if (StringUtils.isBlank(requestInfo.getOperatorKcId()) || !checkPermissionByUserId(requestInfo, request)) {
                 buildErrorResponse(servletResponse, requestInfo.getRequestId(), HttpServletResponse.SC_OK,
                     CommonResponseCode.FORBIDDEN.getValue(), CommonResponseCode.FORBIDDEN.getDisplayName());
                 return true;
@@ -143,11 +142,11 @@ public class HandlerFilter implements Filter {
         }
     }
 
-    public boolean processRequest(HttpServletRequest request, HttpServletResponse servletResponse, FilterChain filterChain) {
+    public boolean processRequest(HttpServletRequest request, HttpServletResponse servletResponse, RequestInfo requestInfo, FilterChain filterChain) {
         try {
             if (requestInfo.isBasicAuth()) {
-                if (!checkBasicAuth()) return false;
-            } else if (StringUtils.isBlank(requestInfo.getOperatorKcId()) || !checkPermissionByUserId(requestInfo.getOperatorKcId(), request)) {
+                if (!checkBasicAuth(requestInfo)) return false;
+            } else if (StringUtils.isBlank(requestInfo.getOperatorKcId()) || !checkPermissionByUserId(requestInfo, request)) {
                 buildErrorResponse(servletResponse, requestInfo.getRequestId(), HttpServletResponse.SC_OK,
                     CommonResponseCode.FORBIDDEN.getValue(), CommonResponseCode.FORBIDDEN.getDisplayName());
                 return true;
@@ -182,9 +181,9 @@ public class HandlerFilter implements Filter {
             requestWrapper.setBody(dataRequest.toString());
             requestWrapper.addHeader(HeaderInfo.X_USER_NAME, requestInfo.getFullName());
             requestWrapper.addHeader(HeaderInfo.X_USER_CODE, requestInfo.getCode());
-            log.info("before doFilter method=" +request.getMethod()+ " user= " + this.requestInfo.getFullName() + " URI=" + request.getRequestURL().toString());
+            log.info("before doFilter method=" +request.getMethod()+ " user= " + requestInfo.getFullName() + " URI=" + request.getRequestURL().toString());
             filterChain.doFilter(requestWrapper, servletResponse);
-            log.info("after doFilter method=" +request.getMethod()+ " user= " + this.requestInfo.getFullName() + " URI=" + request.getRequestURL().toString());
+            log.info("after doFilter method=" +request.getMethod()+ " user= " + requestInfo.getFullName() + " URI=" + request.getRequestURL().toString());
             return true;
         } catch (Exception ex) {
             log.error(ex.getMessage());
@@ -213,8 +212,7 @@ public class HandlerFilter implements Filter {
         }
     }
 
-    private boolean getUserInfo(HttpServletRequest request) {
-        requestInfo = new RequestInfo();
+    private boolean getUserInfo(HttpServletRequest request, RequestInfo requestInfo) {
         String authorization = request.getHeader(HeaderEnum.HEADER_AUTHORIZATION.getValue());
         if (StringUtils.isBlank(authorization)) {
             return false;
@@ -252,12 +250,12 @@ public class HandlerFilter implements Filter {
         return true;
     }
 
-    private boolean checkBasicAuth() {
+    private boolean checkBasicAuth(RequestInfo requestInfo) {
         return BasicAuthorization.checkBasicAuthorization(requestInfo.getAuthorization(), basicUserName, basicPassword);
     }
 
     @SneakyThrows
-    private boolean checkPermissionByUserId(String userId, HttpServletRequest request) {
+    private boolean checkPermissionByUserId(RequestInfo requestInfo, HttpServletRequest request) {
         RequestMappingHandlerMapping req2HandlerMapping = appContext.getBean(RequestMappingHandlerMapping.class);
         HandlerExecutionChain handlerExeChain = req2HandlerMapping.getHandler(request);
         if (!Objects.nonNull(handlerExeChain)) {
@@ -274,7 +272,7 @@ public class HandlerFilter implements Filter {
         }
         PermissionRequestDto requestDto = new PermissionRequestDto();
         requestDto.setRequestId(requestInfo.getRequestId());
-        requestDto.setUserId(userId);
+        requestDto.setUserId(requestInfo.getOperatorKcId());
         requestDto.setUserName(requestInfo.getOperatorName());
         Result<PermissionResponseDto> result = authService.getPermissionInfo(requestDto);
         final String[] grantedPermissions = Optional.ofNullable(result)
