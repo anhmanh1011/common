@@ -97,7 +97,6 @@ public class HandlerFilter implements Filter {
             if (isMultipart && this.processMultipartRequest(request, response, requestInfo, filterChain)) {
                 return;
             } else if (!isMultipart && this.processRequest(request, response, requestInfo, filterChain)) {
-                log.info("RequestInfor method=" +request.getMethod()+ " user= " + requestInfo.getFullName() + " URI=" + request.getRequestURL().toString());
                 return;
             }
             buildErrorResponse(response, requestInfo.getRequestId(), HttpServletResponse.SC_OK,
@@ -181,9 +180,7 @@ public class HandlerFilter implements Filter {
             requestWrapper.setBody(dataRequest.toString());
             requestWrapper.addHeader(HeaderInfo.X_USER_NAME, requestInfo.getFullName());
             requestWrapper.addHeader(HeaderInfo.X_USER_CODE, requestInfo.getCode());
-            log.info("before doFilter method=" +request.getMethod()+ " user= " + requestInfo.getFullName() + " URI=" + request.getRequestURL().toString());
             filterChain.doFilter(requestWrapper, servletResponse);
-            log.info("after doFilter method=" +request.getMethod()+ " user= " + requestInfo.getFullName() + " URI=" + request.getRequestURL().toString());
             return true;
         } catch (Exception ex) {
             log.error(ex.getMessage());
@@ -231,7 +228,6 @@ public class HandlerFilter implements Filter {
         getUserInfoRequest.setToken(String.format("Bearer %s", token));
 
         GetUserInfoResponse getUserInfoResponse = authenService.getUserInfo(getUserInfoRequest);
-        log.info("HandlerFilter method = " +request.getMethod()+ " user= " + getUserInfoResponse.getFullName() + "URI=" + request.getRequestURL().toString());
         if (getUserInfoResponse == null || StringUtils.isBlank(getUserInfoResponse.getName()) || StringUtils.isBlank(getUserInfoResponse.getCode()) || StringUtils.isBlank(
             getUserInfoResponse.getFullName())) {
             return false;
