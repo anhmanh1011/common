@@ -10,7 +10,6 @@ public enum PrintTypeEnum implements BaseEnum<String> {
     INVENTORY_TRANSFER("inventory_transfer", "Mẫu in phiếu chuyển kho"),
     INVENTORY_TRANSFER_BILL("inventory_transfer_bill", "Mẫu in vận đơn chuyển kho"),
     INVENTORY_ADJUSTMENT("inventory_adjustment", "Mẫu in biên bản xử lý hàng thừa thiếu"),
-    PURCHASE_ORDER("purchase_order", "Hoá đơn nhập hàng"),
     SHIPMENT("shipment", "Phiếu giao hàng"),
     STOCK_EXPORT("stock_export", "Phiếu xuất kho"),
     ORDER_DRAFT("order_draft", "Đơn bán hàng nháp"),
@@ -20,7 +19,11 @@ public enum PrintTypeEnum implements BaseEnum<String> {
     GOODS_RECEIPT_RECEIVE_DETAIL("goods_receipt_receive_detail", "Biên bản nhận chuyển hoàn từ hãng vận chuyển đầy đủ"),
     ORDER_EXCHANGE("order_exchange", "Hóa đơn đổi hàng"),
     ORDER_RETURN("order_return", "Hóa đơn trả hàng"),
-    WARRANTY("warranty","Phiếu bảo hành");
+    WARRANTY("warranty","Phiếu bảo hành"),
+    PURCHASE_ORDER("purchase_order", "Hoá đơn nhập hàng"),
+    PURCHASE_ORDER_7("purchase_order_ma_7","Hóa đơn in theo 1 mã 7"),
+    PURCHASE_ORDER_FGG("purchase_order_fgg","Phiếu bảo hành FGG"),
+    PURCHASE_ORDER_FGG_7("purchase_order_ma_7_fgg","Hóa đơn in theo 1 mã 7 FGG");
 
     private final String  value;
     private final String displayName;
