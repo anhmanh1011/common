@@ -130,9 +130,12 @@ public class HandlerFilter implements Filter {
             multipartRequest.setAttribute(FieldConstant.OPERATOR_KC_ID, requestInfo.getOperatorKcId());
             multipartRequest.setAttribute(FieldConstant.OPERATOR_LOGIN_ID, requestInfo.getOperatorLoginId());
             multipartRequest.setAttribute(FieldConstant.REQUEST_ID, requestInfo.getRequestId());
-
-            multipartRequest.getRequestHeaders().put(HeaderInfo.X_USER_NAME, Collections.singletonList(requestInfo.getFullName()));
-            multipartRequest.getRequestHeaders().put(HeaderInfo.X_USER_CODE, Collections.singletonList(requestInfo.getCode()));
+            if(!Strings.isEmpty(requestInfo.getCode())) {
+                multipartRequest.getRequestHeaders().put(HeaderInfo.X_USER_CODE, Collections.singletonList(requestInfo.getCode()));
+            }
+            if(!Strings.isEmpty(requestInfo.getFullName())) {
+                multipartRequest.getRequestHeaders().put(HeaderInfo.X_USER_NAME, Collections.singletonList(requestInfo.getFullName()));
+            }
             filterChain.doFilter(multipartRequest, servletResponse);
             return true;
         } catch (Exception ex) {
@@ -178,8 +181,12 @@ public class HandlerFilter implements Filter {
                 dataRequest.put(FieldConstant.UPDATED_BY, "admin");
             }
             requestWrapper.setBody(dataRequest.toString());
-            requestWrapper.addHeader(HeaderInfo.X_USER_NAME, requestInfo.getFullName());
-            requestWrapper.addHeader(HeaderInfo.X_USER_CODE, requestInfo.getCode());
+            if(!Strings.isEmpty(requestInfo.getCode())) {
+                requestWrapper.addHeader(HeaderInfo.X_USER_CODE, requestInfo.getCode());
+            }
+            if(!Strings.isEmpty(requestInfo.getFullName())) {
+                requestWrapper.addHeader(HeaderInfo.X_USER_NAME, requestInfo.getCode());
+            }
             filterChain.doFilter(requestWrapper, servletResponse);
             return true;
         } catch (Exception ex) {
