@@ -185,7 +185,7 @@ public class HandlerFilter implements Filter {
                 requestWrapper.addHeader(HeaderInfo.X_USER_CODE, requestInfo.getCode());
             }
             if(!Strings.isEmpty(requestInfo.getFullName())) {
-                requestWrapper.addHeader(HeaderInfo.X_USER_NAME, requestInfo.getCode());
+                requestWrapper.addHeader(HeaderInfo.X_USER_NAME, requestInfo.getFullName());
             }
             filterChain.doFilter(requestWrapper, servletResponse);
             return true;
