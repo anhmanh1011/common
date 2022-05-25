@@ -23,7 +23,8 @@ public enum PrintTypeEnum implements BaseEnum<String> {
     PURCHASE_ORDER("purchase_order", "Hoá đơn nhập hàng"),
     PURCHASE_ORDER_7("purchase_order_ma_7","Hóa đơn in theo 1 mã 7"),
     PURCHASE_ORDER_FGG("purchase_order_fgg","Phiếu bảo hành FGG"),
-    PURCHASE_ORDER_FGG_7("purchase_order_ma_7_fgg","Hóa đơn in theo 1 mã 7 FGG");
+    PURCHASE_ORDER_FGG_7("purchase_order_ma_7_fgg","Hóa đơn in theo 1 mã 7 FGG"),
+    WARRANTY_RETURN("warranty_returns","Phiếu trả bảo hành");
 
     private final String  value;
     private final String displayName;
