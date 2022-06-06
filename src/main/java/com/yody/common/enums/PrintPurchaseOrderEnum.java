@@ -40,7 +40,9 @@ public enum PrintPurchaseOrderEnum implements BasePrintEnum<String> {
   PO_PAYMENT_NOTE("{po_payment_note}", "Diễn giải thanh toán", ""),
   PO_PAYMENT_PLAN_ARRAY("{po_payment_plan_array}", "Bảng kế hoạch thanh toán", ""),
   PO_REFERENCE("{po_reference}", "Mã tham chiếu", "D00000001"),
-  DATA_TABLE_PAYMENT("{data_table_payment}", "Bảng thanh toán", "");
+  DATA_TABLE_PAYMENT("{data_table_payment}", "Bảng thanh toán", ""),
+  EXPECT_RECEIPT_DATE("{expect_receipt_date}", "Ngày nhận hàng dự kiến", "25/02/1996"),
+  PO_DEBT("{po_debt}", "Thời gian công nợ", "1 ngày sau khi nhận hàng");
 
   private final String value;
   private final String displayName;
