@@ -212,6 +212,7 @@ public class HandlerFilter implements Filter {
         try {
             response.getOutputStream().write(restResponseBytes(Result.error(requestId, errorCode, message)));
         } catch (IOException ignored) {
+            ignored.printStackTrace();
             log.error(ignored.toString());
         }
     }
