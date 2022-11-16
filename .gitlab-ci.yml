@@ -22,7 +22,7 @@ sornaqube check:
 compile deploy:
   image: 610881553522.dkr.ecr.ap-southeast-1.amazonaws.com/maven:3.6.1-jdk-8
   tags:
-    - npd-dev
+    - builder
   stage: deploy_server
   script:
     - mvn -s maven/settings.xml --batch-mode -U clean package deploy
